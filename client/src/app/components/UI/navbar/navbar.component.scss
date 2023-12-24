@@ -12,7 +12,7 @@ nav {
         position: absolute;
         left: 0;
         top: 0;
-        width: 200px;
+        width: 150px;
         height: 100%;
         background-color: $main-green-2;
         clip-path: polygon(0 0, 75% 0, 100% 100%, 0 100%);
@@ -23,7 +23,7 @@ nav {
         position: absolute;
         right: 0;
         top: 0;
-        width: 200px;
+        width: 150px;
         height: 100%;
         background-color: $main-green-1;
         clip-path: polygon(0 0, 100% 0, 100% 100%, 25% 100%);
@@ -33,9 +33,11 @@ nav {
         display: flex;
         column-gap: $p-l;
         position: relative;
-        width: $container-width;
+        width: 100%;
+        max-width: $container-width;
         height: 100%;
         margin: 0 auto;
+        z-index: 2;
 
         a.logo {
             display: flex;
@@ -67,10 +69,22 @@ nav {
                 height: 100%;
 
                 h1 {
+                    position: relative;
                     font-family: 'Pacifico', cursive;
                     font-size: 24px;
                     color: $main-white;
                     font-weight: 400;
+
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        left: 5px;
+                        top: 0;
+                        width: 6px;
+                        height: 6px;
+                        background-color: $main-white;
+                        border-radius: 50%;
+                    }
                 }
             }
         }
@@ -87,6 +101,7 @@ nav {
 
             app-my-input {
                 width: 100%;
+                min-width: 200px;
                 height: 100%;
             }
 
@@ -96,7 +111,8 @@ nav {
         }
 
         .create-post {
-            width: 300px;
+            width: 200px;
+            min-width: 200px;
             height: 100%;
 
             app-my-button {
