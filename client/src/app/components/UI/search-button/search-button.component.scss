@@ -1,0 +1,26 @@
+@import '../../../variables.scss';
+
+.searchButton {
+    width: auto;
+    height: 100%;
+    aspect-ratio: 1/1;
+
+    &.black > button > svg > path { fill: $main-black; stroke: $main-black; }
+    &.white > button > svg > path { fill: $main-white; stroke: $main-white; }
+    &.green > button > svg > path { fill: $main-green-3; stroke: $main-green-3; }
+
+    button {
+        width: auto;
+        height: inherit;
+        aspect-ratio: inherit;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+
+        svg {
+            width: auto;
+            height: inherit;
+            aspect-ratio: inherit;
+        }
+    }
+}

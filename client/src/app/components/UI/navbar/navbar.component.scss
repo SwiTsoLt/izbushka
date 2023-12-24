@@ -1,0 +1,107 @@
+@import '../../../variables.scss';
+
+nav {
+    position: relative;
+    width: 100%;
+    height: $nav-height;
+    background-color: $main-green-3;
+    padding: $p-s;
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 200px;
+        height: 100%;
+        background-color: $main-green-2;
+        clip-path: polygon(0 0, 75% 0, 100% 100%, 0 100%);
+    } 
+
+    &::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 200px;
+        height: 100%;
+        background-color: $main-green-1;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 25% 100%);
+    }
+
+    .container {
+        display: flex;
+        column-gap: $p-l;
+        position: relative;
+        width: $container-width;
+        height: 100%;
+        margin: 0 auto;
+
+        a.logo {
+            display: flex;
+            column-gap: $p-l;
+            width: fit-content;
+            height: 100%;
+            text-decoration: none;
+    
+            .icon {
+                width: auto;
+                height: 100%;
+                aspect-ratio: 1/1;
+    
+                svg {
+                    width: auto;
+                    height: 100%;
+                    aspect-ratio: 1/1;
+                    object-fit: contain;
+                    
+                    path {
+                        stroke-width: 0;
+                    }
+                }
+            }
+
+            .title {
+                display: flex;
+                align-items: center;
+                height: 100%;
+
+                h1 {
+                    font-family: 'Pacifico', cursive;
+                    font-size: 24px;
+                    color: $main-white;
+                    font-weight: 400;
+                }
+            }
+        }
+
+        .search {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            border: 2px solid $main-white;
+            border-radius: $b-r-inner;
+            padding: 0 $p-l;
+
+            app-my-input {
+                width: 100%;
+                height: 100%;
+            }
+
+            app-search-button {
+                height: $icon-m;
+            }
+        }
+
+        .create-post {
+            width: 300px;
+            height: 100%;
+
+            app-my-button {
+                height: 100%;
+            }
+        }
+    }
+}

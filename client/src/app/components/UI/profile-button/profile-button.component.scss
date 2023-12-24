@@ -1,0 +1,31 @@
+@import '../../../variables.scss';
+
+.profileButton {
+    width: auto;
+    height: 100%;
+    aspect-ratio: 1/1;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    // transition: border-color $anim-tr $anim-mode;
+
+    // &:hover {
+    //     border-color: $main-beige-1;
+    // }
+
+    button {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background-color: $main-image-placeholder;
+        border-radius: 50%;
+        cursor: pointer;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            background-color: #dddddd;
+        }
+    }
+}

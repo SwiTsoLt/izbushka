@@ -1,0 +1,33 @@
+@import '../../../variables.scss';
+
+.myButton {
+    width: 100%;
+    height: 100%;
+
+    &.none > button {
+        border: none;
+        color: $main-black;
+    }
+
+    &.white > button {
+        border-color: $main-white;
+        color: $main-white;
+    }
+
+    &.begie > button {
+        border-color: $main-beige-1;
+        color: $main-beige-1;
+    }
+
+    &.green > button { border-color: $main-green-1; }
+    
+    button {
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        border: 2px solid $main-beige-1;
+        cursor: pointer;
+        border-radius: $b-r-inner;
+        font-weight: 600;
+    }
+}

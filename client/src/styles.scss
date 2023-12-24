@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+@import './app/variables.scss';
+
+*,
+*::before,
+*::after {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+
+    font-family: 'Pacifico', cursive;
+    font-family: 'Raleway', sans-serif;
+    color: $main-black;
+    font-size: $fs-m;
+}
+
+html, body {
+    width: 100%;
+}
+
+body {
+    min-height: 100vh;
+}

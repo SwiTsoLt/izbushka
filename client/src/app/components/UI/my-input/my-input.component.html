@@ -1,0 +1,11 @@
+<div class="my-input">
+    <label [for]="myInput">{{ label }}</label>
+    <input #myInput type="text" [placeholder]="placeholder"
+    [ngClass]="{
+        'white': color === 'white',
+        'beige': color === 'beige',
+        'green': color === 'green',
+        'none': color === 'none',
+        'noBorder': noBorder === false,
+        }">
+</div>
