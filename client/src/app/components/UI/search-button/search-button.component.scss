@@ -16,11 +16,23 @@
         background-color: transparent;
         border: none;
         cursor: pointer;
+        transition: all $anim-tr $anim-mode;
+
+        &:hover {            
+            svg > path {
+                fill: $main-beige-1;
+                stroke: $main-beige-1;
+            }
+        }
 
         svg {
             width: auto;
             height: inherit;
             aspect-ratio: inherit;
+
+            path {
+                transition: all $anim-tr $anim-mode;
+            }
         }
     }
 }

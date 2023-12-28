@@ -13,6 +13,7 @@
         font-size: $fs-m;
         color: $main-black;
         padding: 0 $p-s;
+        transition: border-color $anim-tr $anim-mode;
 
         &.white, &.white::placeholder {
             color: $main-white;
@@ -36,6 +37,10 @@
 
         &.noBorder {
             border: none;
+        }
+
+        &:focus {
+            border-color: $main-beige-1;
         }
     }
 }

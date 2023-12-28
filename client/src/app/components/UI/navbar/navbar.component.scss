@@ -94,6 +94,11 @@ nav {
             border: 2px solid $main-white;
             border-radius: $b-r-inner;
             padding: 0 $p-l;
+            transition: border-color $anim-tr $anim-mode;
+
+            &:hover {
+                border-color: $main-beige-1;
+            }
 
             app-my-input {
                 width: 100%;

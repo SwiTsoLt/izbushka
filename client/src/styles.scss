@@ -95,6 +95,7 @@ body {
     -moz-text-size-adjust: 100%;
     font-size: $fs-s;
     color: $main-black;
+    letter-spacing: 1px;
 }
 
 /* ---------- Default styles ---------- */
@@ -114,6 +115,6 @@ hr {
     border: none;
 }
 
-span.number {
+.number {
     font-family: 'Roboto', sans-serif;
 }

@@ -23,17 +23,18 @@
         background-color: $main-white;
     }
 
-    &:hover {
-        box-shadow: 0 0 0 2px $main-green-3;
-    }
-
     img {
         width: 100%;
         height: auto;
         aspect-ratio: 4/3;
         object-fit: cover;
         background-color: $main-gray-lighter;
-        z-index: 2;
+        transition: transform $anim-tr $anim-mode;
+        z-index: 1;
+    }
+
+    &:hover > img {
+        transform: scale(1.1);
     }
 
     .info {
@@ -47,7 +48,7 @@
         border-top: none;
         border-radius: 0 0 $b-r-outer $b-r-outer;
         padding: $p-l;
-        z-index: 1;
+        z-index: 2;
 
         h6 {
             font-size: $fs-m;

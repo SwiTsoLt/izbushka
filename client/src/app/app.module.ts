@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -52,6 +52,7 @@ registerLocaleData(localeRu, 'ru');
     }),
   ],
   providers: [
+    { provide: LOCALE_ID, useValue: 'ru' },
     StaticDataSource,
     PostRepository,
     UserRepository
