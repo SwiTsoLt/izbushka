@@ -5,6 +5,9 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "engines": {
+    "node": "v18.15.0"
+  },
   "scripts": {
     "build": "nest build",
     "build:all": "npm i && npm i --prefix client && npm run build --prefix client && npm run build",

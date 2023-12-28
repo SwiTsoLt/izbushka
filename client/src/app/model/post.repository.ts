@@ -12,7 +12,7 @@ export class PostRepository {
         })
     }
 
-    public getPosts(categoryID: number = -1): Post[] {
+    public getPosts(categoryID = -1): Post[] {
         return this.posts
             .filter(p => categoryID === -1 || categoryID === p.categoryID)
     }

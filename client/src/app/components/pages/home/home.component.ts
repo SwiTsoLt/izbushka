@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Post } from '../../../model/post.model';
-import { PostRepository } from 'src/app/model/post.repository';
+import { PostRepository } from '../../../model/post.repository';
 
 @Component({
   selector: 'app-home',

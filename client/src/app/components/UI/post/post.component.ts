@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Post } from '../../../model/post.model';
-import { User } from 'src/app/model/user.model';
-import { UserRepository } from 'src/app/model/user.repository';
+import { User } from '../../../model/user.model';
+import { UserRepository } from '../../../model/user.repository';
 import { Observable } from 'rxjs';
 
 @Component({

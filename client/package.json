@@ -1,12 +1,15 @@
 {
   "name": "client",
   "version": "0.0.0",
+  "engines": {
+    "node": "v18.15.0"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "lint": "eslint --ext .ts --fix src",
+    "lint": "eslint \"src/**/*.ts\" --fix",
     "test": "ng test"
   },
   "private": true,
@@ -22,6 +25,7 @@
     "@ngrx/store": "^17.0.1",
     "@ngrx/store-devtools": "^17.0.1",
     "@types/node": "^20.10.5",
+    "izbushka": "file:..",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
