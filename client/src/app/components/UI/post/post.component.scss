@@ -43,6 +43,9 @@
         width: 100%;
         height: 100%;
         background-color: $main-beige-1-light;
+        border: 2px solid $main-beige-1;
+        border-top: none;
+        border-radius: 0 0 $b-r-outer $b-r-outer;
         padding: $p-l;
         z-index: 1;
 

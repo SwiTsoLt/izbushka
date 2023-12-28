@@ -8,16 +8,16 @@ export class StaticDataSource {
     private readonly day = 24 * 60 * 60 * 1000;
 
     private posts: Post[] = [
-        new Post("1", "Title 1", "Body 1", ["https://i.bulavka.by/lots47/200/477684.webp?3128a6", "image2", "image3"], 1, "1", new PostLocation("1", "1"), 10, Date.now() - this.day),
-        new Post("2", "Title 2", "Body 2", ["https://i.bulavka.by/lots47/200/476738.webp?bb4f38", "image2", "image3"], 2, "2", new PostLocation("2", "1"), 20, Date.now() - 2 * this.day),
-        new Post("3", "Title 3", "Body 3", ["https://i.bulavka.by/lots47/200/475382.webp?6ae234", "image2", "image3"], 3, "3", new PostLocation("1", "2"), 30, Date.now() - 3 * this.day),
-        new Post("4", "Title 4", "Body 4", ["https://i.bulavka.by/lots47/200/474425.webp?f2fd8a", "image2", "image3"], 2, "2", new PostLocation("2", "2"), 40, Date.now() - 4 * this.day),
-        new Post("5", "Title 5", "Body 5", ["https://i.bulavka.by/lots47/200/474847-1.webp?68328e", "image2", "image3"], 1, "1", new PostLocation("3", "1"), 50, Date.now() - 5 * this.day),
-        new Post("6", "Title 6", "Body 6", ["https://i.bulavka.by/lots47/200/473649.webp?9fa5e2", "image2", "image3"], 3, "3", new PostLocation("1", "3"), 60, Date.now() - 6 * this.day),
-        new Post("7", "Title 7", "Body 7", ["https://i.bulavka.by/lots47/200/472919.webp?25e742", "image2", "image3"], 3, "3", new PostLocation("2", "3"), 70, Date.now() - 7 * this.day),
-        new Post("8", "Title 8", "Body 8", ["https://i.bulavka.by/lots47/200/471499.webp?64c0fe", "image2", "image3"], 2, "2", new PostLocation("1", "1"), 80, Date.now() - 8 * this.day),
-        new Post("8", "Title 9", "Body 9", ["https://i.bulavka.by/lots47/200/470759.webp?1415a3", "image2", "image3"], 2, "2", new PostLocation("3", "2"), 90, Date.now() - 9 * this.day),
-        new Post("10", "Title 10", "Body 10", ["https://i.bulavka.by/lots47/200/470560.webp?d17680", "image2", "image3"], 1, "1", new PostLocation("2", "1"), 100, Date.now() - 10 * this.day),
+        new Post("1", "Title 1", "Body 1", ["https://i.bulavka.by/lots47/200/477684.webp", "image2", "image3"], 1, "1", new PostLocation("1", "1"), 10, Date.now() - this.day),
+        new Post("2", "Title 2", "Body 2", ["https://i.bulavka.by/lots47/200/476738.webp", "image2", "image3"], 2, "2", new PostLocation("2", "1"), 20, Date.now() - 2 * this.day),
+        new Post("3", "Title 3", "Body 3", ["https://i.bulavka.by/lots47/200/475382.webp", "image2", "image3"], 3, "3", new PostLocation("1", "2"), 30, Date.now() - 3 * this.day),
+        new Post("4", "Title 4", "Body 4", ["https://i.bulavka.by/lots47/200/474425.webp", "image2", "image3"], 2, "2", new PostLocation("2", "2"), 40, Date.now() - 4 * this.day),
+        new Post("5", "Title 5", "Body 5", ["https://i.bulavka.by/lots47/200/474847-1.webp", "image2", "image3"], 1, "1", new PostLocation("3", "1"), 50, Date.now() - 5 * this.day),
+        new Post("6", "Title 6", "Body 6", ["https://i.bulavka.by/lots47/200/473649.webp", "image2", "image3"], 3, "3", new PostLocation("1", "3"), 60, Date.now() - 6 * this.day),
+        new Post("7", "Title 7", "Body 7", ["https://i.bulavka.by/lots47/200/472919.webp", "image2", "image3"], 3, "3", new PostLocation("2", "3"), 70, Date.now() - 7 * this.day),
+        new Post("8", "Title 8", "Body 8", ["https://i.bulavka.by/lots47/200/471499.webp", "image2", "image3"], 2, "2", new PostLocation("1", "1"), 80, Date.now() - 8 * this.day),
+        new Post("8", "Title 9", "Body 9", ["https://i.bulavka.by/lots47/200/470759.webp", "image2", "image3"], 2, "2", new PostLocation("3", "2"), 90, Date.now() - 9 * this.day),
+        new Post("10", "Title 10", "Body 10", ["https://i.bulavka.by/lots47/200/470560.webp", "image2", "image3"], 1, "1", new PostLocation("2", "1"), 100, Date.now() - 10 * this.day),
     ]
 
     private users: User[] = [
