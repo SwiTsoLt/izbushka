@@ -17,7 +17,9 @@
             </form>
         </aside>
         <div class="postList">
-            <app-post *ngFor="let post of posts" [post]="post"></app-post>
+            @for(post of posts; track post.id) {
+                <app-post [post]="post"></app-post>
+            }
         </div>
     </div>
 </div>

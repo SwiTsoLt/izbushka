@@ -17,7 +17,7 @@ export class StaticDataSource {
         new Post("7", "Title 7", "Body 7", ["https://i.bulavka.by/lots47/200/472919.webp", "image2", "image3"], 3, "3", new PostLocation("2", "3"), 70, Date.now() - 7 * this.day),
         new Post("8", "Title 8", "Body 8", ["https://i.bulavka.by/lots47/200/471499.webp", "image2", "image3"], 2, "2", new PostLocation("1", "1"), 80, Date.now() - 8 * this.day),
         new Post("8", "Title 9", "Body 9", ["https://i.bulavka.by/lots47/200/470759.webp", "image2", "image3"], 2, "2", new PostLocation("3", "2"), 90, Date.now() - 9 * this.day),
-        new Post("10", "Title 10", "Body 10", ["https://i.bulavka.by/lots47/200/470560.webp", "image2", "image3"], 1, "1", new PostLocation("2", "1"), 100, Date.now() - 10 * this.day),
+        new Post("10", "Title 10", "Body 10", ["../../assets/pages/home/test-image.gif", "image2", "image3"], 1, "1", new PostLocation("2", "1"), 100, Date.now() - 10 * this.day),
     ]
 
     private users: User[] = [

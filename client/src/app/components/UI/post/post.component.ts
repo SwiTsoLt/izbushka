@@ -1,13 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Post } from '../../../model/post.model';
+import { Observable } from 'rxjs';
 import { User } from '../../../model/user.model';
 import { UserRepository } from '../../../model/user.repository';
-import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-post',
+  standalone: true,
+  imports: [CommonModule],
+  providers: [
+    { provide: UserRepository }
+  ],
   templateUrl: './post.component.html',
-  styleUrls: ['./post.component.scss']
+  styleUrl: './post.component.scss'
 })
 export class PostComponent implements OnInit {
   @Input() post: Post | undefined

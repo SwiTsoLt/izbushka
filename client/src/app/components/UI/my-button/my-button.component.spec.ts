@@ -6,10 +6,12 @@ describe('MyButtonComponent', () => {
   let component: MyButtonComponent;
   let fixture: ComponentFixture<MyButtonComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [MyButtonComponent]
-    });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [MyButtonComponent]
+    })
+    .compileComponents();
+    
     fixture = TestBed.createComponent(MyButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -6,10 +6,12 @@ describe('SearchButtonComponent', () => {
   let component: SearchButtonComponent;
   let fixture: ComponentFixture<SearchButtonComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [SearchButtonComponent]
-    });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [SearchButtonComponent]
+    })
+    .compileComponents();
+    
     fixture = TestBed.createComponent(SearchButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

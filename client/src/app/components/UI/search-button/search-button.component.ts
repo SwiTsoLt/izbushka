@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 type SearchButtonColor = 'black' | 'white' | 'green';
@@ -8,8 +9,10 @@ function foo() {
 
 @Component({
   selector: 'app-search-button',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './search-button.component.html',
-  styleUrls: ['./search-button.component.scss'],
+  styleUrl: './search-button.component.scss'
 })
 export class SearchButtonComponent {
   @Input() color: SearchButtonColor = 'black';

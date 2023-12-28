@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 type MyButtonColor = 'none' | 'white' | 'beige' | 'green';
@@ -8,8 +9,10 @@ function foo() {
 
 @Component({
   selector: 'app-my-button',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './my-button.component.html',
-  styleUrls: ['./my-button.component.scss'],
+  styleUrl: './my-button.component.scss'
 })
 export class MyButtonComponent {
   @Input() text = '';
