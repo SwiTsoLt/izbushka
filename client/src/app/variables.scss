@@ -1,16 +1,18 @@
 /* Colors */
 
-$main-white: #f7f3eb;
+$main-white: #F7F5F1;
 $main-black: #303030;
 $main-gray: #909090;
-$main-image-placeholder: #dddddd;
+$main-gray-light: #c4c4c4;
+$main-gray-lighter: #e8e8e8;
 $main-green-1: #18604A;
 $main-green-2: #1E6851;
 $main-green-3: #257157;
-$main-green-3-50: rgba(37, 113, 87, 0.5);
-$main-green-3-10: rgba(37, 113, 87, 0.1);
+$main-green-3-50: #6bb399;
+$main-green-3-10: #d1ebe1;
 $main-green-4: #6AB29C;
 $main-beige-1: #E5D5C6;
+$main-beige-1-light: #eee4db;
 $main-beige-2: #95877A;
 $main-red: #F44336;
 $main-blue: #1E88E5;
@@ -37,15 +39,16 @@ $main-yellow: #FFA000;
 
 /* Font size */
 
-$fs-s: 10px;
-$fs-m: 14px;
-$fs-l: 24px;
-$fs-xl: 36px;
+$fs-s: 12px;
+$fs-m: 16px;
+$fs-l: 20px;
+$fs-xl: 24px;
 
 /* Sizes */
 
-$container-width: 1280px;
+$container-width: 1500px;
 $nav-height: 60px;
+$button-height: 40px;
 $icon-s: 10px;
 $icon-m: 20px;
 $icon-l: 30px;

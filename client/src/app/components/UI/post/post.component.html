@@ -1,0 +1,34 @@
+<div class="post">
+    <img [src]="$any(post)?.images[0]" onerror="this.src='../../../assets/pages/home/image-error.png';" loading="lazy"
+        alt="post image">
+    <div class="info">
+        <h6 *ngIf="$any(post)?.title; else titleElse">
+            {{ $any(post)?.title }}
+        </h6>
+        <ng-template #titleElse>
+            <span class="text__placeholder title__placeholder"></span>
+        </ng-template>
+        <p>
+            <span class="owner" *ngIf="$any(user$ | async)?.first_name; else ownerElse">
+                {{ $any(user$ | async)?.first_name }}, {{ $any(user$ | async)?.location.areaID }}
+            </span>
+            <ng-template #ownerElse>
+                <span class="text__placeholder owner__placeholder"></span>
+            </ng-template>
+            <span class="date number" *ngIf="$any(post)?.publishDate; else dateElse">
+                {{ $any(post)?.publishDate | date:"d LLL, H:mm" }}
+            </span>
+            <ng-template #dateElse>
+                <span class="text__placeholder date__placeholder"></span>
+            </ng-template>
+        </p>
+        <h4>
+            <span class="number" *ngIf="$any(post)?.price; else priceElse">
+                {{ $any(post)?.price }} руб
+            </span>
+            <ng-template #priceElse>
+                <span class="text__placeholder price__placeholder"></span>
+            </ng-template>
+        </h4>
+    </div>
+</div>

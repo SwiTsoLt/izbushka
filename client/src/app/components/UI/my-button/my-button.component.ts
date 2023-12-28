@@ -12,7 +12,7 @@ function foo() {
   styleUrls: ['./my-button.component.scss'],
 })
 export class MyButtonComponent {
-  @Input('text') text = '';
-  @Input('color') color: MyButtonColor = 'green';
-  @Input('callback') callback: () => void = foo;
+  @Input() text = '';
+  @Input() color: MyButtonColor = 'green';
+  @Input() callback: () => void = foo;
 }

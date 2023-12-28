@@ -8,8 +8,8 @@ type MyInputColor = 'none' | 'white' | 'beige' | 'green';
   styleUrls: ['./my-input.component.scss'],
 })
 export class MyInputComponent {
-  @Input('label') label = '';
-  @Input('placeholder') placeholder = '';
-  @Input('color') color: MyInputColor = 'white';
-  @Input('nBorder') noBorder = false;
+  @Input() label = '';
+  @Input() placeholder = '';
+  @Input() color: MyInputColor = 'white';
+  @Input() noBorder: '' | boolean = false;
 }

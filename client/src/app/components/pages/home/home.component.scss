@@ -1,0 +1,89 @@
+@import '../../../variables.scss';
+
+.home {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+
+    .container {
+        display: grid;
+        grid-template-columns: 300px auto;
+        column-gap: $p-l;
+        height: 100%;
+        min-height: calc(100vh - $nav-height);
+        // background-color: $main-beige-1;
+        padding-top: $p-l;
+        padding-bottom: $p-l;
+
+        aside {
+            width: 100%;
+            height: 100%;
+
+            form {
+                display: flex;
+                flex-direction: column;
+                row-gap: $p-l;
+                width: 100%;
+                height: fit-content;
+
+                .post_type {
+                    display: flex;
+                    width: 100%;
+                    column-gap: $p-s;
+
+                    label {
+                        position: relative;
+                        width: 100%;
+                        height: $button-height;
+                        background-color: $main-white;
+                        overflow: hidden;
+                        font-size: $fs-m;
+
+                        &:hover > .checkmark {
+                            background-color: $main-green-3-10;
+                        }
+
+                        input {
+                            position: absolute;
+                            width: 100%;
+                            height: 100%;
+                            opacity: 0;
+                            cursor: pointer;
+
+                            &:checked~.checkmark {
+                                background-color: $main-green-3;
+                                color: $main-white;
+                            }
+                        }
+
+                        .checkmark {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            width: 100%;
+                            height: 100%;
+                            background-color: $main-white;
+                            border: 2px solid $main-green-3;
+                            border-radius: $b-r-inner;
+                            font-weight: 600;
+                            transition: all $anim-tr $anim-mode;
+                        }
+                    }
+                }
+            }
+        }
+
+        .postList {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: $p-s;
+            width: 100%;
+            height: fit-content;
+
+            app-post {
+                width: 100%;
+                height: 350px;
+            }
+        }
+    }
+}

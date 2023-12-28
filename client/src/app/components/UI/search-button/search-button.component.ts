@@ -12,6 +12,6 @@ function foo() {
   styleUrls: ['./search-button.component.scss'],
 })
 export class SearchButtonComponent {
-  @Input('color') color: SearchButtonColor = 'black';
-  @Input('callback') callback: () => void = foo;
+  @Input() color: SearchButtonColor = 'black';
+  @Input() callback: () => void = foo;
 }
