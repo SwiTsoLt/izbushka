@@ -1,23 +1,30 @@
 import { Injectable } from "@angular/core";
 import { User } from "./user.model";
 import { StaticDataSource } from "./static.datasource";
+import { Observable, map } from "rxjs";
 
 
 @Injectable()
 export class UserRepository {
-    private users: User[] = []
 
-    constructor(dataSource: StaticDataSource) {
-        dataSource.getUsers().subscribe(data => {
-            this.users = data
-        })
+    constructor(public dataSource: StaticDataSource) {}
+
+    public getUsers(): Observable<User[]> {
+        return this.dataSource.getUsers()
     }
 
-    public getUsers(): User[] {
-        return this.users
+    public getUser(id: string): Observable<User | undefined> {
+        return this.dataSource.getUser(id)
+            .pipe(map((user: User | undefined) => {
+                if (!user) return undefined;
+                if (!this.isUserValid(user)) return undefined;
+                return user;
+            }))
     }
 
-    public getUser(id: string): User | undefined {
-        return this.users.find(user => user.id === id)
+    // Private
+
+    private isUserValid(user: User): boolean {
+        return !!user
     }
 }

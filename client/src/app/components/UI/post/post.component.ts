@@ -1,33 +1,33 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Post } from '../../../model/post.model';
-import { Observable } from 'rxjs';
 import { User } from '../../../model/user.model';
-import { UserRepository } from '../../../model/user.repository';
 import { CommonModule } from '@angular/common';
+import { PostPlaceholderComponent } from '../post-placeholder/post-placeholder.component';
+import { UserRepository } from '../../../model/user.repository';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-post',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PostPlaceholderComponent],
   providers: [
-    { provide: UserRepository }
+    {provide: UserRepository},
   ],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss'
 })
 export class PostComponent implements OnInit {
-  @Input() post: Post | undefined
-  @Input() user$: Observable<User> | undefined
+  @Input() post!: Post;
+  public user$!: Observable<User | undefined>;
 
-  constructor(private userRepository: UserRepository) {}  
+  constructor(
+    public userRepository: UserRepository,
+  ) {}
 
   ngOnInit(): void {
-    this.user$ = new Observable((observer) => {
-      if (!this.post) {
-        observer.next(undefined);
-        return;
-      }
-      observer.next(this.userRepository.getUser(this.post.ownerID))
+    this.userRepository.getUser(this.post.ownerID)
+    .subscribe(user => {
+      this.user$ = of(user)
     })
   }
 }

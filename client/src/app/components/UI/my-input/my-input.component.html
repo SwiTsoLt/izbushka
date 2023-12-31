@@ -1,11 +1,15 @@
-<div class="my-input">
+<div class="my-input" [ngClass]="{
+    'isOptional': isOptional === true || isOptional === ''
+    }">
+    @if(label) {
     <label [for]="myInput">{{ label }}</label>
-    <input #myInput type="text" [placeholder]="placeholder"
-    [ngClass]="{
+    }
+    <input #myInput [type]="type" [placeholder]="placeholder" [name]="name" [ngClass]="{
         'white': color === 'white',
         'beige': color === 'beige',
         'green': color === 'green',
         'none': color === 'none',
-        'noBorder': noBorder === false || noBorder === '',
+        'noBorder': noBorder === true || noBorder === '',
+        'isOptional': isOptional === true || isOptional === ''
         }">
 </div>

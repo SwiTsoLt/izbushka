@@ -17,5 +17,6 @@ function foo() {
 export class MyButtonComponent {
   @Input() text = '';
   @Input() color: MyButtonColor = 'green';
+  @Input() hasBackground: boolean = false;
   @Input() callback: () => void = foo;
 }

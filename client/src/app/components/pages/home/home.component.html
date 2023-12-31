@@ -17,7 +17,7 @@
             </form>
         </aside>
         <div class="postList">
-            @for(post of posts; track post.id) {
+            @for(post of (posts$ | async); track $index) {
                 <app-post [post]="post"></app-post>
             }
         </div>

@@ -1,0 +1,39 @@
+<div class="login">
+    <img src="../../../../assets/pages/login/login-bg.jpg" alt="login image">
+    <div class="form__container">
+        <div class="logo">
+            <svg>
+                <defs>
+                    <clipPath id="clip">
+                        <path
+                            d="M100.000,21.000 Q100,0 81.217,9.391L18.783,40.609 Q0,50 18.783,59.391L81.217,90.609 Q100,100 100.000,79.000Z" />
+                    </clipPath>
+                </defs>
+            </svg>
+            <div class="roof"></div>
+            <h1>Iзбушка</h1>
+        </div>
+        <form action="/">
+            <app-my-input type="text" name="login" color="green" placeholder="Email или номер телефона"></app-my-input>
+            <app-my-input type="text" name="first_name" color="green" placeholder="Имя"></app-my-input>
+            <app-my-input type="text" name="last_name" color="green" placeholder="Фамилия" isOptional></app-my-input>
+            <app-my-input type="password" name="password" color="green" placeholder="Придумайте пароль"></app-my-input>
+            <app-my-input type="password" name="confirm_password" color="green"
+                placeholder="Подтвердите пароль"></app-my-input>
+            <div class="policy">
+                Регистрируясь, вы принимаете наши условия
+                <a routerLink="/policy">Политику конфиденциальности</a> и 
+                <a routerLink="/policy">Политику в отношении файлов cookie</a>.
+            </div>
+            <app-my-button text="Регистрация" color="green" [hasBackground]="true"></app-my-button>
+            <span>
+                <hr>
+                <span>ИЛИ</span>
+            </span>
+            <div class="redirect">
+                <p>Есть аккаунт?</p>
+                <a routerLink="/login">Вход</a>
+            </div>
+        </form>
+    </div>
+</div>

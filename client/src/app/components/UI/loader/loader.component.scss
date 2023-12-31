@@ -1,0 +1,111 @@
+@import '../../../variables.scss';
+
+.loader {
+    height: 5px;
+    width: 5px;
+    color: $main-green-3-50;
+    box-shadow: -10px -10px 0 5px,
+        -10px -10px 0 5px,
+        -10px -10px 0 5px,
+        -10px -10px 0 5px;
+    animation: loader 6s infinite;
+}
+
+@keyframes loader {
+    0% {
+        box-shadow: -10px -10px 0 5px,
+            -10px -10px 0 5px,
+            -10px -10px 0 5px,
+            -10px -10px 0 5px;
+    }
+
+    8.33% {
+        box-shadow: -10px -10px 0 5px,
+            10px -10px 0 5px,
+            10px -10px 0 5px,
+            10px -10px 0 5px;
+    }
+
+    16.66% {
+        color: $main-beige-1;
+        box-shadow: -10px -10px 0 5px,
+            10px -10px 0 5px,
+            10px 10px 0 5px,
+            10px 10px 0 5px;
+    }
+
+    24.99% {
+        box-shadow: -10px -10px 0 5px,
+            10px -10px 0 5px,
+            10px 10px 0 5px,
+            -10px 10px 0 5px;
+    }
+
+    33.32% {
+        color: $main-green-3-50;
+        box-shadow: -10px -10px 0 5px,
+            10px -10px 0 5px,
+            10px 10px 0 5px,
+            -10px -10px 0 5px;
+    }
+
+    41.65% {
+        box-shadow: 10px -10px 0 5px,
+            10px -10px 0 5px,
+            10px 10px 0 5px,
+            10px -10px 0 5px;
+    }
+
+    49.98% {
+        color: $main-beige-1;
+        box-shadow: 10px 10px 0 5px,
+            10px 10px 0 5px,
+            10px 10px 0 5px,
+            10px 10px 0 5px;
+    }
+
+    58.31% {
+        box-shadow: -10px 10px 0 5px,
+            -10px 10px 0 5px,
+            10px 10px 0 5px,
+            -10px 10px 0 5px;
+    }
+
+    66.64% {
+        color: $main-green-3-50;
+        box-shadow: -10px -10px 0 5px,
+            -10px -10px 0 5px,
+            10px 10px 0 5px,
+            -10px 10px 0 5px;
+    }
+
+    74.97% {
+        box-shadow: -10px -10px 0 5px,
+            10px -10px 0 5px,
+            10px 10px 0 5px,
+            -10px 10px 0 5px;
+    }
+
+    83.3% {
+        color: $main-beige-1;
+        box-shadow: -10px -10px 0 5px,
+            10px 10px 0 5px,
+            10px 10px 0 5px,
+            -10px 10px 0 5px;
+    }
+
+    91.63% {
+        box-shadow: -10px -10px 0 5px,
+            -10px 10px 0 5px,
+            -10px 10px 0 5px,
+            -10px 10px 0 5px;
+    }
+
+    100% {
+        color: $main-green-3-50;
+        box-shadow: -10px -10px 0 5px,
+            -10px -10px 0 5px,
+            -10px -10px 0 5px,
+            -10px -10px 0 5px;
+    }
+}

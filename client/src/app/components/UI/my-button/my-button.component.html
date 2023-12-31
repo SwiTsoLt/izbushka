@@ -4,7 +4,12 @@
     'beige': color === 'beige',
     'green': color === 'green',
 }">
-    <button>
+    <button
+    [ngClass]="{
+        'hasBackground': hasBackground,
+    }"
+    (click)="callback()"
+    >
         {{ text }}
     </button>
 </div>

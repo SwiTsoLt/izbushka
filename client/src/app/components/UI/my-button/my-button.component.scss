@@ -7,19 +7,41 @@
     &.none > button {
         border: none;
         color: $main-black;
+
+        &.hasBackground {
+            background-color: $main-black;
+            color: $main-white;
+        }
     }
 
     &.white > button {
         border-color: $main-white;
         color: $main-white;
+
+        &.hasBackground {
+            background-color: $main-white;
+            color: $main-black;
+        }
     }
 
     &.begie > button {
         border-color: $main-beige-1;
         color: $main-beige-1;
+
+        &.hasBackground {
+            background-color: $main-beige-1;
+            color: $main-black;
+        }
     }
 
-    &.green > button { border-color: $main-green-1; }
+    &.green > button {
+        border-color: $main-green-3;
+
+        &.hasBackground {
+            background-color: $main-green-3;
+            color: $main-white;
+        }
+    }
     
     button {
         width: 100%;
@@ -28,6 +50,7 @@
         border: 2px solid $main-beige-1;
         cursor: pointer;
         border-radius: $b-r-inner;
-        font-weight: 600;
+        font-size: $fs-s;
+        letter-spacing: 2px;
     }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Post, PostLocation } from "./post.model";
-import { Observable, from } from "rxjs";
+import { Observable } from "rxjs";
 import { User, UserLocation } from "./user.model";
 
 @Injectable()
@@ -29,10 +29,34 @@ export class StaticDataSource {
     ]
 
     public getPosts(): Observable<Post[]> {
-        return from([this.posts]);
+        return new Observable(subscriber => {
+            setTimeout(() => {
+                subscriber.next(this.posts)
+            }, 100)
+        })
+    }
+
+    public getPost(id: string): Observable<Post | undefined> {
+        return new Observable(subscriber => {
+            setTimeout(() => {
+                subscriber.next(this.posts.find(p => p.id === id))
+            }, 100)
+        })
     }
 
     public getUsers(): Observable<User[]> {
-        return from([this.users]);
+        return new Observable(subscriber => {
+            setTimeout(() => {
+                subscriber.next(this.users)
+            }, 100)
+        })
+    }
+
+    public getUser(id: string): Observable<User | undefined> {
+        return new Observable(subscriber => {
+            setTimeout(() => {
+                subscriber.next(this.users.find(u => u.id === id))
+            }, 100)
+        })
     }
 }

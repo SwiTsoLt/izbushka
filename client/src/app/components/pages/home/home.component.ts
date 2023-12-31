@@ -4,11 +4,14 @@ import { Post } from '../../../model/post.model';
 import { PostComponent } from '../../UI/post/post.component';
 import { NavbarComponent } from '../../UI/navbar/navbar.component';
 import { StaticDataSource } from '../../../model/static.datasource';
+import { PostPlaceholderComponent } from '../../UI/post-placeholder/post-placeholder.component';
+import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [PostComponent, NavbarComponent],
+  imports: [CommonModule, PostComponent, PostPlaceholderComponent, NavbarComponent],
   providers: [
     { provide: PostRepository },
     { provide: StaticDataSource },
@@ -17,9 +20,10 @@ import { StaticDataSource } from '../../../model/static.datasource';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-  public posts: Post[] = []
-  
-  constructor(postRepository: PostRepository) {
-    this.posts = postRepository.getPosts()
-  }
+
+  public posts$: Observable<Post[]> = this.postRepository.getPosts()
+
+  constructor(
+    public postRepository: PostRepository,
+  ) { }
 }

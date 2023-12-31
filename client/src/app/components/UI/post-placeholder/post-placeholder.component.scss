@@ -1,6 +1,6 @@
 @import '../../../variables.scss';
 
-.post {
+.post-placeholder {
     display: flex;
     flex-direction: column;
     position: relative;
@@ -8,11 +8,9 @@
     height: 100%;
     border-radius: $b-r-outer;
     overflow: hidden;
-    cursor: pointer;
-    box-shadow: 0 0 0 2px transparent;
-    transition: box-shadow $anim-tr $anim-mode;
+    cursor: wait;
 
-    &::after {
+    &::before {
         content: "";
         position: absolute;
         left: 0;
@@ -23,18 +21,15 @@
         background-color: $main-white;
     }
 
-    img {
+    app-loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 100%;
         height: auto;
         aspect-ratio: 1/1;
-        object-fit: cover;
         background-color: $main-gray-lighter;
-        transition: transform $anim-tr $anim-mode;
         z-index: 1;
-    }
-
-    &:hover > img {
-        transform: scale(1.1);
     }
 
     .info {
@@ -51,13 +46,7 @@
         padding: $p-m;
         z-index: 2;
 
-        h6 {
-            font-size: $fs-m;
-            font-weight: 600;
-            line-height: $fs-l;
-        }
-
-        .text__placeholder {
+        div {
             display: inline-block;
             height: $fs-s;
             background-color: $main-gray-light;
@@ -69,32 +58,18 @@
             width: 100%;
         }
 
-        p {
-            display: flex;
-            flex-direction: column;
-            gap: calc($p-s / 2);
-
-            .owner__placeholder {
-                width: 60%;
-                margin: 2px 0;
-            }
-
-            .date__placeholder {
-                width: 80%;
-                margin: 2px 0;
-            }
+        .owner__placeholder {
+            width: 60%;
+            margin: 2px 0;
         }
 
-        h4 {
-            display: flex;
-            align-items: end;
-            height: 100%;
-            font-size: $fs-l;
-            font-weight: 600;
+        .date__placeholder {
+            width: 80%;
+            margin: 2px 0;
+        }
 
-            .price__placeholder {
-                width: 40%;
-            }
+        .price__placeholder {
+            width: 40%;
         }
     }
 }

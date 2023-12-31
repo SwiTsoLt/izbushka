@@ -13,7 +13,7 @@ $main-green-3-10: #d1ebe1;
 $main-green-4: #6AB29C;
 $main-beige-1: #E5D5C6;
 $main-beige-1-light: #f3ece5;
-$main-beige-2: #95877A;
+$main-beige-2: #CCB8A6;
 $main-red: #F44336;
 $main-blue: #1E88E5;
 $main-yellow: #FFA000;
@@ -30,11 +30,11 @@ $main-yellow: #FFA000;
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
 /* Miama-nueva */
-
 @font-face {
-    font-family: MiamaNueva;
-    font-weight: 400;
-    src: "./fonts/miama-nueva/miama-nueva.otf" format("opentype");
+    font-family: "MiamaNueva";
+    src: url("./fonts/miama-nueva/miamanueva.ttf") format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 /* Font size */

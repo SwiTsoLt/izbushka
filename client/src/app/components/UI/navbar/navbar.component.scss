@@ -89,6 +89,9 @@ nav {
             display: grid;
             grid-template-columns: 1fr auto;
             align-items: center;
+            position: relative;
+            left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
             border: 2px solid $main-white;
@@ -101,12 +104,19 @@ nav {
             }
 
             app-my-input {
-                width: 100%;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: calc(100% - $p-l);
                 min-width: 200px;
                 height: 100%;
             }
 
             app-search-button {
+                position: absolute;
+                right: $p-l;
+                top: 50%;
+                transform: translateY(-50%);
                 height: $icon-m;
             }
         }
