@@ -1,0 +1,14 @@
+@import '../../../variables.scss';
+
+.posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: $p-s;
+    width: 100%;
+    height: fit-content;
+
+    app-post {
+        width: 100%;
+        height: fit-content;
+    }
+}

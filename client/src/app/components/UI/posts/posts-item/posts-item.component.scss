@@ -1,4 +1,4 @@
-@import '../../../variables.scss';
+@import '../../../../variables.scss';
 
 .post {
     display: flex;
@@ -26,7 +26,7 @@
     img {
         width: 100%;
         height: auto;
-        aspect-ratio: 1/1;
+        aspect-ratio: 4/3;
         object-fit: cover;
         background-color: $main-gray-lighter;
         transition: transform $anim-tr $anim-mode;
@@ -43,7 +43,7 @@
         gap: $p-s;
         width: 100%;
         height: auto;
-        aspect-ratio: 4/3;
+        aspect-ratio: 1/1;
         background-color: $main-beige-1-light;
         border: 2px solid $main-beige-1;
         border-top: none;
@@ -57,32 +57,10 @@
             line-height: $fs-l;
         }
 
-        .text__placeholder {
-            display: inline-block;
-            height: $fs-s;
-            background-color: $main-gray-light;
-            border-radius: $b-r-outer;
-            margin: 6px 0;
-        }
-
-        .title__placeholder {
-            width: 100%;
-        }
-
         p {
             display: flex;
             flex-direction: column;
             gap: calc($p-s / 2);
-
-            .owner__placeholder {
-                width: 60%;
-                margin: 2px 0;
-            }
-
-            .date__placeholder {
-                width: 80%;
-                margin: 2px 0;
-            }
         }
 
         h4 {
@@ -91,10 +69,23 @@
             height: 100%;
             font-size: $fs-l;
             font-weight: 600;
+        }
+    }
 
-            .price__placeholder {
-                width: 40%;
-            }
+    .favoriteButton {
+        position: absolute;
+        right: $p-m;
+        bottom: $p-m;
+        width: $icon-m;
+        height: $icon-m;
+        background-image: url('../../../../../assets/UI/post/heart.svg');
+        background-color: transparent;
+        cursor: pointer;
+        z-index: 2;
+        transition: background-image $anim-tr $anim-mode;
+
+        &.active {
+            background-image: url('../../../../../assets/UI/post/heart-full.svg');
         }
     }
 }

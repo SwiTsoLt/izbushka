@@ -107,9 +107,10 @@ nav {
                 position: absolute;
                 left: 0;
                 top: 0;
-                width: calc(100% - $p-l);
+                width: 100%;
                 min-width: 200px;
                 height: 100%;
+                padding-right: $p-l;
             }
 
             app-search-button {
@@ -129,6 +130,24 @@ nav {
             app-my-button {
                 height: 100%;
             }
+        }
+
+        .profile {
+            app-navbar-menu {
+                position: absolute;
+                right: $p-l;
+                top: calc($nav-height - $p-m * 2);
+                opacity: 0;
+                pointer-events: none;
+                padding-top: calc($p-m + $p-s);
+                transition: all $anim-tr $anim-mode;
+            }
+
+            app-profile-button:hover + app-navbar-menu, app-navbar-menu:hover {
+                pointer-events: all;
+                opacity: 1;
+            }
+
         }
     }
 }

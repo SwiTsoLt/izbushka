@@ -29,6 +29,16 @@
         padding: $p-s $p-l;
         transition: border-color $anim-tr $anim-mode;
 
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active {
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: $main-white;
+            transition: background-color 5000s ease-in-out 0s;
+            caret-color: $main-white;
+        }
+
         &.white,
         &.white::placeholder {
             color: $main-white;
@@ -60,6 +70,7 @@
 
         &.noBorder {
             border: none;
+            border-radius: 0;
         }
 
         &:focus {

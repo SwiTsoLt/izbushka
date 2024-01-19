@@ -1,0 +1,5 @@
+<div class="posts">
+    @for(post of posts$ | async; track $index) {
+        <app-posts-item [post]="post"></app-posts-item>
+    }
+</div>

@@ -1,0 +1,8 @@
+<div class="navbar-menu">
+    <div class="navbar-menu-links">
+        @for (link of menu.links; track $index) {
+        <app-navbar-menu-link [iconSrc]="menu.linkIconStaticPath + link.iconName"
+            [name]="link.name" [href]="link.href"></app-navbar-menu-link>
+        }
+    </div>
+</div>

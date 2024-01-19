@@ -1,0 +1,15 @@
+@import '../../../../variables.scss';
+
+.navbar-menu {
+    width: $nav-menu-width;
+    background-color: $main-beige-1-light;
+    border: 2px solid $main-beige-1;
+    border-top: none;
+    border-radius: 0 0 $b-r-inner $b-r-inner;
+
+    .navbar-menu-links {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }   
+}

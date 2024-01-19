@@ -1,0 +1,36 @@
+@import '../../../../../variables.scss';
+
+.navbar-menu-link {
+    width: 100%;
+
+    a {
+        display: flex;
+        align-items: center;
+        grid-gap: $p-s;
+        color: $main-black;
+        width: 100%;
+        height: $button-height;
+        background-color: transparent;
+        padding: 0 $p-m;
+        transition: background-color $anim-tr $anim-mode;
+
+        &:hover {
+            background-color: $main-beige-1;
+        }
+
+        .navbar-menu-link-icon {
+            width: auto;
+            height: $icon-m;
+            aspect-ratio: 1/1;
+
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .navbar-menu-link-name {
+            white-space: nowrap;
+        }
+    }
+}
