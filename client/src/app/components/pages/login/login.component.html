@@ -12,9 +12,9 @@
             <div class="roof"></div>
             <h1>Iзбушка</h1>
         </div>
-        <form action="/" (ngSubmit)="login">
-            <app-my-input type="text" name="login" color="green" placeholder="Email или номер телефона"></app-my-input>
-            <app-my-input type="text" name="password" color="green" placeholder="Пароль"></app-my-input>
+        <form action="/" (ngSubmit)="login" [formGroup]="loginGroup">
+            <input formControlName="email" type="email" class="my-input-green" placeholder="Email или номер телефона">
+            <input formControlName="password" type="password" class="my-input-green" placeholder="Пароль">
             <a routerLink="/password-recovery">Забыли пароль?</a>
             <app-my-button text="Вход" color="green" [hasBackground]="true"></app-my-button>
             <span>
@@ -22,8 +22,7 @@
                 <span>ИЛИ</span>
             </span>
             <div class="redirect">
-                <p>У вас ещё нет аккаунта?</p>
-                <a routerLink="/registration">Зарегистрироваться</a>
+                <p>У вас ещё нет аккаунта? <a routerLink="/registration">Зарегистрироваться</a></p>
             </div>
         </form>
     </div>

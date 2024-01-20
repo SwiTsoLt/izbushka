@@ -36,11 +36,7 @@
                         height: $button-height;
                         background-color: $main-white;
                         overflow: hidden;
-                        font-size: $fs-m;
-
-                        &:hover > .checkmark {
-                            background-color: $main-beige-1-light;
-                        }
+                        font-size: $fs-s;
 
                         input {
                             position: absolute;
@@ -64,7 +60,6 @@
                             background-color: $main-white;
                             border: 2px solid $main-green-3;
                             border-radius: $b-r-inner;
-                            font-weight: 600;
                             transition: all $anim-tr $anim-mode;
                         }
                     }

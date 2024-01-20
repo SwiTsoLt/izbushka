@@ -85,13 +85,12 @@
             height: fit-content;
             font-size: $fs-m;
 
-            app-my-input,
             app-my-button {
                 width: 100%;
                 height: 40px;
             }
 
-            a {
+            & > a {
                 width: 100%;
                 text-align: right;
                 color: $main-green-3;
@@ -125,20 +124,31 @@
             .policy {
                 text-align: center;
                 font-size: $fs-s;
+                line-height: $fs-m;
                 margin: $p-m 0;
+
+                a {
+                    color: $main-green-3;
+                }
             }
 
             .redirect {
                 display: flex;
                 justify-content: center;
+                align-items: center;
                 flex-wrap: wrap;
                 gap: $p-s;
                 width: 100%;
                 text-align: center;
 
-                a {
+                p {
                     width: fit-content;
+                    height: fit-content;
                     font-size: $fs-m;
+
+                    a {
+                        color: $main-green-3;
+                    }
                 }
             }
         }

@@ -80,7 +80,8 @@ h6 {
 * {
     // font-family: 'Pacifico', cursive;
     // font-family: 'Raleway', sans-serif;
-    font-family: 'Roboto', sans-serif;
+    // font-family: 'Roboto', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 /* ---------- Reset styles ---------- */
@@ -124,4 +125,71 @@ hr {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+}
+
+/* My Input */
+
+.my-input,
+.my-input-white,
+.my-input-beige,
+.my-input-green,
+.my-input-none,
+.my-input {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border: 2px solid $main-beige-1;
+    border-radius: $b-r-inner;
+    font-size: $fs-m;
+    color: $main-black;
+    padding: $p-s $p-l;
+    transition: border-color $anim-tr $anim-mode;
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: $main-white;
+        transition: background-color 5000s ease-in-out 0s;
+        caret-color: $main-white;
+    }
+
+    &:focus {
+        border-color: $main-beige-1;
+    }
+}
+
+.my-input-white,
+.my-input-white::placeholder {
+    color: $main-white;
+    border-color: $main-white;
+}
+
+.my-input-beige {
+    color: $main-beige-1;
+    border-color: $main-beige-1;
+}
+
+.my-input-green {
+    color: $main-green-3;
+    border-color: $main-green-3-10;
+
+    &:focus {
+        border-color: $main-green-3-50;
+    }
+
+    &::placeholder {
+        color: $main-gray;
+    }
+}
+
+.my-input-none {
+    color: $main-black;
+    border-color: transparent;
+}
+
+.noBorder {
+    border: none;
+    border-radius: 0;
 }

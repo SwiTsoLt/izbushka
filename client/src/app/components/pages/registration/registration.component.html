@@ -14,12 +14,11 @@
             <h1>Iзбушка</h1>
         </div>
         <form action="/">
-            <app-my-input type="text" name="login" color="green" placeholder="Email или номер телефона"></app-my-input>
-            <app-my-input type="text" name="first_name" color="green" placeholder="Имя"></app-my-input>
-            <app-my-input type="text" name="last_name" color="green" placeholder="Фамилия" isOptional></app-my-input>
-            <app-my-input type="password" name="password" color="green" placeholder="Придумайте пароль"></app-my-input>
-            <app-my-input type="password" name="confirm_password" color="green"
-                placeholder="Подтвердите пароль"></app-my-input>
+            <input formControlName="email" type="email" class="my-input-green" placeholder="Email или номер телефона">
+            <input formControlName="first_name" type="text" class="my-input-green" placeholder="Имя">
+            <input formControlName="last_name" type="text" class="my-input-green" placeholder="Фамилия">
+            <input formControlName="password" type="password" class="my-input-green" placeholder="Придумайте пароль">
+            <input formControlName="confirm_password" type="password" class="my-input-green" placeholder="Подтвердите пароль">
             <div class="policy">
                 Регистрируясь, вы принимаете наши условия
                 <a routerLink="/policy">Политику конфиденциальности</a> и 
@@ -31,8 +30,7 @@
                 <span>ИЛИ</span>
             </span>
             <div class="redirect">
-                <p>Есть аккаунт?</p>
-                <a routerLink="/login">Вход</a>
+                <p>Есть аккаунт? <a routerLink="/login">Вход</a></p>
             </div>
         </form>
     </div>
