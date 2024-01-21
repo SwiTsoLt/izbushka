@@ -2,7 +2,10 @@
   "name": "izbushka",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": {
+    "email": "stanislavsmwork@gmail.com",
+    "name": "Stanislav"
+  },
   "private": true,
   "license": "UNLICENSED",
   "engines": {

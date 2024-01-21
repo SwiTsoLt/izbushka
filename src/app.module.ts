@@ -25,11 +25,13 @@ const rootPath = join(
       isGlobal: true,
       load: [configuration],
     }),
-    MongooseModule.forRoot('mongodb://localhost:27017/izbushka'),
+    MongooseModule.forRoot(
+      new ConfigService().get<string>('database.mongoUri'),
+    ),
     ServeStaticModule.forRoot({ rootPath }),
     JwtModule.register({
       global: true,
-      secret: new ConfigService().get<string>('JWT_SECRET'),
+      secret: new ConfigService().get<string>('JWTSecret'),
       signOptions: { expiresIn: '60s' },
     }),
     AuthModule,
