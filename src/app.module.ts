@@ -7,7 +7,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import configuration from './config/configuration';
 
 const rootPath = join(
   __dirname,
@@ -23,15 +22,13 @@ const rootPath = join(
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [configuration],
+      envFilePath: ['.env', '.env.development'],
     }),
-    MongooseModule.forRoot(
-      new ConfigService().get<string>('database.mongoUri'),
-    ),
+    MongooseModule.forRoot(new ConfigService().get<string>('MONGO_URI')),
     ServeStaticModule.forRoot({ rootPath }),
     JwtModule.register({
       global: true,
-      secret: new ConfigService().get<string>('JWTSecret'),
+      secret: new ConfigService().get<string>('JWT_SECRET'),
       signOptions: { expiresIn: '60s' },
     }),
     AuthModule,
