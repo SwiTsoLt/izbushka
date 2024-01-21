@@ -135,6 +135,7 @@ hr {
 .my-input-green,
 .my-input-none,
 .my-input {
+    position: relative;
     width: 100%;
     height: 100%;
     background-color: transparent;
@@ -150,13 +151,24 @@ hr {
     &:-webkit-autofill:focus,
     &:-webkit-autofill:active {
         -webkit-background-clip: text;
-        -webkit-text-fill-color: $main-white;
+        -webkit-text-fill-color: $main-black;
         transition: background-color 5000s ease-in-out 0s;
-        caret-color: $main-white;
+        caret-color: $main-black;
     }
 
     &:focus {
         border-color: $main-beige-1;
+    }
+
+    &[type="password"]::before {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 100px;
+        height: 100px;
+        aspect-ratio: 1/1;
+        background-color: red;
     }
 }
 
@@ -164,6 +176,16 @@ hr {
 .my-input-white::placeholder {
     color: $main-white;
     border-color: $main-white;
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: $main-white;
+        transition: background-color 5000s ease-in-out 0s;
+        caret-color: $main-white;
+    }
 }
 
 .my-input-beige {

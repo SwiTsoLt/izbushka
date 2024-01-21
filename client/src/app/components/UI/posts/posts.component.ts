@@ -4,7 +4,6 @@ import { PostsItemComponent } from './posts-item/posts-item.component';
 import { Post } from '../../../model/post.model';
 import { UserRepository } from '../../../model/user.repository';
 import { Observable, of } from 'rxjs';
-import { User } from '../../../model/user.model';
 
 @Component({
   selector: 'app-posts',

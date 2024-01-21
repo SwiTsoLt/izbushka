@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { HomeComponent } from './components/pages/home/home.component';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpService } from './services/http.service';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +12,10 @@ import { HomeComponent } from './components/pages/home/home.component';
     CommonModule,
     RouterOutlet,
     HomeComponent,
+    HttpClientModule  
+  ],
+  providers: [
+    { provide: HttpService }
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

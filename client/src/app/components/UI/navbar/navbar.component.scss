@@ -16,7 +16,7 @@ nav {
         height: 100%;
         background-color: $main-green-2;
         clip-path: polygon(0 0, 75% 0, 100% 100%, 0 100%);
-    } 
+    }
 
     &::after {
         content: "";
@@ -41,18 +41,18 @@ nav {
             width: fit-content;
             height: 100%;
             text-decoration: none;
-    
+
             .icon {
                 width: auto;
                 height: 100%;
                 aspect-ratio: 1/1;
-    
+
                 svg {
                     width: auto;
                     height: 100%;
                     aspect-ratio: 1/1;
                     object-fit: contain;
-                    
+
                     path {
                         stroke-width: 0;
                     }
@@ -103,16 +103,6 @@ nav {
                 border-color: $main-beige-1;
             }
 
-            app-my-input {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                min-width: 200px;
-                height: 100%;
-                padding-right: $p-l;
-            }
-
             app-search-button {
                 position: absolute;
                 right: $p-l;
@@ -143,7 +133,8 @@ nav {
                 transition: all $anim-tr $anim-mode;
             }
 
-            app-profile-button:hover + app-navbar-menu, app-navbar-menu:hover {
+            app-profile-button:hover+app-navbar-menu,
+            app-navbar-menu:hover {
                 pointer-events: all;
                 opacity: 1;
             }

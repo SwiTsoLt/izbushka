@@ -1,4 +1,4 @@
-import { CommonModule, NgClass } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { PostPlaceholderComponent } from '../../post-placeholder/post-placeholder.component';
 import { UserRepository } from '../../../../model/user.repository';

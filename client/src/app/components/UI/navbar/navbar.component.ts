@@ -19,7 +19,7 @@ export class NavbarComponent {
     private router: Router
   ) { }
 
-  public redirect_to_login(): void {
-    this.router.navigate(['/login']);
+  public redirect_to_signin(): void {
+    this.router.navigate(['/signin']);
   }
 }

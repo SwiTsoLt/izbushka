@@ -1,0 +1,29 @@
+<div class="auth">
+    <img src="../../../../assets/pages/login/login-bg.jpg" loading="lazy" alt="login image">
+    <div class="form__container">
+        <div class="logo">
+            <svg>
+                <defs>
+                     <clipPath id="clip">
+                       <path d="M100.000,21.000 Q100,0 81.217,9.391L18.783,40.609 Q0,50 18.783,59.391L81.217,90.609 Q100,100 100.000,79.000Z" />
+                    </clipPath> 
+                </defs>
+            </svg>
+            <div class="roof"></div>
+            <h1>Iзбушка</h1>
+        </div>
+        <form (ngSubmit)="onSubmit()" [formGroup]="signInForm">
+            <input formControlName="email" type="email" name="email" class="my-input-green" placeholder="Email или номер телефона">
+            <input formControlName="password" type="password" name="password" class="my-input-green" placeholder="Пароль">
+            <a routerLink="/password-recovery">Забыли пароль?</a>
+            <app-my-button text="Вход" color="green" [hasBackground]="true" [disabled]="!signInForm.valid"></app-my-button>
+            <span>
+                <hr>
+                <span>ИЛИ</span>
+            </span>
+            <div class="redirect">
+                <p>У вас ещё нет аккаунта? <a routerLink="/signup">Зарегистрироваться</a></p>
+            </div>
+        </form>
+    </div>
+</div>
