@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "author": {
     "email": "stanislavsmwork@gmail.com",
-    "name": "Stanislav"
+    "name": "Stanislav",
+    "url": "https://izbushka.onrender.com"
   },
   "scripts": {
     "ng": "ng",
