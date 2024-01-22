@@ -2,6 +2,7 @@
     <a [routerLink]="href">
         <div class="navbar-menu-link-icon">
             <img [src]="iconSrc" alt="navbar-menu-link-icon">
+            <img [src]="iconSrc?.replace('.svg', '-active.svg')" alt="navbar-menu-link-icon">
         </div>
         <div class="navbar-menu-link-name">{{ name }}</div>
     </a>

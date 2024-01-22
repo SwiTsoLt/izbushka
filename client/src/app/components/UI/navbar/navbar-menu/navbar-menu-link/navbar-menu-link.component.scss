@@ -7,6 +7,7 @@
         display: flex;
         align-items: center;
         grid-gap: $p-s;
+        position: relative;
         color: $main-black;
         width: 100%;
         height: $button-height;
@@ -15,17 +16,35 @@
         transition: background-color $anim-tr $anim-mode;
 
         &:hover {
-            background-color: $main-beige-1;
+            background-color: $main-green-3;
+            color: $main-white;
         }
 
         .navbar-menu-link-icon {
+            position: relative;
             width: auto;
             height: $icon-m;
             aspect-ratio: 1/1;
 
             img {
+                position: absolute;
+                left: 0;
+                top: 0;
                 width: 100%;
                 height: 100%;
+                transform: opacity $anim-tr $anim-mode;
+
+                &:last-child {
+                    opacity: 0;
+                }
+            }
+        }
+
+        &:hover > .navbar-menu-link-icon > img {
+            opacity: 0;
+
+            &:last-child {
+                opacity: 1;
             }
         }
 

@@ -22,6 +22,17 @@
             background-color: $main-white;
             color: $main-black;
         }
+
+        &:hover {
+            background-color: $main-white;
+            color: $main-green-3;   
+            font-weight: bold;
+        }
+
+        &.hasBackground:hover {
+            background-color: $main-green-3;
+            color: $main-white;   
+        }
     }
 
     &.begie > button {
@@ -41,6 +52,11 @@
             background-color: $main-green-3;
             color: $main-white;
         }
+
+        &:hover {
+            background-color: $main-green-3;
+            color: $main-white;   
+        }
     }
     
     button {
@@ -49,10 +65,10 @@
         background-color: transparent;
         border: 2px solid $main-beige-1;
         cursor: pointer;
-        border-radius: $b-r-inner;
         font-size: $fs-s;
-        letter-spacing: 2px;
+        letter-spacing: 1px;
         color: $main-black;
+        transition: all $anim-tr $anim-mode;
 
         &:disabled {
             opacity: 0.7;

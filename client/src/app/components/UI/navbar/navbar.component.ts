@@ -15,11 +15,17 @@ import { RouterModule } from '@angular/router';
 })
 export class NavbarComponent {
 
+  public isNavbarMenuShow: boolean = false;
+
   constructor(
     private router: Router
   ) { }
 
   public redirect_to_signin(): void {
     this.router.navigate(['/signin']);
+  }
+
+  public toggleNavbarMenuShow(): void {
+    this.isNavbarMenuShow = !this.isNavbarMenuShow;
   }
 }

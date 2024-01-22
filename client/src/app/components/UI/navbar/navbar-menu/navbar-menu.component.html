@@ -1,8 +1,13 @@
-<div class="navbar-menu">
+<div [ngClass]="{ 'show': isShow }" class="navbar-menu">
     <div class="navbar-menu-links">
+        <button (click)="toggleNavbarMenuShow()" class="close">
+            <img src="../../../../../assets/UI/navbar/menu/cross.svg" alt="close-icon">
+            <img src="../../../../../assets/UI/navbar/menu/cross-active.svg" alt="close-icon">
+        </button>
         @for (link of menu.links; track $index) {
         <app-navbar-menu-link [iconSrc]="menu.linkIconStaticPath + link.iconName"
             [name]="link.name" [href]="link.href"></app-navbar-menu-link>
         }
     </div>
 </div>
+<button (click)="toggleNavbarMenuShow()" class="substrate">&nbsp;</button>

@@ -5,9 +5,11 @@ import { ConfigService } from '@nestjs/config';
 import * as csurf from 'csurf';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
-  app.use(csurf());
+  const app = await NestFactory.create(AppModule, {
+    cors: true,
+  });
   const configService = app.get(ConfigService);
   await app.listen(configService.get('PORT') ?? config.get('PORT'));
+  app.use(csurf());
 }
 bootstrap();

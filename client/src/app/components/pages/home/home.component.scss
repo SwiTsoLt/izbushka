@@ -51,6 +51,11 @@
                             }
                         }
 
+                        &:hover>.checkmark {
+                            background-color: $main-green-3;
+                            color: $main-white;
+                        }
+
                         .checkmark {
                             display: flex;
                             justify-content: center;
@@ -59,7 +64,6 @@
                             height: 100%;
                             background-color: $main-white;
                             border: 2px solid $main-green-3;
-                            border-radius: $b-r-inner;
                             transition: all $anim-tr $anim-mode;
                         }
                     }

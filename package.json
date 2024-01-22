@@ -36,6 +36,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/serve-static": "^4.0.0",
     "@types/config": "^3.3.3",
+    "@types/csurf": "^1.11.5",
     "bcrypt": "^5.1.1",
     "config": "^3.3.10",
     "csurf": "^1.11.0",

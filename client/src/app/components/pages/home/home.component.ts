@@ -3,7 +3,6 @@ import { PostRepository } from '../../../model/post.repository';
 import { Post } from '../../../model/post.model';
 import { NavbarComponent } from '../../UI/navbar/navbar.component';
 import { StaticDataSource } from '../../../model/static.datasource';
-import { PostPlaceholderComponent } from '../../UI/post-placeholder/post-placeholder.component';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { PostsComponent } from '../../UI/posts/posts.component';
@@ -11,7 +10,7 @@ import { PostsComponent } from '../../UI/posts/posts.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, PostPlaceholderComponent, NavbarComponent, PostsComponent],
+  imports: [CommonModule, NavbarComponent, PostsComponent],
   providers: [
     { provide: PostRepository },
     { provide: StaticDataSource },

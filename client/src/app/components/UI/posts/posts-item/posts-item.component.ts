@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { PostPlaceholderComponent } from '../../post-placeholder/post-placeholder.component';
 import { UserRepository } from '../../../../model/user.repository';
 import { Post } from '../../../../model/post.model';
 import { User } from '../../../../model/user.model';
@@ -9,7 +8,7 @@ import { Observable, of } from 'rxjs';
 @Component({
   selector: 'app-posts-item',
   standalone: true,
-  imports: [CommonModule, PostPlaceholderComponent],
+  imports: [CommonModule],
   providers: [
     { provide: UserRepository },
   ],
