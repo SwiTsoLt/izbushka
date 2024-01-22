@@ -5,20 +5,27 @@ import { SearchButtonComponent } from '../search-button/search-button.component'
 import { Router } from '@angular/router';
 import { NavbarMenuComponent } from './navbar-menu/navbar-menu.component';
 import { RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { User } from '../../../model/user.model';
+import { selectUser } from '../../../store/user/user.selectors';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [MyButtonComponent, ProfileButtonComponent, SearchButtonComponent, NavbarMenuComponent, RouterModule],
+  imports: [CommonModule, MyButtonComponent, ProfileButtonComponent, SearchButtonComponent, NavbarMenuComponent, RouterModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
 
   public isNavbarMenuShow: boolean = false;
+  public user$: Observable<User> = this.store.select(selectUser as never);
 
   constructor(
-    private router: Router
+    private readonly router: Router,
+    private readonly store: Store
   ) { }
 
   public redirect_to_signin(): void {

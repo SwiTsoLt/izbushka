@@ -1,3 +1,12 @@
-<div class="favorite">
+<div class="settings">
     <app-navbar></app-navbar>
+    <div class="container">
+        <aside>
+            <a routerLink="/settings/profile">Профиль</a>
+            <a routerLink="/settings/security">Безопасность</a>
+        </aside>
+        <div class="content">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
 </div>

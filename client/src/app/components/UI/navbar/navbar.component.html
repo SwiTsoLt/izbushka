@@ -22,8 +22,11 @@
             <app-search-button color="white"></app-search-button>
         </div>
         <div class="create-post">
-            <!-- <app-my-button color="white" text="Подать объявление"></app-my-button> -->
-            <app-my-button color="white" text="Войти" [callback]="redirect_to_signin.bind(this)"></app-my-button>
+            @if($any(user$ | async)._id) {
+                <app-my-button color="white" [hasBackground]="true" text="Подать объявление"></app-my-button>
+            } @else {
+                <app-my-button color="white" [hasBackground]="true" text="Войти" [callback]="redirect_to_signin.bind(this)"></app-my-button>
+            }            
         </div>
         <div class="menu">
             <button (click)="toggleNavbarMenuShow()">

@@ -1,1 +1,12 @@
-<p>profile works!</p>
+<div class="profile">
+    @if($any(user$ | async)._id) {
+        <div class="name">
+            <h2>{{ $any(user$ | async).last_name }} {{ $any(user$ | async).first_name }}</h2>
+        </div>
+    } @else {
+        <div class="unauth">
+            <h2>Войдете в учетную запись</h2>
+            <a class="signin-link" routerLink="/signin">Войти</a>
+        </div>
+    }
+</div>

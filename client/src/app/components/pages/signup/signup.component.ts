@@ -1,25 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MyButtonComponent } from '../../UI/my-button/my-button.component';
 import { Router, RouterModule } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SignUpService } from './signup.service';
 import { ISignUpForm } from '../../../dtos/auth.dto';
+import { UserService } from '../../../services/user.service';
+import { setUser } from '../../../store/user/user.actions';
+import { Store } from '@ngrx/store';
+import { User } from '../../../model/user.model';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
   imports: [MyButtonComponent, RouterModule, ReactiveFormsModule],
-  providers: [
-    { provide: SignUpService }
-  ],
+  providers: [UserService, AuthService],
   templateUrl: './signup.component.html',
   styleUrl: '../signin/signin.component.scss'
 })
 export class SignUpComponent {
+  private readonly store: Store = inject(Store);
 
   constructor(
-    private signUpService: SignUpService,
-    private router: Router
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+    private readonly router: Router
   ) { }
 
   public isPasswordsEqual: boolean = false;
@@ -69,9 +73,16 @@ export class SignUpComponent {
   }
 
   public onSubmit(): void {
-    this.signUpService.signUp(this.signUpForm.value).subscribe(data => {
-      if (data) {
+    this.authService.signUp(this.signUpForm.value).subscribe(data => {
+      if (data && data.access_token) {
         window.localStorage.setItem('access_token', data.access_token ?? '');
+
+        this.userService.getUserByJWT(data.access_token).subscribe((user: User | null) => {
+          if (user) {
+            this.store.dispatch(setUser({ user }));
+          }
+        })
+
         this.router.navigate(['/home']);
       }
     })

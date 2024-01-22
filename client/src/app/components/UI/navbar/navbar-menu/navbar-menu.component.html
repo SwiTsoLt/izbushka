@@ -1,13 +1,22 @@
 <div [ngClass]="{ 'show': isShow }" class="navbar-menu">
     <div class="navbar-menu-links">
-        <button (click)="toggleNavbarMenuShow()" class="close">
+        <button (click)="toggleNavbarMenuShow()" class="close-button">
             <img src="../../../../../assets/UI/navbar/menu/cross.svg" alt="close-icon">
             <img src="../../../../../assets/UI/navbar/menu/cross-active.svg" alt="close-icon">
         </button>
         @for (link of menu.links; track $index) {
-        <app-navbar-menu-link [iconSrc]="menu.linkIconStaticPath + link.iconName"
-            [name]="link.name" [href]="link.href"></app-navbar-menu-link>
+        <app-navbar-menu-link [iconSrc]="menu.linkIconStaticPath + link.iconName" [name]="link.name"
+            [href]="link.href"></app-navbar-menu-link>
         }
+        <button (click)="signout()" class="signout-button">
+            <div class="signout-button-icon">
+                <img src="../../../../../assets/UI/navbar/menu/exit.svg"
+                    alt="Sign Out Button Icon">
+                <img src="../../../../../assets/UI/navbar/menu/exit-active.svg"
+                    alt="Sign Out Button Icon Active">
+            </div>
+            <div class="signout-name">Выход</div>
+        </button>
     </div>
 </div>
 <button (click)="toggleNavbarMenuShow()" class="substrate">&nbsp;</button>

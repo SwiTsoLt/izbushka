@@ -21,11 +21,11 @@ export class StaticDataSource {
     ]
 
     private users: User[] = [
-         new User("1", "1example@gmail.com", "+37529xxxxxx1", "Alex", "Smirnov", "avatar1", ["1", "3"], new UserLocation("1", "1"), new Date(2022, 5, 20, 3, 5, 0).getMilliseconds()),
-         new User("2", "2example@gmail.com", "+37529xxxxxx2", "Leonid", "Bagaev", "avatar2", ["2", "4"], new UserLocation("2", "1"), new Date(2021, 7, 23, 3, 5, 30).getMilliseconds()),
-         new User("3", "3example@gmail.com", "+37529xxxxxx3", "Nikita", "Tisevich", "avatar3", ["5", "6"], new UserLocation("1", "2"), new Date(2019, 2, 25, 3, 6, 0).getMilliseconds()),
-         new User("4", "4example@gmail.com", "+37529xxxxxx4", "Vlad", "Stepanov", "avatar4", ["7", "9"], new UserLocation("3", "1"), new Date(2020, 12, 12, 3, 6, 30).getMilliseconds()),
-         new User("5", "5example@gmail.com", "+37529xxxxxx5", "Andrey", "Vladimirov", "avatar5", ["8", "10"], new UserLocation("1", "3"), new Date(2023, 8, 20, 3, 7, 0).getMilliseconds()),
+         new User("1", "1example@gmail.com", "+37529xxxxxx1", "Alex", "Smirnov", "avatar1", ["1", "3"], [], new UserLocation("1", "1"), new Date(2022, 5, 20, 3, 5, 0).getMilliseconds()),
+         new User("2", "2example@gmail.com", "+37529xxxxxx2", "Leonid", "Bagaev", "avatar2", ["2", "4"], [], new UserLocation("2", "1"), new Date(2021, 7, 23, 3, 5, 30).getMilliseconds()),
+         new User("3", "3example@gmail.com", "+37529xxxxxx3", "Nikita", "Tisevich", "avatar3", ["5", "6"], [], new UserLocation("1", "2"), new Date(2019, 2, 25, 3, 6, 0).getMilliseconds()),
+         new User("4", "4example@gmail.com", "+37529xxxxxx4", "Vlad", "Stepanov", "avatar4", ["7", "9"], [], new UserLocation("3", "1"), new Date(2020, 12, 12, 3, 6, 30).getMilliseconds()),
+         new User("5", "5example@gmail.com", "+37529xxxxxx5", "Andrey", "Vladimirov", "avatar5", ["8", "10"], [], new UserLocation("1", "3"), new Date(2023, 8, 20, 3, 7, 0).getMilliseconds()),
     ]
 
     public getPosts(): Observable<Post[]> {
@@ -55,7 +55,7 @@ export class StaticDataSource {
     public getUser(id: string): Observable<User | undefined> {
         return new Observable(subscriber => {
             setTimeout(() => {
-                subscriber.next(this.users.find(u => u.id === id))
+                subscriber.next(this.users.find(u => u._id === id))
             }, 100)
         })
     }

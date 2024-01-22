@@ -5,7 +5,7 @@
     right: 0;
     top: 0;
     transform: translateX(100%);
-    width: $nav-menu-width;
+    width: $aside-width;
     height: 100dvh;
     transition: all $anim-tr $anim-mode;
     z-index: 3;
@@ -27,7 +27,7 @@
         background-color: $main-white;
         z-index: 2;
 
-        button.close {
+        button.close-button {
             position: relative;
             width: 100%;
             height: $button-height;
@@ -61,6 +61,56 @@
                 &:last-child {
                     opacity: 1;
                 }
+            }
+        }
+
+        button.signout-button {
+            display: flex;
+            align-items: center;
+            grid-gap: $p-s;
+            position: relative;
+            color: $main-black;
+            width: 100%;
+            height: $button-height;
+            background-color: transparent;
+            padding: 0 $p-m;
+            transition: background-color $anim-tr $anim-mode;
+    
+            &:hover {
+                background-color: $main-green-3;
+                color: $main-white;
+            }
+    
+            .signout-button-icon {
+                position: relative;
+                width: auto;
+                height: $icon-m;
+                aspect-ratio: 1/1;
+    
+                img {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    transform: opacity $anim-tr $anim-mode;
+    
+                    &:last-child {
+                        opacity: 0;
+                    }
+                }
+            }
+    
+            &:hover > .signout-button-icon > img {
+                opacity: 0;
+    
+                &:last-child {
+                    opacity: 1;
+                }
+            }
+    
+            .signout-button-name {
+                white-space: nowrap;
             }
         }
     }

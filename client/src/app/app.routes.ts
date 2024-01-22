@@ -23,6 +23,7 @@ export const routes: Routes = [
     path: 'settings', component: SettingsComponent, children: [
       { path: 'profile', component: ProfileComponent },
       { path: 'security', component: SecurityComponent },
+      { path: '**', redirectTo: '/settings/profile', pathMatch: 'full' },
     ]
   },
   { path: 'policy', component: PolicyComponent },

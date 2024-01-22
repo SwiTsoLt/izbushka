@@ -5,8 +5,9 @@ import { HomeComponent } from './components/pages/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpService } from './services/http.service';
 import { UserService } from './services/user.service';
-// import { StoreModule } from '@ngrx/store'
-// import * as FromUserReference from './store/user';
+import { User } from './model/user.model';
+import { Store } from '@ngrx/store';
+import { setUser } from './store/user/user.actions';
 
 @Component({
   selector: 'app-root',
@@ -15,22 +16,30 @@ import { UserService } from './services/user.service';
     CommonModule,
     RouterOutlet,
     HomeComponent,
-    HttpClientModule,
-    // StoreModule.forRoot(FromUserReference.reducers),
+    HttpClientModule
   ],
   providers: [
     { provide: HttpService },
+    { provide: UserService }
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  title = 'client';
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly store: Store
+  ) { }
 
   ngOnInit(): void {
     const access_token = window.localStorage.getItem('access_token');
-    console.log(access_token);
+    if (access_token) {
+      this.userService.getUserByJWT(access_token).subscribe((user: User | null) => {
+        if (user) {
+          this.store.dispatch(setUser({ user }));
+        }
+      })
+    }
   }
 }

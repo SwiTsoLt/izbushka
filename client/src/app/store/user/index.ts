@@ -1,11 +1,11 @@
 import { ActionReducerMap, MetaReducer } from "@ngrx/store";
 import { userNode, userReducer } from "./user.reducer";
 import { isDevMode } from "@angular/core";
-import * as UserInterface from "./user.interface";
+import { User } from "../../model/user.model";
 
 
 export interface IState {
-    [userNode]: UserInterface.IInitialState
+    [userNode]: User
 }
 
 export const reducers: ActionReducerMap<IState> = {

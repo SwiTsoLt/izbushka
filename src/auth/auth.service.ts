@@ -14,12 +14,13 @@ import { User } from '../schemas/user.schema';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+// import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
-    private jwtService: JwtService,
+    @InjectModel(User.name) private readonly userModel: Model<User>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async signIn(signInDTO: SignInDTO): Promise<SignInResponseDTO> {
@@ -49,18 +50,19 @@ export class AuthService {
       ...signUpDTO,
       password: passwordHash,
       roles: ['USER'],
+      posts: [],
       registration_date: Date.now(),
     });
     await user.save();
 
-    const payload = { sub: user._id };
+    const payload = { sub: user._id, roles: user.roles };
 
     return {
       access_token: await this.generateAccessToken(payload),
     };
   }
 
-  private generateAccessToken(payload: any): Promise<string> {
+  public async generateAccessToken(payload: any): Promise<string> {
     return this.jwtService.signAsync(payload);
   }
 }
