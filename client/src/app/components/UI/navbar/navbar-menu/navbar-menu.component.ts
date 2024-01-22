@@ -28,10 +28,10 @@ export class NavbarMenuComponent {
     linkIconStaticPath: '../../../../../assets/UI/navbar/menu/',
     links: [
       { iconName: 'my-posts.svg', name: 'Мои объявления', href: '/my-posts' },
-      { iconName: 'favorites.svg', name: 'Избранные', href: '/my-posts' },
-      { iconName: 'chats.svg', name: 'Сообщения', href: '/my-posts' },
-      { iconName: 'settings.svg', name: 'Настройки', href: '/my-posts' },
-      { iconName: 'exit.svg', name: 'Выход', href: '/my-posts' },
+      { iconName: 'favorites.svg', name: 'Избранные', href: '/favorite' },
+      { iconName: 'chats.svg', name: 'Сообщения', href: '/chats' },
+      { iconName: 'settings.svg', name: 'Настройки', href: '/settings' },
+      { iconName: 'exit.svg', name: 'Выход', href: '/' },
     ]
   }
 }
