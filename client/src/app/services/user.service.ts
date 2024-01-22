@@ -13,4 +13,13 @@ export class UserService {
   getUserById(id: string): Observable<User | null> {
     return this.httpService.get<User>(`/api/user/${id}`);
   }
+
+  getUserByJWT(access_token: string): Observable<User | null> {
+    const options = {
+      'headers': {
+        'Authorization': 'Bearer ' + access_token
+      }
+    }
+    return this.httpService.get<User>(`/api/user/jwt`, options);
+  }
 }
