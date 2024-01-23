@@ -2,16 +2,14 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from '../schemas/user.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { JwtService } from '@nestjs/jwt';
 import { GetUserByJWTResponse } from '../dtos/user.dto';
-import { AuthService } from 'src/auth/auth.service';
+import { MyJWTService } from '../services/jwt.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    private readonly jwtService: JwtService,
-    private readonly authService: AuthService,
+    private readonly jwtService: MyJWTService,
   ) {}
 
   public async getAll(): Promise<User[]> {
@@ -47,9 +45,7 @@ export class UserService {
 
     const user = await this.userModel.findById(sub).select('-password');
     const payload = { sub: user._id, roles: user.roles };
-    const new_access_token = await this.authService.generateAccessToken(
-      payload,
-    );
+    const new_access_token = await this.jwtService.generateAccessToken(payload);
 
     return {
       user,

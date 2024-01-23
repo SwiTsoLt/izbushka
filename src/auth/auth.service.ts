@@ -13,14 +13,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../schemas/user.schema';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
-// import { JwtService } from '@nestjs/jwt';
+import { MyJWTService } from 'src/services/jwt.service';
+import { JWTPayload } from 'src/models/jwt.model';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    private readonly jwtService: JwtService,
+    private readonly jwtService: MyJWTService,
   ) {}
 
   async signIn(signInDTO: SignInDTO): Promise<SignInResponseDTO> {
@@ -39,8 +39,8 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const payload = { sub: candidate._id };
-    return { access_token: await this.generateAccessToken(payload) };
+    const payload: JWTPayload = { sub: candidate._id, roles: candidate.roles };
+    return { access_token: await this.jwtService.generateAccessToken(payload) };
   }
 
   async signUp(signUpDTO: SignUpDTO): Promise<SignUpResponseDTO> {
@@ -55,14 +55,10 @@ export class AuthService {
     });
     await user.save();
 
-    const payload = { sub: user._id, roles: user.roles };
+    const payload: JWTPayload = { sub: user._id, roles: user.roles };
 
     return {
-      access_token: await this.generateAccessToken(payload),
+      access_token: await this.jwtService.generateAccessToken(payload),
     };
-  }
-
-  public async generateAccessToken(payload: any): Promise<string> {
-    return this.jwtService.signAsync(payload);
   }
 }

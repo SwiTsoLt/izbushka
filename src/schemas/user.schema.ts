@@ -24,7 +24,7 @@ export class User {
   password: string;
 
   @Prop({ required: true })
-  roles: Types.ObjectId[];
+  roles: string[];
 
   @Prop({ required: true })
   posts: Types.ObjectId[];
