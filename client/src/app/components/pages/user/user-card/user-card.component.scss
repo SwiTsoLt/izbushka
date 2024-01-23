@@ -1,0 +1,85 @@
+@import '../../../../variables.scss';
+
+.user-card {
+    display: flex;
+    gap: $p-m;
+    width: fit-content;
+    height: calc(150px + $p-l * 2);
+    border: 2px solid $main-beige-3;
+    border-radius: $b-r-outer;
+    padding: $p-l;
+
+    .avatar {
+        width: auto;
+        height: 100%;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+
+        img {
+            width: auto;
+            height: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+        }
+    }
+
+    .info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        width: $tab-button-width;
+        height: 100%;
+
+        .name {
+            font-size: $fs-m;
+            font-weight: bold;
+        }
+
+        .location {
+            font-size: $fs-s;
+            font-style: italic;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: $p-s;
+            margin-top: calc($p-s / 2);
+
+            .rating-count {
+                span {
+                    font-weight: bold;
+                }
+            }
+            
+            .rating-stars {
+                display: flex;
+                width: fit-content;
+                height: $fs-s;
+            }
+        }
+
+        .reviews {
+            color: $main-green-3;
+
+            span {
+                font-weight: bold;
+            }
+        }
+
+        .chat-button {
+            margin-top: $p-m;
+
+            button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: $tab-button-width;
+                height: $button-height;
+                background-color: $main-green-3;
+                border-radius: $b-r-inner;
+                color: $main-white;
+            }
+        }
+    }
+}

@@ -13,6 +13,7 @@ export const initialState: User = {
     roles: [],
     posts: [],
     avatar: '',
+    rating: 0,
     location: {
         areaID: '',
         regionID: '',

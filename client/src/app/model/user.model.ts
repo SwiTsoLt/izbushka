@@ -13,6 +13,7 @@ export class User {
         public first_name: string,
         public last_name: string,
         public avatar: string,
+        public rating: number,
         public roles: string[],
         public posts: string[],
         public location: UserLocation,

@@ -3,6 +3,9 @@ import { NavbarMenuLinkComponent } from './navbar-menu-link/navbar-menu-link.com
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { resetUser } from '../../../../store/user/user.actions';
+import { Observable, of } from 'rxjs';
+import { User } from '../../../../model/user.model';
+import { selectUser } from '../../../../store/user/user.selectors';
 
 interface IMenuLink {
   href: string
@@ -26,17 +29,37 @@ export class NavbarMenuComponent {
   @Input() isShow: boolean = false;
   @Input() toggleNavbarMenuShow: () => void = () => { };
 
-  constructor(private readonly store: Store) { }
+  private readonly user$: Observable<User> = this.store.select(selectUser as never)
 
-  public menu: Menu = {
+  public menu$: Observable<Menu> = of({
     linkIconStaticPath: '../../../../../assets/UI/navbar/menu/',
     links: [
+      { iconName: 'profile.svg', name: 'Мой профиль', href: '/signin' },
       { iconName: 'my-posts.svg', name: 'Мои объявления', href: '/my-posts' },
       { iconName: 'favorites.svg', name: 'Избранные', href: '/favorite' },
       { iconName: 'chats.svg', name: 'Сообщения', href: '/chats' },
       { iconName: 'settings.svg', name: 'Настройки', href: '/settings' },
     ]
+  })
+
+  constructor(private readonly store: Store) {
+    this.user$.subscribe((user: User | null) => {
+      if (user) {
+        this.menu$ = of({
+          linkIconStaticPath: '../../../../../assets/UI/navbar/menu/',
+          links: [
+            { iconName: 'profile.svg', name: 'Мой профиль', href: `/user/${user._id}` },
+            { iconName: 'my-posts.svg', name: 'Мои объявления', href: '/my-posts' },
+            { iconName: 'favorites.svg', name: 'Избранные', href: '/favorite' },
+            { iconName: 'chats.svg', name: 'Сообщения', href: '/chats' },
+            { iconName: 'settings.svg', name: 'Настройки', href: '/settings' },
+          ]
+        })
+      }
+    })
   }
+
+
 
   public signout(): void {
     const answer = confirm('Вы действительно хотите покинуть учетную запись?');

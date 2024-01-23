@@ -10,12 +10,14 @@ import { ChatsComponent } from './components/pages/chats/chats.component';
 import { SettingsComponent } from './components/pages/settings/settings.component';
 import { ProfileComponent } from './components/pages/settings/profile/profile.component';
 import { SecurityComponent } from './components/pages/settings/security/security.component';
+import { UserComponent } from './components/pages/user/user.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'signin', component: SignInComponent },
   { path: 'signup', component: SignUpComponent },
+  { path: 'user/:id', component: UserComponent },
   { path: 'my-posts', component: MyPostsComponent },
   { path: 'favorite', component: FavoriteComponent },
   { path: 'chats', component: ChatsComponent },
