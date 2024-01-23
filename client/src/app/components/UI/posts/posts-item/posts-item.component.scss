@@ -3,7 +3,6 @@
 .post {
     display: flex;
     flex-direction: column;
-    gap: calc($p-s);
     position: relative;
     width: 100%;
     height: 100%;
@@ -24,7 +23,8 @@
     .post-image {
         width: 100%;
         height: auto;
-        aspect-ratio: 1/1;
+        aspect-ratio: 4/3;
+        border-radius: 8px 8px 0 0;
         overflow: hidden;
         cursor: pointer;
         z-index: 1;
@@ -32,9 +32,10 @@
         img {
             width: 100%;
             height: auto;
-            aspect-ratio: 1/1;
+            aspect-ratio: 4/3;
             object-fit: cover;
             background-color: $main-gray-lighter;
+            border-radius: 8px 8px 0 0;
             transition: transform $anim-tr $anim-mode;
         }
     }
@@ -52,6 +53,8 @@
         aspect-ratio: 4/3;
         background-color: $main-beige-1-10;
         border: 2px solid $main-beige-1;
+        border-top: none;
+        border-radius: 0 0 8px 8px;
         padding: $p-m;
         z-index: 1;
 

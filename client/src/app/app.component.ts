@@ -8,6 +8,7 @@ import { UserService } from './services/user.service';
 import { User } from './model/user.model';
 import { Store } from '@ngrx/store';
 import { setUser } from './store/user/user.actions';
+import { SettingsComponent } from './components/pages/settings/settings.component';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,7 @@ import { setUser } from './store/user/user.actions';
     CommonModule,
     RouterOutlet,
     HomeComponent,
+    SettingsComponent,
     HttpClientModule
   ],
   providers: [

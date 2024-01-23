@@ -2,8 +2,18 @@
     <app-navbar></app-navbar>
     <div class="container">
         <aside>
-            <a routerLink="/settings/profile">Профиль</a>
-            <a routerLink="/settings/security">Безопасность</a>
+            <a routerLink="/settings/profile" class="aside-link">
+                <div class="aside-link-icon">
+                    <img src="../../../../assets/pages/settings/profile.svg" alt="Aside Link Icon Profile">
+                </div>
+                <div class="aside-link-name">Профиль</div>
+            </a>
+            <a routerLink="/settings/security" class="aside-link">
+                <div class="aside-link-icon">
+                    <img src="../../../../assets/pages/settings/security.svg" alt="Aside Link Icon Security">
+                </div>
+                <div class="aside-link-name">Безопасность</div>
+            </a>
         </aside>
         <div class="content">
             <router-outlet></router-outlet>
