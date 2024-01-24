@@ -31,6 +31,7 @@
             height: $button-height;
             background-color: transparent;
             border: 2px solid $main-green-3;
+            border-radius: $b-r-inner;
             color: $main-black;
             cursor: pointer;
             transition: all $anim-tr $anim-mode;

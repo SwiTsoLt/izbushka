@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
-import { MyButtonComponent } from '../../UI/my-button/my-button.component';
+import { MyButtonComponent } from '@UI/my-button/my-button.component';
 import { Router, RouterModule } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ISignUpForm } from '../../../dtos/auth.dto';
-import { UserService } from '../../../services/user.service';
-import { setUser } from '../../../store/user/user.actions';
+import { ISignUpForm } from '@dtos/auth.dto';
+import { UserService } from '@services/user.service';
+import { setUser } from '@store/user/user.actions';
 import { Store } from '@ngrx/store';
-import { User } from '../../../model/user.model';
-import { AuthService } from '../../../services/auth.service';
+import { User } from '@model/user.model';
+import { AuthService } from '@services/auth.service';
 
 @Component({
   selector: 'app-registration',

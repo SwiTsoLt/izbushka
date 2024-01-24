@@ -5,6 +5,10 @@
     height: 100%;
     min-height: 100vh;
 
+    app-mobile-navbar {
+        display: none;
+    }
+
     .container {
         display: grid;
         grid-template-columns: $aside-width auto;
@@ -13,5 +17,33 @@
         min-height: calc(100vh - $nav-height);
         padding-top: $p-l;
         padding-bottom: $p-l;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .home > app-navbar {
+        display: none;
+    }
+    
+    .home > app-mobile-navbar {
+        display: block;
+    }
+
+    .home > .container {
+        padding: $p-s;
+    }
+
+    .home > .container {
+        grid-template-columns: 1fr;
+
+        app-home-aside {
+            display: none;
+        }
+    }
+}
+
+@media screen and (max-width: 365px)  {
+    .home > .container {
+        padding: 0;
     }
 }

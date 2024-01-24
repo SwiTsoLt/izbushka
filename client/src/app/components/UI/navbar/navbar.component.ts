@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { MyButtonComponent } from '../my-button/my-button.component';
-import { ProfileButtonComponent } from '../profile-button/profile-button.component';
-import { SearchButtonComponent } from '../search-button/search-button.component';
+import { MyButtonComponent } from '@UI/my-button/my-button.component';
+import { ProfileButtonComponent } from '@UI/profile-button/profile-button.component';
+import { SearchButtonComponent } from '@UI/search-button/search-button.component';
 import { Router } from '@angular/router';
 import { NavbarMenuComponent } from './navbar-menu/navbar-menu.component';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { User } from '../../../model/user.model';
-import { selectUser } from '../../../store/user/user.selectors';
+import { User } from '@model/user.model';
+import { selectUser } from '@store/user/user.selectors';
 import { CommonModule } from '@angular/common';
 
 @Component({

@@ -9,17 +9,6 @@
     overflow: hidden;
     transition: box-shadow $anim-tr $anim-mode;
 
-    &::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: auto;
-        aspect-ratio: 1/1;
-        background-color: $main-white;
-    }
-
     .post-image {
         width: 100%;
         height: auto;
@@ -94,5 +83,45 @@
         &.active {
             background-image: url('../../../../../assets/UI/post/heart-full.svg');
         }
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .post .info {
+        gap: calc($mob-p-s / 2);
+        padding: $mob-p-m;
+    }
+
+    .post .info h4 {
+        font-size: $mob-fs-m;
+        height: fit-content;
+        margin-top: $mob-p-s;
+    }
+
+    .post .info h6 {
+        font-size: $mob-fs-m;
+        line-height: $mob-fs-l;
+    }
+
+    .post .info p {
+        font-size: $mob-fs-s;
+    }
+
+    .post > .favoriteButton {
+        right: $mob-p-m;
+        bottom: $mob-p-m;
+    }
+}
+
+@media screen and (max-width: 365px) {
+    .post > .post-image,
+    .post > .post-image > img,
+    .post > .info {
+        border: none;
+        border-radius: 0;
+    }
+
+    .post > .info {
+        aspect-ratio: 3/1;
     }
 }

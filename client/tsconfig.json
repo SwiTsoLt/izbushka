@@ -27,6 +27,7 @@
     "paths": {
       "@pages/*": ["./components/pages/*"],
       "@UI/*": ["./components/UI/*"],
+      "@MUI/*": ["./components/MUI/*"],
       "@dtos/*": ["./dtos/*"],
       "@model/*": ["./model/*"],
       "@services/*": ["./services/*"],

@@ -1,0 +1,46 @@
+@import '../../../variables.scss';
+
+nav {
+    display: flex;
+    gap: $mob-p-s;
+    width: 100%;
+    height: $mob-nav-height;
+    background-color: $main-green-3;
+    padding: $mob-p-s;
+
+    * {
+        font-size: $mob-fs-m;
+    }
+
+    .search-input {
+        display: flex;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        
+        app-search-button {
+            position: absolute;
+            right: $p-l;
+            top: 50%;
+            transform: translateY(-50%);
+            width: auto;
+            height: calc(100% - $p-s * 2);
+            aspect-ratio: 1/1;
+        }
+    }
+
+    .filter-button {
+        width: auto;
+        height: 100%;
+        aspect-ratio: 1/1;
+        background-color: $main-white;
+        border-radius: $b-r-inner;
+        padding: calc($mob-p-s / 2);
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+}

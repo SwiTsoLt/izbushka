@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { HomeComponent } from './components/pages/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
-import { HttpService } from './services/http.service';
-import { UserService } from './services/user.service';
-import { User } from './model/user.model';
+import { HttpService } from '@services/http.service';
+import { UserService } from '@services/user.service';
+import { User } from '@model/user.model';
 import { Store } from '@ngrx/store';
-import { setUser } from './store/user/user.actions';
-import { SettingsComponent } from './components/pages/settings/settings.component';
+import { setUser } from '@store/user/user.actions';
+import { SettingsComponent } from '@pages/settings/settings.component';
+import { HomeComponent } from '@pages/home/home.component';
 
 @Component({
   selector: 'app-root',

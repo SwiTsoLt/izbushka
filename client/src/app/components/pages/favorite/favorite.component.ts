@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavbarComponent } from '../../UI/navbar/navbar.component';
+import { NavbarComponent } from '@UI/navbar/navbar.component';
 
 @Component({
   selector: 'app-favorite',

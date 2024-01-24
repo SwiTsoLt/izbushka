@@ -41,8 +41,8 @@
 
             .roof {
                 position: absolute;
-                left: calc(50% - 55px);
-                top: -70px;
+                left: calc(50% - 53px);
+                top: -90px;
                 transform: translateX(-50%);
                 width: 100px;
                 height: 100px;
@@ -65,8 +65,8 @@
                 &::before {
                     content: "";
                     position: absolute;
-                    left: -25px;
-                    top: -20px;
+                    left: -27px;
+                    top: -38px;
                     width: 77px;
                     height: 77px;
                     background-color: $main-beige-1;
