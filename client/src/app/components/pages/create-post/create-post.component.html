@@ -1,0 +1,198 @@
+<app-navbar></app-navbar>
+<div class="create-post">
+    <div class="container">
+        <div class="container-title">
+            <h1>Подача объявления</h1>
+        </div>
+        <div class="container-body">
+            <section class="section-post-photos">
+                <div class="section-title">
+                    <h2>Фотографии</h2>
+                </div>
+                <div class="section-body">
+                    <div class="photos-preview scrollbar-h">
+                        <div class="preview-image-list">
+                            @for(url of imagesPreview; track url; let index = $index) {
+                            <div class="preview-image">
+                                <img [src]="url" alt="Image Preview">
+                                <button class="preview-image-remove__button" (click)="removeImage(index)">
+                                    <img src="../../../../assets/pages/create-post/trash.svg"
+                                        alt="Remove Preview Image Button Icon">
+                                </button>
+
+                            </div>
+                            } @empty {
+                            <div class="preview-image preview-image-placeholder">
+                                <img src="../../../../assets/pages/create-post/image-placeholder.png"
+                                    alt="Image Preview Placeholder">
+                            </div>
+                            <div class="preview-image preview-image-placeholder">
+                                <img src="../../../../assets/pages/create-post/image-placeholder.png"
+                                    alt="Image Preview Placeholder">
+                            </div>
+                            <div class="preview-image preview-image-placeholder">
+                                <img src="../../../../assets/pages/create-post/image-placeholder.png"
+                                    alt="Image Preview Placeholder">
+                            </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="photos-loader" [ngClass]="{ 'drag__start': isDragStart }" draggable="true"
+                        (dragover)="isDragStartSet(true)" (dragleave)="isDragStartSet(false)"
+                        (dragstart)="isDragStartSet(false)" (dragend)="isDragStartSet(false)">
+                        <input (change)="onFilesLoad($event)" type="file" maxlength="10" multiple="multiple"
+                            accept="image/png, image/jpg, image/jpeg">
+                        <p>Перетащите фотографии сюда или кликните здесь</p>
+                        <div class="photos-loader-description">
+                            <div class="photos-loader-description-recomendation">
+                                <p>Используйте реальные фото вашего товара в разных ракурсах.<br>Максимальный размер:
+                                    10 МБ.</p>
+                            </div>
+                            <div class="photos-loader-description-loaded">
+                                <img src="../../../../assets/pages/create-post/image.svg"
+                                    alt="Photos Loader Description Icon">
+                                <p>Загружено&nbsp;<span>0</span> из <span>10</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="section-post-title">
+                <div class="section-title">
+                    <h2>Название товара / услуги*</h2>
+                </div>
+                <div class="section-body">
+                    <input class="my-input-green" minlength="1" maxlength="50" type="text"
+                        placeholder="Например, краска Caparol">
+                    <i>0 из 50 знаков</i>
+                </div>
+            </section>
+            <section class="section-post-category">
+                <div class="section-title">
+                    <h2>Выбор категории</h2>
+                </div>
+                <div class="section-body">
+                    <div class="section-body-inner">
+                        <div class="category-list-container">
+                            <div class="category-list-inner scrollbar-v">
+                                <ul>
+                                    @for(category of categoryList; track category._id; let index = $index) {
+                                    <li>
+                                        <input type="radio" (change)="setCategory(category._id)" name="category"
+                                            id="subcategory-item-{{category._id}}" [checked]="index === 0">
+                                        <label for="subcategory-item-{{category._id}}">{{category.name}}</label>
+                                    </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="category-list-container">
+                            <div class="category-list-inner scrollbar-v">
+                                <ul>
+                                    @for(subcategory of subcategoryList; track subcategory._id; let index = $index) {
+                                    <li>
+                                        <input (change)="setSubCategory(subcategory._id)" type="radio"
+                                            name="subcategory" id="subcategory-item-{{subcategory._id}}"
+                                            [checked]="index === 0">
+                                        <label for="subcategory-item-{{subcategory._id}}">{{subcategory.name}}</label>
+                                    </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="section-post-description">
+                <div class="section-title">
+                    <h2>Описание</h2>
+                </div>
+                <div class="section-body">
+                    <div class="textarea-container my-input-green">
+                        <textarea minlength="20" maxlength="4000" class="scrollbar-v" name="post-description" cols="30"
+                            rows="10"></textarea>
+                    </div>
+                    <i>
+                        <span>0 из 4000 знаков</span>
+                        <span>Минимально: 20 знаков</span>
+                    </i>
+                </div>
+            </section>
+            <hr>
+            <section class="section-post-price">
+                <div class="section-title">
+                    <h2>Цена</h2>
+                </div>
+                <div class="section-body">
+                    <div class="price-type">
+                        <div class="price-type-default">
+                            <input (change)="setIsPriceFree(false)" type="radio" name="price-type"
+                                id="price-type-default" checked>
+                            <label for="price-type-default">Цена</label>
+                        </div>
+                        <div class="price-type-free">
+                            <input (change)="setIsPriceFree(true)" type="radio" name="price-type" id="price-type-free">
+                            <label for="price-type-free">Бесплатно</label>
+                        </div>
+                    </div>
+                    @if(!isPriceFree) {
+                    <div class="price-input">
+                        <input class="my-input-green" maxlength="12" type="number" placeholder="Например: 4.20">
+                        <span>руб</span>
+                        <i>Чтобы поставить договорную цену, оставьте поле пустым</i>
+                    </div>
+                    }
+                </div>
+            </section>
+            <section class="section-post-phone">
+                <div class="section-title">
+                    <h2>Телефон</h2>
+                </div>
+                <div class="section-body">
+                    <p>Скрыть телефон в объявлении</p>
+                    <input id="phone-checkbox" type="checkbox" name="phone-checkbox" checked>
+                    <label for="phone-checkbox" class="my-input-green">
+                        <img src="../../../../assets/pages/create-post/checkmark.svg" alt="Phone Checkmark">
+                    </label>
+                </div>
+            </section>
+            <hr>
+            <section class="section-post-location">
+                <div class="section-title">
+                    <h2>Местоположение товара / услуги*</h2>
+                </div>
+                <div class="section-body">
+                    <mat-form-field>
+                        <mat-label>Выберете город</mat-label>
+                        <mat-select matNativeControl>
+                            <mat-option value="0" selected>Минск</mat-option>
+                            <mat-option value="1">Брест</mat-option>
+                            <mat-option value="2">Витебск</mat-option>
+                            <mat-option value="3">Гомель</mat-option>
+                            <mat-option value="4">Гродно</mat-option>
+                            <mat-option value="5">Могилёв</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Выберете район</mat-label>
+                        <mat-select matNativeControl>
+                            <mat-option value="0" selected>Минск</mat-option>
+                            <mat-option value="1">Брест</mat-option>
+                            <mat-option value="2">Витебск</mat-option>
+                            <mat-option value="3">Гомель</mat-option>
+                            <mat-option value="4">Гродно</mat-option>
+                            <mat-option value="5">Могилёв</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </section>
+            <hr>
+            <section class="section-final">
+                <div class="section-body">
+                    <i>Публикуя объявления, вы соглашаетесь с <a routerLink="/policy">правилами</a>.</i>
+                    <app-my-button [callback]="post.bind(this)" text="Подать объявление" color="green" [hasBackground]="true"></app-my-button>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

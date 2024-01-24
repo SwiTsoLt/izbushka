@@ -19,8 +19,8 @@
             </div>
             
             @if(!isMe) {
-                <div class="chat-button">
-                    <button>Написать</button>
+                <div class="chat-link">
+                    <a routerLink="/chat/{{user._id}}">Написать</a>
                 </div>
             }
         </div>

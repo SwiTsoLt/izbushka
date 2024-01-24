@@ -39,7 +39,7 @@ export class StaticDataSource {
     public getPost(id: string): Observable<Post | undefined> {
         return new Observable(subscriber => {
             setTimeout(() => {
-                subscriber.next(this.posts.find(p => p.id === id))
+                subscriber.next(this.posts.find(p => p._id === id))
             }, 100)
         })
     }

@@ -87,20 +87,15 @@ nav {
         }
 
         .search {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: center;
+            display: flex;
             position: relative;
-            left: 0;
-            top: 0;
             width: 100%;
             height: 100%;
-            border: 2px solid $main-white;
-            padding: 0 $p-l 0 0;
-            transition: border-color $anim-tr $anim-mode;
 
-            &:hover {
-                border-color: $main-beige-1;
+            input {
+                width: 100%;
+                height: 100%;
+                padding-right: calc($p-l + $icon-m + $p-l);
             }
 
             app-search-button {
@@ -108,6 +103,7 @@ nav {
                 right: $p-l;
                 top: 50%;
                 transform: translateY(-50%);
+                width: $icon-m;
                 height: $icon-m;
                 z-index: 2;
             }

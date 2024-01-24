@@ -1,24 +1,19 @@
-@import '../../../../variables.scss';
+@import '../../../variables.scss';
 
 .user-card {
     display: flex;
     gap: $p-m;
     width: fit-content;
-    height: calc(150px + $p-l * 2);
-    border: 2px solid $main-beige-3;
-    border-radius: $b-r-outer;
-    padding: $p-l;
+    height: fit-content;
 
     .avatar {
-        width: auto;
-        height: 100%;
-        aspect-ratio: 1/1;
+        width: fit-content;
+        height: fit-content;
         border-radius: 50%;
 
         img {
-            width: auto;
-            height: 100%;
-            aspect-ratio: 1/1;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
         }
     }
@@ -26,7 +21,7 @@
     .info {
         display: flex;
         flex-direction: column;
-        gap: 2px;
+        gap: calc($p-s / 2);
         width: $tab-button-width;
         height: 100%;
 
@@ -44,7 +39,7 @@
             display: flex;
             align-items: center;
             gap: $p-s;
-            margin-top: calc($p-s / 2);
+            margin-top: $p-s;
 
             .rating-count {
                 span {
@@ -67,10 +62,10 @@
             }
         }
 
-        .chat-button {
-            margin-top: $p-m;
+        .chat-link {
+            margin-top: $p-s;
 
-            button {
+            a {
                 display: flex;
                 justify-content: center;
                 align-items: center;

@@ -28,8 +28,12 @@ export class NavbarComponent {
     private readonly store: Store
   ) { }
 
-  public redirect_to_signin(): void {
+  public redirectToSignIn(): void {
     this.router.navigate(['/signin']);
+  }
+
+  public redirectToCreatePost(): void {
+    this.router.navigate(['/create-post']);
   }
 
   public toggleNavbarMenuShow(): void {

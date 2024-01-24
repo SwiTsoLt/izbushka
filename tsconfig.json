@@ -16,6 +16,14 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@pages/*": ["./client/src/app/components/pages/*"],
+      "@UI/*": ["./client/src/app/components/UI/*"],
+      "@dtos/*": ["./client/src/app/dtos/*"],
+      "@model/*": ["./client/src/app/model/*"],
+      "@services/*": ["./client/src/app/services/*"],
+      "@store/*": ["./client/src/app/store/*"],
+    }
   }
 }

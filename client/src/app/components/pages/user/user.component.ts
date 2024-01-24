@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Observable, map, of, take } from 'rxjs';
-import { UserService } from '../../../services/user.service';
-import { User } from '../../../model/user.model';
+import { UserService } from '@services/user.service';
+import { User } from '@model/user.model';
 import { CommonModule } from '@angular/common';
-import { UserCardComponent } from './user-card/user-card.component';
-import { NavbarComponent } from '../../UI/navbar/navbar.component';
+import { UserCardComponent } from '@UI/user-card/user-card.component';
+import { NavbarComponent } from '@UI/navbar/navbar.component';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, UserCardComponent],
+  imports: [CommonModule, NavbarComponent, UserCardComponent, RouterModule],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
 })

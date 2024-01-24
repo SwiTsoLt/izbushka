@@ -18,14 +18,14 @@
             </div>
         </a>
         <div class="search">
-            <input type="text" class="my-input-white noBorder" placeholder="Поиск">
+            <input type="text" class="my-input-white" placeholder="Поиск">
             <app-search-button color="white"></app-search-button>
         </div>
         <div class="create-post">
             @if($any(user$ | async)._id) {
-                <app-my-button color="white" [hasBackground]="true" text="Подать объявление"></app-my-button>
+                <app-my-button text="Подать объявление" [callback]="redirectToCreatePost.bind(this)" color="white" [hasBackground]="true"></app-my-button>
             } @else {
-                <app-my-button color="white" [hasBackground]="true" text="Войти" [callback]="redirect_to_signin.bind(this)"></app-my-button>
+                <app-my-button text="Войти" [callback]="redirectToSignIn.bind(this)" color="white" [hasBackground]="true"></app-my-button>
             }            
         </div>
         <div class="menu">

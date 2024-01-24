@@ -1,8 +1,6 @@
 <div class="profile">
     @if($any(user$ | async)._id) {
-        <div class="name">
-            <h2>{{ $any(user$ | async).last_name }} {{ $any(user$ | async).first_name }}</h2>
-        </div>
+        <app-user-card [user]="user$ | async" [isMe]="true"></app-user-card>
     } @else {
         <div class="unauth">
             <h2>Войдете в учетную запись</h2>

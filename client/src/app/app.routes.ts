@@ -1,16 +1,17 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './components/pages/home/home.component';
-import { SignInComponent } from './components/pages/signin/signin.component';
-import { SignUpComponent } from './components/pages/signup/signup.component';
-import { PolicyComponent } from './components/pages/policy/policy.component';
-import { PasswordRecoveryComponent } from './components/pages/password-recovery/password-recovery.component';
-import { MyPostsComponent } from './components/pages/my-posts/my-posts.component';
-import { FavoriteComponent } from './components/pages/favorite/favorite.component';
-import { ChatsComponent } from './components/pages/chats/chats.component';
-import { SettingsComponent } from './components/pages/settings/settings.component';
-import { ProfileComponent } from './components/pages/settings/profile/profile.component';
-import { SecurityComponent } from './components/pages/settings/security/security.component';
-import { UserComponent } from './components/pages/user/user.component';
+import { HomeComponent } from '@pages/home/home.component';
+import { SignInComponent } from '@pages/signin/signin.component';
+import { SignUpComponent } from '@pages/signup/signup.component';
+import { PolicyComponent } from '@pages/policy/policy.component';
+import { PasswordRecoveryComponent } from '@pages/password-recovery/password-recovery.component';
+import { MyPostsComponent } from '@pages/my-posts/my-posts.component';
+import { FavoriteComponent } from '@pages/favorite/favorite.component';
+import { ChatsComponent } from '@pages/chats/chats.component';
+import { SettingsComponent } from '@pages/settings/settings.component';
+import { ProfileComponent } from '@pages/settings/settings-profile/settings-profile.component';
+import { SecurityComponent } from '@pages/settings/security/security.component';
+import { UserComponent } from '@pages/user/user.component';
+import { CreatePostComponent } from '@pages/create-post/create-post.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -18,6 +19,7 @@ export const routes: Routes = [
   { path: 'signin', component: SignInComponent },
   { path: 'signup', component: SignUpComponent },
   { path: 'user/:id', component: UserComponent },
+  { path: 'create-post', component: CreatePostComponent },
   { path: 'my-posts', component: MyPostsComponent },
   { path: 'favorite', component: FavoriteComponent },
   { path: 'chats', component: ChatsComponent },
