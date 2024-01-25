@@ -1,3 +1,15 @@
-<div class="chats">
+<div class="chats standard-page">
     <app-navbar></app-navbar>
+    <app-mobile-navbar></app-mobile-navbar>
+    <app-mobile-menu (toggleMobileContextMenuShow)="ctx.isShow = !ctx.isShow"></app-mobile-menu>
+    <app-mobile-context-menu #ctx></app-mobile-context-menu>
+    
+    <div class="container">
+        <div class="page-title">
+            <h2>Сообщения</h2>
+        </div>
+        <hr>
+        <div class="page-body">
+        </div>
+    </div>
 </div>

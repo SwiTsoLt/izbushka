@@ -1,4 +1,3 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
@@ -20,13 +19,10 @@ $client-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$client-theme: mat.define-light-theme((
-  color: (
-    primary: $client-primary,
-    accent: $client-accent,
-    warn: $client-warn,
-  )
-));
+$client-theme: mat.define-light-theme((color: (primary: $client-primary,
+                accent: $client-accent,
+                warn: $client-warn,
+            )));
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -141,9 +137,11 @@ body {
 .container {
     position: relative;
     width: 100%;
+    height: 100%;
     max-width: calc($container-width + 2 * $p-l);
+    min-height: calc(100dvh - $nav-height);
     margin: 0 auto;
-    padding: 0 $p-l;
+    padding: calc($nav-height + $p-l) $p-l;
 }
 
 hr {
@@ -161,6 +159,63 @@ hr {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+}
+
+a,
+button {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.standard-page {
+    width: 100%;
+    height: fit-content;
+    min-height: 100dvh;
+
+    &>app-mobile-navbar,
+    &>app-mobile-menu,
+    &>app-mobile-context-menu {
+        display: none;
+    }
+
+    &>.container {
+        display: flex;
+        flex-direction: column;
+        gap: $p-m;
+        height: 100%;
+        min-height: calc(100dvh - $nav-height);
+        padding-top: calc($nav-height + $p-l);
+        padding-bottom: calc($nav-height + $p-l);
+
+        .page-title {
+            width: 100%;
+
+            h2 {
+                font-size: $fs-m;
+            }
+        }
+
+        .page-body {
+            width: 100%;
+            height: fit-content;
+        }
+    }
+
+    @media screen and (max-width: 1000px) {
+        &>app-navbar {
+            display: none;
+        }
+
+        &>app-mobile-navbar,
+        &>app-mobile-menu,
+        &>app-mobile-context-menu {
+            display: block;
+        }
+
+        &>.container>.page-title,
+        &>.container>hr {
+            display: none;
+        }
+    }
 }
 
 /* My Input */
@@ -254,6 +309,7 @@ hr {
 /* Scrollbar */
 
 .scrollbar-v {
+
     /* Width */
     &::-webkit-scrollbar {
         width: 6px;
@@ -278,6 +334,7 @@ hr {
 }
 
 .scrollbar-h {
+
     /* Height */
     &::-webkit-scrollbar {
         height: 6px;
@@ -306,5 +363,15 @@ hr {
 @media screen and (max-width: 1000px) {
     body * {
         line-height: normal;
+    }
+
+    .container {
+        padding: calc($mob-nav-height + $mob-p-s) $mob-p-s !important;
+    }
+}
+
+@media screen and (max-width: 365px) {
+    .container {
+        padding: calc($mob-nav-height) 0 !important;
     }
 }

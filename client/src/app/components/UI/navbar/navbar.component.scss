@@ -1,11 +1,14 @@
 @import '../../../variables.scss';
 
 nav {
-    position: relative;
+    position: fixed;
+    left: 0;
+    top: 0;
     width: 100%;
     height: $nav-height;
     background-color: $main-green-3;
     padding: $p-s;
+    z-index: 2;
 
     &::before {
         content: "";
@@ -32,7 +35,8 @@ nav {
     .container {
         display: flex;
         column-gap: $p-s;
-        height: 100%;
+        min-height: fit-content;
+        padding: 0 $p-m;
         z-index: 2;
 
         a.logo {

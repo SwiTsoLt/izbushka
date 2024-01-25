@@ -9,7 +9,7 @@
         padding-top: $p-l;
         padding-bottom: $p-l;
 
-        .container-title {
+        .page-title {
             padding-bottom: $p-l;
 
             h1 {
@@ -17,7 +17,7 @@
             }
         }
 
-        .container-body {
+        .page-body {
             display: flex;
             flex-direction: column;
             gap: $p-l;

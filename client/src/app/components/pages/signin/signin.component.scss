@@ -22,6 +22,7 @@
         width: 100%;
         height: inherit;
         min-height: inherit;
+        padding: 0 $p-m;
 
         .logo {
             position: relative;
@@ -81,8 +82,9 @@
             display: flex;
             flex-direction: column;
             gap: $p-s;
-            width: 400px;
+            width: fit-content;
             height: fit-content;
+            max-width: 400px;
             font-size: $fs-m;
 
             app-my-button {
@@ -159,10 +161,12 @@
     img {
         display: none;
     }
-}
 
-@media screen and (max-width: 500px) {
-    .login > .form__container > form {
-        width: 300px;
+    .auth>.form__container>.logo>.roof {
+        top: -72px;
+    }
+
+    .auth>.form__container>.logo>h1::before {
+        top: -20px;
     }
 }

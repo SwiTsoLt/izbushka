@@ -1,6 +1,8 @@
-<app-navbar></app-navbar>
+<div class="user standard-page">
+    <app-navbar></app-navbar>
+    <app-mobile-navbar></app-mobile-navbar>
+    <app-mobile-menu></app-mobile-menu>
 
-<div class="user">
     <div class="container">
         @if((user$ | async)?._id) {
         <app-user-card [user]="(user$ | async)" [isMe]="false"></app-user-card>

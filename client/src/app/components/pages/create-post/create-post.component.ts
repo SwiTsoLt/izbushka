@@ -9,6 +9,9 @@ import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { RouterModule } from '@angular/router';
 import { MyButtonComponent } from '@UI/my-button/my-button.component';
+import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
+import { MobileNavbarComponent } from '@MUI/mobile-navbar/mobile-navbar.component';
+import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-context-menu.component';
 
 @Component({
   selector: 'app-create-post',
@@ -24,7 +27,10 @@ import { MyButtonComponent } from '@UI/my-button/my-button.component';
     MatInputModule,
     MatCheckboxModule,
     RouterModule,
-    MyButtonComponent
+    MyButtonComponent,
+    MobileMenuComponent,
+    MobileNavbarComponent,
+    MobileContextMenuComponent
   ],
   templateUrl: './create-post.component.html',
   styleUrl: './create-post.component.scss'

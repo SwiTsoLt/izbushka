@@ -1,1 +1,17 @@
-<p>mobile-menu works!</p>
+<nav>
+    <a routerLink="/" class="nav-button">
+        <img src="../../../../assets/MUI/mobile-menu/home.svg" alt="">
+    </a>
+    <a routerLink="/favorite" class="nav-button">
+        <img src="../../../../assets/MUI/mobile-menu/favorite.svg" alt="">
+    </a>
+    <a routerLink="/create-post" class="nav-button">
+        <img src="../../../../assets/MUI/mobile-menu/create-post.svg" alt="">
+    </a>
+    <a routerLink="/chats" class="nav-button">
+        <img src="../../../../assets/MUI/mobile-menu/chats.svg" alt="">
+    </a>
+    <button class="nav-button" (click)="toggleMobileContextMenuShow.emit()">
+        <img src="../../../../assets/MUI/mobile-menu/avatar.svg" alt="">
+    </button>
+</nav>

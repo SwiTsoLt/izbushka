@@ -6,11 +6,14 @@ import { User } from '@model/user.model';
 import { CommonModule } from '@angular/common';
 import { UserCardComponent } from '@UI/user-card/user-card.component';
 import { NavbarComponent } from '@UI/navbar/navbar.component';
+import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-context-menu.component';
+import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
+import { MobileNavbarComponent } from '@MUI/mobile-navbar/mobile-navbar.component';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, UserCardComponent, RouterModule],
+  imports: [CommonModule, NavbarComponent, UserCardComponent, RouterModule, MobileContextMenuComponent, MobileMenuComponent, MobileNavbarComponent],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
 })

@@ -1,49 +1,29 @@
 @import '../../../variables.scss';
 
 .home {
-    width: 100%;
-    height: 100%;
-    min-height: 100vh;
-
-    app-mobile-navbar {
-        display: none;
-    }
-
     .container {
         display: grid;
         grid-template-columns: $aside-width auto;
         column-gap: $p-l;
         height: 100%;
-        min-height: calc(100vh - $nav-height);
-        padding-top: $p-l;
-        padding-bottom: $p-l;
     }
 }
 
 @media screen and (max-width: 1000px) {
-    .home > app-navbar {
+    .home>app-navbar {
         display: none;
     }
-    
-    .home > app-mobile-navbar {
+
+    .home>app-mobile-navbar,
+    .home>app-mobile-menu {
         display: block;
     }
 
-    .home > .container {
-        padding: $p-s;
-    }
-
-    .home > .container {
+    .home>.container {
         grid-template-columns: 1fr;
 
         app-home-aside {
             display: none;
         }
-    }
-}
-
-@media screen and (max-width: 365px)  {
-    .home > .container {
-        padding: 0;
     }
 }
