@@ -1,7 +1,7 @@
 export class PostLocation {
     constructor(
-        public areaID: string,
-        public regionID: string
+        public area: string,
+        public region: string
     ) {}
 }
 
@@ -11,8 +11,8 @@ export class Post {
         public title: string,
         public body: string,
         public images: string[],
-        public categoryID: number,
-        public ownerID: string,
+        public category: number,
+        public owner: string,
         public location: PostLocation,
         public price: number,
         public publishDate: number,

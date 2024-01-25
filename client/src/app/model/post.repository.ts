@@ -11,7 +11,7 @@ export class PostRepository {
     public getPosts(categoryID = -1): Observable<Post[]> {
         return this.dataSource.getPosts()
             .pipe(map(posts => posts.filter(this.isPostValid)))
-            .pipe(map(posts => posts.filter((p: Post) => categoryID === -1 || categoryID === p.categoryID)))
+            .pipe(map(posts => posts.filter((p: Post) => categoryID === -1 || categoryID === p.category)))
     }
 
     public getPost(id: string): Observable<Post | undefined> {

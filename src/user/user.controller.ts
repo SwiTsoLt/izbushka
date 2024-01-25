@@ -1,19 +1,32 @@
-import { Controller, Get, Headers, Param, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Headers,
+  Param,
+  Put,
+  Res,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from '../schemas/user.schema';
 import { Response } from 'express';
+import { Types } from 'mongoose';
+import { UpdateUserDTO } from 'src/dtos/user.dto';
 
 @Controller('api/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  // Get
+
   @Get()
-  async getAll(): Promise<User[]> {
+  public async getAll(): Promise<User[]> {
     return this.userService.getAll();
   }
 
   @Get('/jwt')
-  async getByJWT(
+  public async getByJWT(
     @Headers('Authorization') auth: string,
     @Res() res: Response,
   ): Promise<Response<User>> {
@@ -22,7 +35,24 @@ export class UserController {
   }
 
   @Get(':id')
-  async getById(@Param('id') id: string): Promise<User> {
+  public async getById(@Param('id') id: string): Promise<User> {
     return this.userService.getById(id);
+  }
+
+  // Update
+
+  @Put('/:id')
+  public async update(
+    @Param('id') id: Types.ObjectId,
+    @Body() updateUserDTO: UpdateUserDTO,
+  ): Promise<User> {
+    return this.userService.update(id, updateUserDTO);
+  }
+
+  // Delete
+
+  @Delete('/:id')
+  public async delete(@Param('id') id: Types.ObjectId): Promise<User> {
+    return this.userService.delete(id);
   }
 }

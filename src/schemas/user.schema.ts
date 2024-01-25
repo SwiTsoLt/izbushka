@@ -8,7 +8,7 @@ export class User {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ unique: true })
+  @Prop()
   phone: string;
 
   @Prop()
@@ -19,6 +19,12 @@ export class User {
 
   @Prop({ required: true })
   last_name: string;
+
+  @Prop({ type: Object })
+  location: {
+    area: Types.ObjectId;
+    region: Types.ObjectId;
+  };
 
   @Prop({ required: true })
   password: string;

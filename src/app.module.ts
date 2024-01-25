@@ -8,6 +8,11 @@ import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
+import { PostModule } from './post/post.module';
+import { LocationModule } from './location/location.module';
+import { CategoryModule } from './category/category.module';
+import { ErrorHandlerService } from './services/error-handler/error-handler.service';
+import { MyJwtService } from './services/jwt/jwt.service';
 
 const rootPath = join(
   __dirname,
@@ -34,8 +39,11 @@ const rootPath = join(
     }),
     AuthModule,
     UserModule,
+    PostModule,
+    LocationModule,
+    CategoryModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ErrorHandlerService, MyJwtService],
 })
 export class AppModule {}

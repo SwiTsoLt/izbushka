@@ -25,6 +25,6 @@
       "@model/*": ["./client/src/app/model/*"],
       "@services/*": ["./client/src/app/services/*"],
       "@store/*": ["./client/src/app/store/*"],
-    }
-  }
+    },
+  },
 }
