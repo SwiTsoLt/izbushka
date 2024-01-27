@@ -1,7 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { Category } from './category.schema';
-import { User } from './user.schema';
 
 export type PostDocument = HydratedDocument<Post>;
 
@@ -16,11 +14,11 @@ export class Post {
   @Prop()
   images: string[];
 
-  @Prop({ required: true, type: Types.ObjectId, ref: Category.name })
-  category: Category;
+  @Prop({ required: true })
+  category: Types.ObjectId;
 
-  @Prop({ required: true, type: Types.ObjectId, ref: User.name })
-  owner: User;
+  @Prop({ required: true })
+  owner: Types.ObjectId;
 
   @Prop({ type: Object })
   location: {

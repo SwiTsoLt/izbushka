@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
-import { HttpService } from '@services/http.service';
-import { UserService } from '@services/user.service';
-import { User } from '@model/user.model';
 import { Store } from '@ngrx/store';
-import { setUser } from '@store/user/user.actions';
+import { getUserByAccessToken } from '@store/user/user.actions';
 import { SettingsComponent } from '@pages/settings/settings.component';
 import { HomeComponent } from '@pages/home/home.component';
+import { HttpService } from '@services/http.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { getAllCategories } from '@store/category/category.actions';
 
 @Component({
   selector: 'app-root',
@@ -18,11 +17,6 @@ import { HomeComponent } from '@pages/home/home.component';
     RouterOutlet,
     HomeComponent,
     SettingsComponent,
-    HttpClientModule
-  ],
-  providers: [
-    { provide: HttpService },
-    { provide: UserService }
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -30,18 +24,16 @@ import { HomeComponent } from '@pages/home/home.component';
 export class AppComponent implements OnInit {
 
   constructor(
-    private readonly userService: UserService,
     private readonly store: Store
   ) { }
 
   ngOnInit(): void {
     const access_token = window.localStorage.getItem('access_token');
+
     if (access_token) {
-      this.userService.getUserByJWT(access_token).subscribe((user: User | null) => {
-        if (user) {
-          this.store.dispatch(setUser({ user }));
-        }
-      })
+      this.store.dispatch(getUserByAccessToken({ access_token }))
     }
+
+    this.store.dispatch(getAllCategories())
   }
 }

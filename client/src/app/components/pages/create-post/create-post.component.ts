@@ -1,7 +1,7 @@
 import { NavbarComponent } from '@UI/navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Category, SubCategory } from '@model/category.model';
+import { Category } from '@model/category.model';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -48,16 +48,16 @@ export class CreatePostComponent {
   public categoryList: Category[] = [
     {
       _id: '0', name: 'Строительный инструмент', children: [
-        { _id: '01', parent_id: '0', name: 'Бензо и электрорезы' },
-        { _id: '02', parent_id: '0', name: 'Дрели' },
-        { _id: '03', parent_id: '0', name: 'Измерительный инструмент' },
-        { _id: '04', parent_id: '0', name: 'Ключи, отвёртки' },
-        { _id: '05', parent_id: '0', name: 'Краскораспылители, краскопульты' },
-        { _id: '06', parent_id: '0', name: 'Кусачки, плоскогубцы, пассатижи' },
-        { _id: '07', parent_id: '0', name: 'Лобзики' },
-        { _id: '08', parent_id: '0', name: 'Миксеры строительные' },
-        { _id: '09', parent_id: '0', name: 'Наборы инструментов' },
-        { _id: '010', parent_id: '0', name: 'Ножницы по металлу' },
+        { children: [], _id: '01', parent: '0', name: 'Бензо и электрорезы' },
+        { children: [], _id: '02', parent: '0', name: 'Дрели' },
+        { children: [], _id: '03', parent: '0', name: 'Измерительный инструмент' },
+        { children: [], _id: '04', parent: '0', name: 'Ключи, отвёртки' },
+        { children: [], _id: '05', parent: '0', name: 'Краскораспылители, краскопульты' },
+        { children: [], _id: '06', parent: '0', name: 'Кусачки, плоскогубцы, пассатижи' },
+        { children: [], _id: '07', parent: '0', name: 'Лобзики' },
+        { children: [], _id: '08', parent: '0', name: 'Миксеры строительные' },
+        { children: [], _id: '09', parent: '0', name: 'Наборы инструментов' },
+        { children: [], _id: '010', parent: '0', name: 'Ножницы по металлу' },
       ]
     },
     { _id: '1', name: 'Строительное оборудование', children: [] },
@@ -96,7 +96,7 @@ export class CreatePostComponent {
     this.imagesPreview = this.imagesPreview.filter((_, i) => i !== index);
   }
 
-  public get subcategoryList(): SubCategory[] {
+  public get subcategoryList(): Category[] {
     const selectedCategory = this.categoryList.find(cat => cat._id === this.selectedCategoryId);
     if (!selectedCategory) return [];
     return selectedCategory.children;

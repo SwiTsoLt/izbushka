@@ -12,6 +12,8 @@ import { Category } from '../schemas/category.schema';
 import { Types } from 'mongoose';
 import { PostCategoryDTO, UpdateCategoryDTO } from '../dtos/category.dto';
 
+// TODO: Добавить оставшиеся категории начиная с Стройматериалы
+
 @Controller('api/category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}

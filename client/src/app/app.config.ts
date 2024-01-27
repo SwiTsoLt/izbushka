@@ -5,15 +5,17 @@ import { routes } from './app.routes';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideEffects } from '@ngrx/effects';
-import * as fromUserReference  from './store/user';
+import * as fromStoreReference  from './store';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(),
     provideRouter(routes),
-    provideStore(fromUserReference.reducers, { metaReducers: fromUserReference.metaReducers }),
+    provideStore(fromStoreReference.reducers, { metaReducers: fromStoreReference.metaReducers }),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-    provideEffects(),
-    provideAnimations()
+    provideEffects(fromStoreReference.effects),
+    provideAnimations(),
 ]
 };

@@ -38,7 +38,8 @@ export class PostService {
     return this.errorHandlerService.handleError<Post>(
       new this.postModel({
         ...createPostDTO,
-        owner: sub,
+        category: new Types.ObjectId(createPostDTO.category),
+        owner: new Types.ObjectId(sub),
         publishDate: Date.now(),
       }).save(),
     );
@@ -51,7 +52,12 @@ export class PostService {
     updatePostDTO: UpdatePostDTO,
   ): Promise<Post> {
     return this.errorHandlerService.handleError<Post>(
-      this.postModel.findByIdAndUpdate(id, updatePostDTO).exec(),
+      this.postModel
+        .findByIdAndUpdate(id, {
+          ...updatePostDTO,
+          category: new Types.ObjectId(updatePostDTO.category),
+        })
+        .exec(),
     );
   }
 

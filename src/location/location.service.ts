@@ -39,7 +39,7 @@ export class LocationService {
 
   public async postArea(postAreaDTO: PostAreaDTO): Promise<Area> {
     return this.errorHandlerService.handleError<Area>(
-      new this.areaModel(postAreaDTO).save(),
+      new this.areaModel({ ...postAreaDTO, children: [] }).save(),
     );
   }
 
@@ -57,9 +57,17 @@ export class LocationService {
   // Area Delete
 
   public async deleteArea(id: Types.ObjectId): Promise<Area> {
-    return this.errorHandlerService.handleError<Area>(
-      this.areaModel.findById(id).exec(),
+    const deletedArea = await this.errorHandlerService.handleError<Area>(
+      this.areaModel.findByIdAndDelete(id).exec(),
     );
+
+    deletedArea.children.forEach(async (childId: Types.ObjectId) => {
+      await this.errorHandlerService.handleError<Area>(
+        this.areaModel.findByIdAndDelete(childId).exec(),
+      );
+    });
+
+    return deletedArea;
   }
 
   // Region
@@ -81,7 +89,17 @@ export class LocationService {
   // Region Post
 
   public async postRegion(postRegionDTO: PostRegionDTO): Promise<Region> {
-    return new this.regionModel(postRegionDTO).save();
+    const newRegion = await this.errorHandlerService.handleError(
+      new this.regionModel(postRegionDTO).save(),
+    );
+
+    await this.errorHandlerService.handleError<Area>(
+      this.areaModel.findByIdAndUpdate(postRegionDTO.parent, {
+        $push: { children: newRegion._id },
+      }),
+    );
+
+    return newRegion;
   }
 
   // Region Update
@@ -98,8 +116,16 @@ export class LocationService {
   // Region Delete
 
   public async deleteRegion(id: Types.ObjectId): Promise<Region> {
-    return this.errorHandlerService.handleError<Region>(
+    const deletedRegion = await this.errorHandlerService.handleError<Region>(
       this.regionModel.findByIdAndDelete(id).exec(),
     );
+
+    await this.errorHandlerService.handleError<Area>(
+      this.areaModel.findByIdAndUpdate(deletedRegion.parent, {
+        $pull: { children: { $elemMatch: { _id: id } } },
+      }),
+    );
+
+    return deletedRegion;
   }
 }

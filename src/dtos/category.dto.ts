@@ -1,9 +1,13 @@
+import { Types } from 'mongoose';
+
 export class PostCategoryDTO {
   name: string;
-  children: PostCategoryDTO[];
+  children: Types.ObjectId[];
+  parent: Types.ObjectId;
 }
 
 export class UpdateCategoryDTO {
   name: string;
-  children: UpdateCategoryDTO[];
+  children: Types.ObjectId[];
+  parent: Types.ObjectId;
 }

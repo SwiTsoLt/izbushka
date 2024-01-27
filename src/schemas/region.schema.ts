@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 
 export type RegionDocument = HydratedDocument<Region>;
 
@@ -7,6 +7,9 @@ export type RegionDocument = HydratedDocument<Region>;
 export class Region {
   @Prop({ required: true })
   name: string;
+
+  @Prop({ required: true })
+  parent: Types.ObjectId;
 }
 
 export const RegionSchema = SchemaFactory.createForClass(Region);

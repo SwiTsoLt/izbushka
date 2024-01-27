@@ -29,9 +29,24 @@ export class CategoryService {
   // Post
 
   public async post(postCategoryDTO: PostCategoryDTO): Promise<Category> {
-    return this.errorHandlerService.handleError<Category>(
-      new this.categoryModel(postCategoryDTO).save(),
+    const newCategory = await this.errorHandlerService.handleError(
+      new this.categoryModel({
+        ...postCategoryDTO,
+        children: [],
+        parent:
+          postCategoryDTO.parent && new Types.ObjectId(postCategoryDTO.parent),
+      }).save(),
     );
+
+    if (postCategoryDTO.parent) {
+      await this.errorHandlerService.handleError<Category>(
+        this.categoryModel.findByIdAndUpdate(postCategoryDTO.parent, {
+          $push: { children: newCategory._id },
+        }),
+      );
+    }
+
+    return newCategory;
   }
 
   // Update
@@ -48,8 +63,17 @@ export class CategoryService {
   // Delete
 
   public async delete(id: Types.ObjectId): Promise<Category> {
-    return this.errorHandlerService.handleError<Category>(
-      this.categoryModel.findByIdAndDelete(id),
-    );
+    const deletedCategory =
+      await this.errorHandlerService.handleError<Category>(
+        this.categoryModel.findByIdAndDelete(id),
+      );
+
+    deletedCategory.children.forEach(async (childId: Types.ObjectId) => {
+      await this.errorHandlerService.handleError<Category>(
+        this.categoryModel.findByIdAndDelete(childId).exec(),
+      );
+    });
+
+    return deletedCategory;
   }
 }

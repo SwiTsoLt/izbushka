@@ -23,6 +23,8 @@ import {
     Region - Район
 */
 
+// TODO: Добавить оставшиеся города и их районы
+
 @Controller('api/location')
 export class LocationController {
   constructor(private readonly locationService: LocationService) {}

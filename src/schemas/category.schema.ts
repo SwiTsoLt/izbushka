@@ -8,8 +8,11 @@ export class Category {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ type: Types.ObjectId, ref: Category.name })
-  children: Category[];
+  @Prop({ required: true })
+  children: Types.ObjectId[];
+
+  @Prop()
+  parent: Types.ObjectId;
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);

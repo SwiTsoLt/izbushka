@@ -23,6 +23,8 @@ export const initialState: User = {
 
 export const userReducer = createReducer(
     initialState,
-    on(userActions.setUser, (state, { user }): User => ({ ...state, ...user })),
+    on(userActions.getUserByAccessToken, (state): User => state),
+    on(userActions.getUserByAccessTokenSuccess, (_state, { user }): User => user),
+    on(userActions.getUserByAccessTokenError, (state): User => state),
     on(userActions.resetUser, (): User => initialState),
 )

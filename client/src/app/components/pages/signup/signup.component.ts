@@ -4,9 +4,8 @@ import { Router, RouterModule } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ISignUpForm } from '@dtos/auth.dto';
 import { UserService } from '@services/user.service';
-import { setUser } from '@store/user/user.actions';
+import { getUserByAccessToken } from '@store/user/user.actions';
 import { Store } from '@ngrx/store';
-import { User } from '@model/user.model';
 import { AuthService } from '@services/auth.service';
 
 @Component({
@@ -22,7 +21,6 @@ export class SignUpComponent {
 
   constructor(
     private readonly authService: AuthService,
-    private readonly userService: UserService,
     private readonly router: Router
   ) { }
 
@@ -76,13 +74,7 @@ export class SignUpComponent {
     this.authService.signUp(this.signUpForm.value).subscribe(data => {
       if (data && data.access_token) {
         window.localStorage.setItem('access_token', data.access_token ?? '');
-
-        this.userService.getUserByJWT(data.access_token).subscribe((user: User | null) => {
-          if (user) {
-            this.store.dispatch(setUser({ user }));
-          }
-        })
-
+        this.store.dispatch(getUserByAccessToken({ access_token: data.access_token }))
         this.router.navigate(['/home']);
       }
     })
