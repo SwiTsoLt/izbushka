@@ -45,7 +45,7 @@ export class PostService {
     );
   }
 
-  // Update
+  // Patch
 
   public async update(
     id: Types.ObjectId,

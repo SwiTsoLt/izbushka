@@ -14,17 +14,40 @@
             <h1>Iзбушка</h1>
         </div>
         <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
-            <input formControlName="email" type="email" name="email" class="my-input-green" placeholder="Email или номер телефона">
-            <input formControlName="first_name" type="text" name="first_name" class="my-input-green" placeholder="Имя">
-            <input formControlName="last_name" type="text" name="last_name" class="my-input-green" placeholder="Фамилия">
-            <input formControlName="password" name="password" (input)="checkIsPasswordsEqual()" type="password" class="my-input-green" placeholder="Придумайте пароль">
-            <input formControlName="confirm_password" name="password" (input)="checkIsPasswordsEqual()" type="password" class="my-input-green" placeholder="Подтвердите пароль">
+            <input [formControl]="signUpForm.controls.email" type="email" name="email" class="my-input-green"
+                placeholder="Email или номер телефона">
+            <input [formControl]="signUpForm.controls.first_name" type="text" name="first_name" class="my-input-green" placeholder="Имя">
+            <input [formControl]="signUpForm.controls.last_name" type="text" name="last_name" class="my-input-green"
+                placeholder="Фамилия">
+            <mat-form-field>
+                <mat-label>Выберете город</mat-label>
+                <mat-select [formControl]="signUpForm.controls.location.controls.area">
+                    @for(area of areaList$ | async; track $index) {
+                        <mat-option [value]="area._id">{{ area.name }}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Выберете район</mat-label>
+                <mat-select [formControl]="signUpForm.controls.location.controls.region">
+                    @for(region of regionList$ | async; track $index) {
+                        @if(region.parent === signUpForm.value.location?.area) {
+                            <mat-option [value]="region._id">{{ region.name }}</mat-option>
+                        }
+                    }
+                </mat-select>
+            </mat-form-field>
+            <input [formControl]="signUpForm.controls.password" name="password" (input)="checkIsPasswordsEqual()" type="password"
+                class="my-input-green" placeholder="Придумайте пароль">
+            <input [formControl]="signUpForm.controls.confirm_password" name="password" (input)="checkIsPasswordsEqual()" type="password"
+                class="my-input-green" placeholder="Подтвердите пароль">
             <div class="policy">
                 Регистрируясь, вы принимаете наши условия
-                <a routerLink="/policy">Политику конфиденциальности</a> и 
+                <a routerLink="/policy">Политику конфиденциальности</a> и
                 <a routerLink="/policy">Политику в отношении файлов cookie</a>.
             </div>
-            <app-my-button text="Регистрация" color="green" [hasBackground]="true" [disabled]="!signUpForm.valid || !isPasswordsEqual"></app-my-button>
+            <app-my-button text="Регистрация" color="green" [hasBackground]="true"
+                [disabled]="!signUpForm.valid || !isPasswordsEqual"></app-my-button>
             <span>
                 <hr>
                 <span>ИЛИ</span>

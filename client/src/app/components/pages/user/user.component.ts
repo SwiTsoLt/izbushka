@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Observable, map, of, take } from 'rxjs';
+import { Observable, forkJoin, map, of, take } from 'rxjs';
 import { UserService } from '@services/user.service';
 import { User } from '@model/user.model';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,8 @@ import { NavbarComponent } from '@UI/navbar/navbar.component';
 import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-context-menu.component';
 import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
 import { MobileNavbarComponent } from '@MUI/mobile-navbar/mobile-navbar.component';
+import { Store } from '@ngrx/store';
+import { selectUser } from '@store/user/user.selectors';
 
 @Component({
   selector: 'app-user',
@@ -19,27 +21,39 @@ import { MobileNavbarComponent } from '@MUI/mobile-navbar/mobile-navbar.componen
 })
 export class UserComponent implements OnInit {
 
-  public user$: Observable<User | null> = of(null);
+  public user$: Observable<User | null> = this.store.select(selectUser as never);
+  public isMe$: Observable<boolean> = of(false);
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly userService: UserService,
+    private readonly store: Store,
     ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.pipe(
-      take(1),
-      map((params) => {
-        return params.get('id')
-      })
-    ).subscribe((id: string | null) => {
-      if (!id) {
+    forkJoin(
+      this.route.paramMap.pipe(
+        take(1),
+        map((params) => {
+          return params.get('id')
+        })
+      ),
+      this.user$.pipe(
+        take(2),
+        map(user => user?._id)
+      )
+    ).subscribe(([find_user_id, current_user_id]) => {
+      if (!find_user_id) {
         this.router.navigate(['/']);
         return;
       }
+      if (find_user_id === current_user_id) {
+        this.isMe$ = of(true);
+        return;
+      }
 
-      this.user$ = this.userService.getUserById(id)
+      this.user$ = this.userService.getUserById(find_user_id)
     })
   }
 }

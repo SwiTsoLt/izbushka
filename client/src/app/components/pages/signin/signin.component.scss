@@ -87,6 +87,10 @@
             max-width: 400px;
             font-size: $fs-m;
 
+            mat-form-field > div:last-child {
+                display: none;
+            }
+
             app-my-button {
                 width: 100%;
                 height: 40px;

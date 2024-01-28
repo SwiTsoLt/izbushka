@@ -15,8 +15,16 @@ export const initialState: User = {
     avatar: '',
     rating: 0,
     location: {
-        areaID: '',
-        regionID: '',
+        area: {
+            _id: '',
+            name: '',
+            children: []
+        },
+        region: {
+            _id: '',
+            name: '',
+            parent: ''
+        },
     },
     registration_date: 0
 };

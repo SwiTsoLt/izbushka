@@ -47,7 +47,7 @@ export class UserService {
     };
   }
 
-  // Update
+  // Patch
 
   public async update(
     id: Types.ObjectId,

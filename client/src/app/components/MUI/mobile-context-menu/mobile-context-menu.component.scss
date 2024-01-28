@@ -7,10 +7,12 @@
     transform: translateX(100%);
     width: 100%;
     height: 100dvh;
+    max-height: 100dvh;
     background-color: $main-white;
     padding: $mob-p-m;
     padding-top: calc($mob-nav-height + $mob-p-m);
     transition: transform $anim-tr $anim-mode;
+    overflow-y: scroll;
     z-index: 2;
 
     &.show {
@@ -22,7 +24,8 @@
         flex-direction: column;
         gap: $mob-p-s;
         width: 100%;
-        height: 100%;
+        height: fit-content;
+        padding-bottom: calc($button-height + $mob-p-s);
 
         .links-item {
             display: flex;

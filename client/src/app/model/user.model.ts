@@ -1,9 +1,4 @@
-export class UserLocation {
-    constructor(
-        public areaID: string,
-        public regionID: string 
-    ) {}
-}
+import { Location } from "./location.model";
 
 export class User {
     constructor(
@@ -16,7 +11,7 @@ export class User {
         public rating: number,
         public roles: string[],
         public posts: string[],
-        public location: UserLocation,
+        public location: Location,
         public registration_date: number
     ) {}
 }

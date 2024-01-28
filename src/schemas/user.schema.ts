@@ -35,6 +35,9 @@ export class User {
   @Prop({ required: true })
   posts: Types.ObjectId[];
 
+  @Prop()
+  rating: number;
+
   @Prop({ required: true })
   registration_date: number;
 }

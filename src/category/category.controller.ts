@@ -4,8 +4,8 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
-  Put,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Category } from '../schemas/category.schema';
@@ -39,9 +39,9 @@ export class CategoryController {
     return this.categoryService.post(postCategoryDTO);
   }
 
-  // Update
+  // Patch
 
-  @Put('/:id')
+  @Patch('/:id')
   public async update(
     @Param('id') id: Types.ObjectId,
     @Body() updateCategoryDTO: UpdateCategoryDTO,

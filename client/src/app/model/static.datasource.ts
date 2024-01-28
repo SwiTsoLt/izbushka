@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Post, PostLocation } from "./post.model";
 import { Observable } from "rxjs";
-import { User, UserLocation } from "./user.model";
+import { User } from "./user.model";
+import { Location } from "./location.model";
 
 @Injectable()
 export class StaticDataSource {
@@ -21,11 +22,11 @@ export class StaticDataSource {
     ]
 
     private users: User[] = [
-         new User("1", "1example@gmail.com", "+37529xxxxxx1", "Alex", "Smirnov", "avatar1", 0, ["1", "3"], [], new UserLocation("1", "1"), new Date(2022, 5, 20, 3, 5, 0).getMilliseconds()),
-         new User("2", "2example@gmail.com", "+37529xxxxxx2", "Leonid", "Bagaev", "avatar2", 0, ["2", "4"], [], new UserLocation("2", "1"), new Date(2021, 7, 23, 3, 5, 30).getMilliseconds()),
-         new User("3", "3example@gmail.com", "+37529xxxxxx3", "Nikita", "Tisevich", "avatar3", 0, ["5", "6"], [], new UserLocation("1", "2"), new Date(2019, 2, 25, 3, 6, 0).getMilliseconds()),
-         new User("4", "4example@gmail.com", "+37529xxxxxx4", "Vlad", "Stepanov", "avatar4", 0, ["7", "9"], [], new UserLocation("3", "1"), new Date(2020, 12, 12, 3, 6, 30).getMilliseconds()),
-         new User("5", "5example@gmail.com", "+37529xxxxxx5", "Andrey", "Vladimirov", "avatar5", 0, ["8", "10"], [], new UserLocation("1", "3"), new Date(2023, 8, 20, 3, 7, 0).getMilliseconds()),
+         new User("1", "1example@gmail.com", "+37529xxxxxx1", "Alex", "Smirnov", "avatar1", 0, ["1", "3"], [], new Location({ _id: '0', name: '0', children: [] }, { _id: '0', name: '01', parent: '0' }), new Date(2022, 5, 20, 3, 5, 0).getMilliseconds()),
+         new User("2", "2example@gmail.com", "+37529xxxxxx2", "Leonid", "Bagaev", "avatar2", 0, ["2", "4"], [], new Location({ _id: '0', name: '0', children: [] }, { _id: '0', name: '01', parent: '0' }), new Date(2021, 7, 23, 3, 5, 30).getMilliseconds()),
+         new User("3", "3example@gmail.com", "+37529xxxxxx3", "Nikita", "Tisevich", "avatar3", 0, ["5", "6"], [], new Location({ _id: '0', name: '0', children: [] }, { _id: '0', name: '01', parent: '0' }), new Date(2019, 2, 25, 3, 6, 0).getMilliseconds()),
+         new User("4", "4example@gmail.com", "+37529xxxxxx4", "Vlad", "Stepanov", "avatar4", 0, ["7", "9"], [], new Location({ _id: '0', name: '0', children: [] }, { _id: '0', name: '01', parent: '0' }), new Date(2020, 12, 12, 3, 6, 30).getMilliseconds()),
+         new User("5", "5example@gmail.com", "+37529xxxxxx5", "Andrey", "Vladimirov", "avatar5", 0, ["8", "10"], [], new Location({ _id: '0', name: '0', children: [] }, { _id: '0', name: '01', parent: '0' }), new Date(2023, 8, 20, 3, 7, 0).getMilliseconds()),
     ]
 
     public getPosts(): Observable<Post[]> {

@@ -43,7 +43,7 @@ export class LocationService {
     );
   }
 
-  // Area Update
+  // Area Patch
 
   public async updateArea(
     id: Types.ObjectId,
@@ -102,7 +102,7 @@ export class LocationService {
     return newRegion;
   }
 
-  // Region Update
+  // Region Patch
 
   public async updateRegion(
     id: Types.ObjectId,

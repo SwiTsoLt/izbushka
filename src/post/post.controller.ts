@@ -5,8 +5,8 @@ import {
   Get,
   Headers,
   Param,
+  Patch,
   Post,
-  Put,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { Post as MyPost } from '../schemas/post.schema';
@@ -39,9 +39,9 @@ export class PostController {
     return this.postService.post(auth, createPostDTO);
   }
 
-  // Update
+  // Patch
 
-  @Put('/:id')
+  @Patch('/:id')
   public async update(
     @Param('id') id: Types.ObjectId,
     @Body() updatePostDTO: UpdatePostDTO,

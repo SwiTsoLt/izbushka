@@ -1,32 +1,42 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { MyButtonComponent } from '@UI/my-button/my-button.component';
 import { Router, RouterModule } from '@angular/router';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ISignUpForm } from '@dtos/auth.dto';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SignUpForm } from '@dtos/auth.dto';
 import { UserService } from '@services/user.service';
 import { getUserByAccessToken } from '@store/user/user.actions';
 import { Store } from '@ngrx/store';
 import { AuthService } from '@services/auth.service';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { LocationArea, LocationRegion } from '@model/location.model';
+import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { selectLocationArea, selectLocationRegion } from '@store/location/location.selectors';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [MyButtonComponent, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, MyButtonComponent, RouterModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule],
   providers: [UserService, AuthService],
   templateUrl: './signup.component.html',
   styleUrl: '../signin/signin.component.scss'
 })
 export class SignUpComponent {
-  private readonly store: Store = inject(Store);
 
   constructor(
     private readonly authService: AuthService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly store: Store,
   ) { }
+
+  public areaList$: Observable<LocationArea[]> = this.store.select(selectLocationArea as never);
+  public regionList$: Observable<LocationRegion[]> = this.store.select(selectLocationRegion as never);
 
   public isPasswordsEqual: boolean = false;
 
-  public signUpForm: FormGroup<ISignUpForm> = new FormGroup({
+  public signUpForm: FormGroup<SignUpForm> = new FormGroup({
     email: new FormControl('', {
       nonNullable: true,
       validators: [
@@ -47,6 +57,10 @@ export class SignUpComponent {
         Validators.required,
         Validators.minLength(1)
       ]
+    }),
+    location: new FormGroup({
+      area: new FormControl('', { nonNullable: true }),
+      region: new FormControl('', { nonNullable: true }),
     }),
     password: new FormControl('', {
       nonNullable: true,

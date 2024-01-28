@@ -4,8 +4,8 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
-  Put,
 } from '@nestjs/common';
 import { LocationService } from './location.service';
 import { Area } from '../schemas/area.schema';
@@ -50,8 +50,8 @@ export class LocationController {
     return this.locationService.postArea(postAreaDTO);
   }
 
-  // Area Update
-  @Put('/area/:id')
+  // Area Patch
+  @Patch('/area/:id')
   public async updateArea(
     @Param('id') id: Types.ObjectId,
     @Body() updateAreaDTO: UpdateAreaDTO,
@@ -88,8 +88,8 @@ export class LocationController {
     return this.locationService.postRegion(postRegionDTO);
   }
 
-  // Region Update
-  @Put('/region/:id')
+  // Region Patch
+  @Patch('/region/:id')
   public async updateRegion(
     @Param('id') id: Types.ObjectId,
     @Body() updateRegionDTO: UpdateRegionDTO,

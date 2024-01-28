@@ -1,21 +1,23 @@
 @if(user) {
     <div class="user-card">
         <div class="avatar">
-            <img [src]="user.avatar" alt="User Avatar">
+            <img [src]="user.avatar" onerror="this.src='../../../../../assets/UI/user-card/default-avatar.svg';"  alt="User Avatar">
         </div>
         <div class="info">
             <div class="name">{{ user.last_name }} {{ user.first_name }}</div>
             <div class="location">Минск, Заводской</div>
             <div class="rating">
-                <div class="rating-count">Рейтинг: <span>{{ user.rating }}</span></div>
+                <div class="rating-count">Рейтинг: <span>{{ user.rating || '?' }}</span></div>
                 <div class="rating-stars">
-                    @for(_ of [].constructor(user.rating); track $index) {
-                        <img src="../../../../../assets/pages/user/user-card/star.svg" alt="Star Icon">
+                    @if (user.rating) {
+                        @for(_ of [].constructor(user.rating); track $index) {
+                            <img src="../../../../../assets/UI/user-card/star.svg" alt="Star Icon">
+                        }
                     }
                 </div>
             </div>
             <div class="reviews">
-                <div class="reviews-count">Отзывов: <span>5</span></div>
+                <div class="reviews-count">Отзывов: <span>0</span></div>
             </div>
             
             @if(!isMe) {

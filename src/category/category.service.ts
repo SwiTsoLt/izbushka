@@ -49,7 +49,7 @@ export class CategoryService {
     return newCategory;
   }
 
-  // Update
+  // Patch
 
   public async update(
     id: Types.ObjectId,

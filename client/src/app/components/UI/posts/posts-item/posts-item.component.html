@@ -10,7 +10,7 @@
         </h6>
         <p>
             <span class="owner">
-                {{ (user$ | async)?.first_name }}, {{ (user$ | async)?.location?.areaID }}
+                {{ (user$ | async)?.first_name }}, {{ (user$ | async)?.location?.area?.name }}, {{ (user$ | async)?.location?.region?.name }}
             </span>
             <span class="date number">
                 {{ post.publishDate | date:"d LLL, H:mm" }}

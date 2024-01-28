@@ -5,7 +5,7 @@ import {
   Get,
   Headers,
   Param,
-  Put,
+  Patch,
   Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -39,9 +39,9 @@ export class UserController {
     return this.userService.getById(id);
   }
 
-  // Update
+  // Patch
 
-  @Put('/:id')
+  @Patch('/:id')
   public async update(
     @Param('id') id: Types.ObjectId,
     @Body() updateUserDTO: UpdateUserDTO,

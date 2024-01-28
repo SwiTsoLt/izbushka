@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { MyButtonComponent } from '@UI/my-button/my-button.component';
 import { Router, RouterModule } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -6,6 +6,7 @@ import { UserService } from '@services/user.service';
 import { getUserByAccessToken } from '@store/user/user.actions';
 import { Store } from '@ngrx/store';
 import { AuthService } from '@services/auth.service';
+import { SignInForm } from '@dtos/auth.dto';
 
 @Component({
   selector: 'app-signin',
@@ -16,14 +17,14 @@ import { AuthService } from '@services/auth.service';
   styleUrl: './signin.component.scss'
 })
 export class SignInComponent {
-  private readonly store: Store = inject(Store);
 
   constructor(
     private readonly authService: AuthService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly store: Store
     ) {}
 
-  public signInForm = new FormGroup({
+  public signInForm: FormGroup<SignInForm> = new FormGroup({
     email: new FormControl('', {
       nonNullable: true,
       validators: [
