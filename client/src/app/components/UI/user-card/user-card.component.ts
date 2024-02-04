@@ -3,7 +3,7 @@ import { User } from 'models/user.model';
 import { RouterModule } from '@angular/router';
 import { Location, LocationArea, LocationRegion } from '@models/location.model';
 import { Store } from '@ngrx/store';
-import { Observable, forkJoin, map, of, take, zip } from 'rxjs';
+import { Observable, map, of, zip } from 'rxjs';
 import { selectLocationArea, selectLocationRegion } from '@store/location/location.selectors';
 import { CommonModule } from '@angular/common';
 import { selectUser } from '@store/user/user.selectors';

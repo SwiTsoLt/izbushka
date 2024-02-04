@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { User } from "./user.model";
 import { StaticDataSource } from "./static.datasource";
-import { Observable, map } from "rxjs";
+import { Observable } from "rxjs";
 import { UserService } from "@services/user.service";
 
 

@@ -9,13 +9,7 @@
             {{ post.title }}
         </h6>
         <p>
-            <span class="owner">
-                {{ (user$ | async)?.first_name }},
-                &nbsp;
-                {{ (getAreaById((user$ | async)?.location?.area ?? '') | async)?.name }},
-                &nbsp;
-                {{ (getRegionById((user$ | async)?.location?.region ?? '') | async)?.name }}
-            </span>
+            <span class="owner">{{ (area$ | async)?.name }}, {{ (region$ | async)?.name }}</span>
             <span class="date number">
                 {{ post.publishDate | date:"d LLL, H:mm" }}
             </span>
