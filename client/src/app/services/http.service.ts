@@ -14,8 +14,8 @@ export class HttpService {
       .pipe(
         takeLast(1),
         map(this.handleUpdateAccessToken),
+        catchError(this.handleError),
         shareReplay(1),
-        catchError(this.handleError)
       );
   }
 
@@ -24,8 +24,8 @@ export class HttpService {
       .pipe(
         takeLast(1),
         map(this.handleUpdateAccessToken),
+        catchError(this.handleError),
         shareReplay(1),
-        catchError(this.handleError)
       )
   }
 
