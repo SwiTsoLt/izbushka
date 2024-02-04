@@ -43,7 +43,7 @@
                             <div class="photos-loader-description-loaded">
                                 <img src="../../../../assets/pages/create-post/image.svg"
                                     alt="Photos Loader Description Icon">
-                                <p>Загружено&nbsp;<span>0</span> из <span>10</span></p>
+                                <p>Загружено&nbsp;<span>{{ imagesPreview.length }}</span> из <span>10</span></p>
                             </div>
                         </div>
                     </div>
@@ -184,7 +184,7 @@
                 <div class="section-body">
                     <i>Публикуя объявления, вы соглашаетесь с <a routerLink="/policy">правилами</a>.</i>
                     <app-my-button text="Подать объявление" color="green"
-                        [hasBackground]="true" type="submit" [disabled]="!createPostForm.valid"></app-my-button>
+                        [hasBackground]="true" type="submit" [disabled]="!createPostForm.valid || isLoading"></app-my-button>
                 </div>
             </section>
         </form>

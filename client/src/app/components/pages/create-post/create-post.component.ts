@@ -76,6 +76,7 @@ export class CreatePostComponent implements OnInit {
   public imagesPreview: string[] = [];
   public isDragStart: boolean = false;
   public isPriceFree: boolean = false;
+  public isLoading: boolean = false;
 
   public createPostForm: FormGroup<PostForm> = new FormGroup<PostForm>({
     title: new FormControl<string>('', {
@@ -177,7 +178,8 @@ export class CreatePostComponent implements OnInit {
     this.isPriceFree = state;
   }
 
-  public onSubmit(): void {    
+  public onSubmit(): void {
+    this.isLoading = true;
     const rawCreatePostForm: CreatePostDTO = this.createPostForm.value
 
     const createPostFormData: FormData = new FormData()
@@ -196,8 +198,11 @@ export class CreatePostComponent implements OnInit {
       }
     }
     this.postService.createPost(createPostFormData).subscribe(data => {
-      console.log(data);
-      this.router.navigate(['/home']);
+      if (data?._id) {
+        this.router.navigate(['/home']);
+        return;
+      }
+      this.isLoading = false;
     })
   }
 
