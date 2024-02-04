@@ -80,7 +80,7 @@ export class PostService {
 
     await this.errorHandlerService.handleError<User>(
       this.userModel.findByIdAndUpdate(newPost.owner, {
-        $push: { posts: newPost._id },
+        $push: { posts: new Types.ObjectId(newPost._id) },
       }),
     );
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable, catchError, map, shareReplay, takeLast, throwError } from 'rxjs';
+import { EMPTY, Observable, catchError, map, shareReplay, takeLast, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -56,7 +56,8 @@ export class HttpService {
         `Backend returned code ${error.status}, body was: `, error.error);
     }
     // Return an observable with a user-facing error message.
-    return throwError(() => new Error('Something bad happened; please try again later.'));
+    console.error('Something bad happened; please try again later.');
+    return EMPTY
   }
 
   private normalizeOptions(options: Record<string, unknown>): {
