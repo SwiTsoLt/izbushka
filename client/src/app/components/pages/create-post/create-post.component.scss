@@ -17,12 +17,16 @@
             }
         }
 
-        .page-body {
+        form {
             display: flex;
             flex-direction: column;
             gap: $p-l;
             width: 100%;
             height: fit-content;
+
+            input {
+                color: $main-black;
+            }
 
             section {
                 width: 100%;
@@ -57,10 +61,10 @@
                     height: fit-content;
 
                     .photos-preview {
-                        position: relative;
-                        width: $container-width;
-                        max-width: $container-width;
-                        height: calc(200px + $p-s);
+                        display: flex;
+                        width: fit-content;
+                        max-width: calc(100dvw - $p-m * 2);
+                        height: fit-content;
                         border-radius: $b-r-inner;
                         overflow-y: hidden;
                         overflow-x: auto;
@@ -68,13 +72,8 @@
                         .preview-image-list {
                             display: flex;
                             gap: $p-s;
-                            justify-content: center;
-                            position: absolute;
-                            left: 0;
-                            top: 0;
                             width: fit-content;
-                            height: 100%;
-                            min-width: $container-width;
+                            height: fit-content;
                             padding-bottom: $p-s;
 
                             .preview-image {
@@ -276,84 +275,92 @@
                     .section-body-inner {
                         display: grid;
                         grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-                        gap: $p-m;                   
+                        gap: $p-m;
                         width: 100%;
-                        height: 100%;
+                        height: fit-content;
 
-                        .category-list-container {
+                        .category-list-container,
+                        .subcategory-list-container {
                             width: 100%;
-                            height: fit-content;
+                            height: 100%;
+                            max-height: 500px;
                             border: 2px solid $main-green-3-10;
                             border-radius: $b-r-outer;
                             overflow-x: hidden;
                             overflow-y: auto;
-                            padding: $p-l;
+                            padding: $p-m;
 
                             &:last-child ul>li>label::after {
                                 display: none;
                             }
 
-                            .category-list-inner {
+                            .category-list-inner,
+                            .subcategory-list-inner {
                                 width: 100%;
-                                height: fit-content;
-                                max-height: calc(300px - $p-l * 2 - $p-s);
+                                height: 100%;
                                 overflow-x: hidden;
                                 overflow-y: auto;
                                 padding-right: $p-s;
-                            }
 
-                            ul {
-                                display: flex;
-                                flex-direction: column;
-                                width: 100%;
-                                height: fit-content;
-
-                                li {
+                                ul {
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: calc($p-s / 2);
                                     width: 100%;
                                     height: fit-content;
 
-                                    label {
-                                        display: block;
+                                    li {
                                         position: relative;
                                         width: 100%;
                                         height: fit-content;
-                                        background-color: transparent;
-                                        color: $main-black;
-                                        border-radius: $b-r-round;
-                                        transition: all $anim-tr $anim-mode;
-                                        padding: calc($p-s / 2) $p-l;
-                                        cursor: pointer;
 
-                                        &::after {
-                                            content: "";
+                                        label {
+                                            display: block;
+                                            position: relative;
+                                            width: 100%;
+                                            height: fit-content;
+                                            background-color: transparent;
+                                            color: $main-black;
+                                            border-radius: $b-r-round;
+                                            transition: all $anim-tr $anim-mode;
+                                            padding: calc($p-s / 2) $p-l;
+                                            cursor: pointer;
+
+                                            &::after {
+                                                content: "";
+                                                position: absolute;
+                                                right: $p-m;
+                                                top: 0;
+                                                width: auto;
+                                                height: 100%;
+                                                aspect-ratio: 1/1;
+                                                background-image: url('../../../../assets/pages/create-post/triangle.svg');
+                                                background-repeat: no-repeat;
+                                                background-size: 50%;
+                                                background-position: center;
+                                                transform: rotateZ(90deg);
+                                            }
+                                        }
+
+                                        input {
                                             position: absolute;
-                                            right: $p-m;
+                                            left: 0;
                                             top: 0;
-                                            width: auto;
+                                            width: 100%;
                                             height: 100%;
-                                            aspect-ratio: 1/1;
-                                            background-image: url('../../../../assets/pages/create-post/triangle.svg');
-                                            background-repeat: no-repeat;
-                                            background-size: 50%;
-                                            background-position: center;
-                                            transform: rotateZ(90deg);
+                                            visibility: hidden;
+
+                                            &:checked~label {
+                                                background-color: $main-green-3;
+                                                color: $main-white;
+                                                font-weight: bold;
+                                            }
                                         }
                                     }
+                                }
 
-                                    input {
-                                        position: absolute;
-                                        left: 0;
-                                        top: 0;
-                                        width: 100%;
-                                        height: 100%;
-                                        visibility: hidden;
-
-                                        &:checked~label {
-                                            background-color: $main-green-3;
-                                            color: $main-white;
-                                            font-weight: bold;
-                                        }
-                                    }
+                                &.subcategory-list-inner>ul>li>label:hover {
+                                    background-color: $main-green-3-10;
                                 }
                             }
                         }
@@ -369,7 +376,6 @@
                     .textarea-container {
                         width: 100%;
                         height: fit-content;
-                        padding: $p-m;
 
                         textarea {
                             display: block;
@@ -488,10 +494,10 @@
                         position: absolute;
                         right: 0;
                         top: 0;
-                        width: auto;
+                        width: 100%;
                         height: 100%;
-                        aspect-ratio: 1/1;
                         opacity: 0;
+                        cursor: pointer;
 
                         &:checked~label {
                             background-color: $main-green-3;
@@ -519,6 +525,14 @@
                     flex-direction: column;
                     gap: $p-s;
                     width: 100%;
+
+                    .region {
+                        margin-top: -$p-m;
+                    }
+                }
+
+                &.section-post-location+hr {
+                    margin-top: -$p-m;
                 }
 
                 &.section-final>.section-body {

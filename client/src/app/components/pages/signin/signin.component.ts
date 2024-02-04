@@ -6,7 +6,7 @@ import { UserService } from '@services/user.service';
 import { getUserByAccessToken } from '@store/user/user.actions';
 import { Store } from '@ngrx/store';
 import { AuthService } from '@services/auth.service';
-import { SignInForm } from '@dtos/auth.dto';
+import { SignInForm } from 'models/auth.model';
 
 @Component({
   selector: 'app-signin',
@@ -45,7 +45,7 @@ export class SignInComponent {
     this.authService.signIn(this.signInForm.value).subscribe(data => {
       if (data && data.access_token) {
         window.localStorage.setItem('access_token', data.access_token ?? '');
-        this.store.dispatch(getUserByAccessToken({ access_token: data.access_token }))
+        this.store.dispatch(getUserByAccessToken())
         this.router.navigate(['/home']);
       }
     })

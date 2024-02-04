@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
 
 @Injectable({
@@ -9,8 +9,8 @@ export class HttpService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public get<T>(url: string, options = {}): Observable<HttpResponse<T | null>> {
-    return this.httpClient.get<T>(url, { observe: 'response', ...options })
+  public get<T>(url: string, options: Record<string, unknown> = {}): Observable<HttpResponse<T | null>> {
+    return this.httpClient.get<T>(url, this.normalizeOptions(options))
       .pipe(
         map(this.handleUpdateAccessToken),
         catchError(this.handleError)
@@ -18,7 +18,7 @@ export class HttpService {
   }
 
   public post<T>(url: string, data: unknown, options = {}): Observable<HttpResponse<T | null>> {
-    return this.httpClient.post<T | null>(url, data ?? {}, { observe: 'response', ...options })
+    return this.httpClient.post<T | null>(url, data ?? {}, this.normalizeOptions(options))
       .pipe(
         map(this.handleUpdateAccessToken),
         catchError(this.handleError)
@@ -53,5 +53,22 @@ export class HttpService {
     }
     // Return an observable with a user-facing error message.
     return throwError(() => new Error('Something bad happened; please try again later.'));
+  }
+
+  private normalizeOptions(options: Record<string, unknown>): {
+    observe: 'response',
+    [key: string]: unknown
+  } {
+    const access_token = window.localStorage.getItem('access_token') ?? '';
+    let headers = new HttpHeaders({ 'Authorization': `Bearer ${access_token}` });
+    if ('headers' in options) {
+      const newHeaders = options['headers'] as Record<string, unknown>;
+      headers = new HttpHeaders({ ...headers, ...newHeaders });
+    }
+    return {
+      observe: 'response',
+      ...options,
+      headers
+    };
   }
 }

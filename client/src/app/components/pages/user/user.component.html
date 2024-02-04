@@ -5,7 +5,7 @@
 
     <div class="container">
         @if((user$ | async)?._id) {
-        <app-user-card [user]="(user$ | async)" [isMe]="(isMe$ | async) || false"></app-user-card>
+        <app-user-card [user]="(user$ | async)"></app-user-card>
         <hr>
         <div class="posts">
             <div class="posts-header">

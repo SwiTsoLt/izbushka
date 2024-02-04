@@ -4,25 +4,15 @@ import { AppService } from './app.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UserModule } from './user/user.module';
-import { PostModule } from './post/post.module';
-import { LocationModule } from './location/location.module';
-import { CategoryModule } from './category/category.module';
 import { ErrorHandlerService } from './services/error-handler/error-handler.service';
 import { MyJwtService } from './services/jwt/jwt.service';
+import { MulterModule } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
+import { ApiModule } from './api/api.module';
 
-const rootPath = join(
-  __dirname,
-  '..',
-  '..',
-  'client',
-  'dist',
-  'client',
-  'browser',
-);
+const rootPath = join(__dirname, '..', 'client', 'dist', 'client', 'browser');
 
 @Module({
   imports: [
@@ -37,11 +27,10 @@ const rootPath = join(
       secret: new ConfigService().get<string>('JWT_SECRET'),
       signOptions: { expiresIn: '1d' },
     }),
-    AuthModule,
-    UserModule,
-    PostModule,
-    LocationModule,
-    CategoryModule,
+    MulterModule.register({
+      storage: memoryStorage(),
+    }),
+    ApiModule,
   ],
   controllers: [AppController],
   providers: [AppService, ErrorHandlerService, MyJwtService],

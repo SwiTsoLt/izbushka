@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import * as userActions from "./user.actions"
-import { User } from "../../model/user.model";
+import { User } from "../../models/user.model";
 
 export const userNode = "user"
 
@@ -15,16 +15,8 @@ export const initialState: User = {
     avatar: '',
     rating: 0,
     location: {
-        area: {
-            _id: '',
-            name: '',
-            children: []
-        },
-        region: {
-            _id: '',
-            name: '',
-            parent: ''
-        },
+        area: '',
+        region: '',
     },
     registration_date: 0
 };

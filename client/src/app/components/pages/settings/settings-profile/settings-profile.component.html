@@ -1,6 +1,6 @@
 <div class="profile">
     @if($any(user$ | async)._id) {
-        <app-user-card [user]="user$ | async" [isMe]="true"></app-user-card>
+        <app-user-card [user]="user$ | async"></app-user-card>
     } @else {
         <div class="unauth">
             <h2>Войдете в учетную запись</h2>

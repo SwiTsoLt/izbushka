@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { PostRepository } from '@model/post.repository';
-import { Post } from '@model/post.model';
+import { PostRepository } from 'models/post.repository';
+import { Post } from 'models/post.model';
 import { NavbarComponent } from '@UI/navbar/navbar.component';
-import { StaticDataSource } from '@model/static.datasource';
+import { StaticDataSource } from 'models/static.datasource';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { PostsComponent } from '@UI/posts/posts.component';
@@ -32,9 +32,13 @@ import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-cont
 })
 export class HomeComponent {
 
-  public posts$: Observable<Post[]> = this.postRepository.getPosts()
+  public posts$: Observable<Post[]> = this.postRepository.getPage(0);
 
   constructor(
     public postRepository: PostRepository,
-  ) { }
+  ) {
+    this.posts$.subscribe(posts => {
+      console.log(posts);
+    })
+  }
 }

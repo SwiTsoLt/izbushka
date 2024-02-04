@@ -1,4 +1,4 @@
-import { LocationArea, LocationRegion } from "@model/location.model";
+import { LocationArea, LocationRegion } from "@models/location.model";
 
 export interface ILocations {
     area: LocationArea[],

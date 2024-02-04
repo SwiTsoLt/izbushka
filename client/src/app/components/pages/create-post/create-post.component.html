@@ -3,12 +3,12 @@
     <app-mobile-navbar></app-mobile-navbar>
     <app-mobile-menu (toggleMobileContextMenuShow)="ctx.isShow = !ctx.isShow"></app-mobile-menu>
     <app-mobile-context-menu #ctx></app-mobile-context-menu>
-    
+
     <div class="container">
         <div class="page-title">
             <h1>Подача объявления</h1>
         </div>
-        <div class="page-body">
+        <form [formGroup]="createPostForm" (ngSubmit)="onSubmit()">
             <section class="section-post-photos">
                 <div class="section-title">
                     <h2>Фотографии</h2>
@@ -18,25 +18,13 @@
                         <div class="preview-image-list">
                             @for(url of imagesPreview; track url; let index = $index) {
                             <div class="preview-image">
+
                                 <img [src]="url" alt="Image Preview">
                                 <button class="preview-image-remove__button" (click)="removeImage(index)">
                                     <img src="../../../../assets/pages/create-post/trash.svg"
                                         alt="Remove Preview Image Button Icon">
                                 </button>
 
-                            </div>
-                            } @empty {
-                            <div class="preview-image preview-image-placeholder">
-                                <img src="../../../../assets/pages/create-post/image-placeholder.png"
-                                    alt="Image Preview Placeholder">
-                            </div>
-                            <div class="preview-image preview-image-placeholder">
-                                <img src="../../../../assets/pages/create-post/image-placeholder.png"
-                                    alt="Image Preview Placeholder">
-                            </div>
-                            <div class="preview-image preview-image-placeholder">
-                                <img src="../../../../assets/pages/create-post/image-placeholder.png"
-                                    alt="Image Preview Placeholder">
                             </div>
                             }
                         </div>
@@ -66,9 +54,9 @@
                     <h2>Название товара / услуги*</h2>
                 </div>
                 <div class="section-body">
-                    <input class="my-input-green" minlength="1" maxlength="50" type="text"
-                        placeholder="Например, краска Caparol">
-                    <i>0 из 50 знаков</i>
+                    <input #title [formControl]="createPostForm.controls.title" class="my-input-green" minlength="1" maxlength="50" type="text"
+                        placeholder="Например, краска Caparol" (blur)="checkFieldValid(title)" >
+                    <i>{{ title.value.length }} из 50 знаков</i>
                 </div>
             </section>
             <section class="section-post-category">
@@ -80,26 +68,31 @@
                         <div class="category-list-container">
                             <div class="category-list-inner scrollbar-v">
                                 <ul>
-                                    @for(category of categoryList; track category._id; let index = $index) {
+                                    @for(category of categoryList$ | async; track category._id) {
+                                    @if(!category.parent) {
                                     <li>
-                                        <input type="radio" (change)="setCategory(category._id)" name="category"
-                                            id="subcategory-item-{{category._id}}" [checked]="index === 0">
-                                        <label for="subcategory-item-{{category._id}}">{{category.name}}</label>
+                                        <input type="radio" (change)="setRootCategory(category._id)" name="category"
+                                            id="subcategory-item-{{category._id}}"
+                                            [checked]="rootCategory === category._id">
+                                        <label (mouseenter)="setRootCategory(category._id)"
+                                            for="subcategory-item-{{category._id}}">{{category.name}}</label>
                                     </li>
+                                    }
                                     }
                                 </ul>
                             </div>
                         </div>
-                        <div class="category-list-container">
-                            <div class="category-list-inner scrollbar-v">
+                        <div class="subcategory-list-container">
+                            <div class="subcategory-list-inner scrollbar-v">
                                 <ul>
-                                    @for(subcategory of subcategoryList; track subcategory._id; let index = $index) {
+                                    @for(category of categoryList$ | async; track category._id) {
+                                    @if(category.parent === rootCategory) {
                                     <li>
-                                        <input (change)="setSubCategory(subcategory._id)" type="radio"
-                                            name="subcategory" id="subcategory-item-{{subcategory._id}}"
-                                            [checked]="index === 0">
-                                        <label for="subcategory-item-{{subcategory._id}}">{{subcategory.name}}</label>
+                                        <input [formControl]="createPostForm.controls.category" type="radio" name="subcategory"
+                                            id="subcategory-item-{{category._id}}" [value]="category._id" [checked]="createPostForm.value.category === category._id">
+                                        <label for="subcategory-item-{{category._id}}">{{category.name}}</label>
                                     </li>
+                                    }
                                     }
                                 </ul>
                             </div>
@@ -112,12 +105,12 @@
                     <h2>Описание</h2>
                 </div>
                 <div class="section-body">
-                    <div class="textarea-container my-input-green">
-                        <textarea minlength="20" maxlength="4000" class="scrollbar-v" name="post-description" cols="30"
-                            rows="10"></textarea>
+                    <div class="textarea-container">
+                        <textarea #body [formControl]="createPostForm.controls.body" minlength="20" maxlength="4000" class="my-input-green scrollbar-v" name="post-description"
+                            (blur)="checkFieldValid(body)"></textarea>
                     </div>
                     <i>
-                        <span>0 из 4000 знаков</span>
+                        <span>{{ body.value.length }} из 4000 знаков</span>
                         <span>Минимально: 20 знаков</span>
                     </i>
                 </div>
@@ -141,14 +134,14 @@
                     </div>
                     @if(!isPriceFree) {
                     <div class="price-input">
-                        <input class="my-input-green" min="0" maxlength="12" type="number" placeholder="Например: 4.20">
+                        <input #price [formControl]="createPostForm.controls.price" (blur)="checkFieldValid(price)" class="my-input-green" min="0" maxlength="6" type="number" step="1.0" placeholder="Например: 4.20">
                         <span>руб</span>
                         <i>Чтобы поставить договорную цену, оставьте поле пустым</i>
                     </div>
                     }
                 </div>
             </section>
-            <section class="section-post-phone">
+            <!-- <section class="section-post-phone">
                 <div class="section-title">
                     <h2>Телефон</h2>
                 </div>
@@ -159,7 +152,7 @@
                         <img src="../../../../assets/pages/create-post/checkmark.svg" alt="Phone Checkmark">
                     </label>
                 </div>
-            </section>
+            </section> -->
             <hr>
             <section class="section-post-location">
                 <div class="section-title">
@@ -168,24 +161,20 @@
                 <div class="section-body">
                     <mat-form-field>
                         <mat-label>Выберете город</mat-label>
-                        <mat-select matNativeControl>
-                            <mat-option value="0" selected>Минск</mat-option>
-                            <mat-option value="1">Брест</mat-option>
-                            <mat-option value="2">Витебск</mat-option>
-                            <mat-option value="3">Гомель</mat-option>
-                            <mat-option value="4">Гродно</mat-option>
-                            <mat-option value="5">Могилёв</mat-option>
+                        <mat-select [formControl]="createPostForm.controls.location.controls.area">
+                            @for(area of areaList$ | async; track area._id) {
+                            <mat-option [value]="area._id">{{ area.name }}</mat-option>
+                            }
                         </mat-select>
                     </mat-form-field>
-                    <mat-form-field>
+                    <mat-form-field class="region">
                         <mat-label>Выберете район</mat-label>
-                        <mat-select matNativeControl>
-                            <mat-option value="0" selected>Минск</mat-option>
-                            <mat-option value="1">Брест</mat-option>
-                            <mat-option value="2">Витебск</mat-option>
-                            <mat-option value="3">Гомель</mat-option>
-                            <mat-option value="4">Гродно</mat-option>
-                            <mat-option value="5">Могилёв</mat-option>
+                        <mat-select [formControl]="createPostForm.controls.location.controls.region">
+                            @for(region of regionList$ | async; track region._id) {
+                            @if(region.parent === createPostForm.value.location?.area) {
+                            <mat-option [value]="region._id">{{ region.name }}</mat-option>
+                            }
+                            }
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -194,9 +183,10 @@
             <section class="section-final">
                 <div class="section-body">
                     <i>Публикуя объявления, вы соглашаетесь с <a routerLink="/policy">правилами</a>.</i>
-                    <app-my-button [callback]="post.bind(this)" text="Подать объявление" color="green" [hasBackground]="true"></app-my-button>
+                    <app-my-button text="Подать объявление" color="green"
+                        [hasBackground]="true" type="submit" [disabled]="!createPostForm.valid"></app-my-button>
                 </div>
             </section>
-        </div>
+        </form>
     </div>
 </div>

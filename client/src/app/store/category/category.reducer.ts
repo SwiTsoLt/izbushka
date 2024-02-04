@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import * as userActions from "./category.actions"
-import { Category } from "@model/category.model";
+import { Category } from "@models/category.model";
 
 export const categoriesNode = "categories";
 

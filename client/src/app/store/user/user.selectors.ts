@@ -1,5 +1,5 @@
 import { createSelector } from "@ngrx/store";
-import { User } from "../../model/user.model";
+import { User } from "../../models/user.model";
 
 export interface AppState {
     user: User

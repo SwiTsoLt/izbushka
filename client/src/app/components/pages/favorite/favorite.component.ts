@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Post } from '@model/post.model';
-import { PostRepository } from '@model/post.repository';
-import { StaticDataSource } from '@model/static.datasource';
+import { Post } from 'models/post.model';
+import { PostRepository } from 'models/post.repository';
+import { StaticDataSource } from 'models/static.datasource';
 import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-context-menu.component';
 import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
 import { MobileNavbarComponent } from '@MUI/mobile-navbar/mobile-navbar.component';

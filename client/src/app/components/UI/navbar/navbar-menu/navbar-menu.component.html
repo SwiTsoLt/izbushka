@@ -4,19 +4,23 @@
             <img src="../../../../../assets/UI/navbar/menu/cross.svg" alt="close-icon">
             <img src="../../../../../assets/UI/navbar/menu/cross-active.svg" alt="close-icon">
         </button>
+        @if(!(user$ | async)?._id?.length) {
+        <app-navbar-menu-link [iconSrc]="(menu$ | async)?.linkIconStaticPath + 'signin.svg'" name="Войти"
+            href="/signin"></app-navbar-menu-link>
+        }
         @for (link of (menu$ | async)?.links; track $index) {
         <app-navbar-menu-link [iconSrc]="(menu$ | async)?.linkIconStaticPath + link.iconName" [name]="link.name"
             [href]="link.href"></app-navbar-menu-link>
         }
+        @if((user$ | async)?._id?.length) {
         <button (click)="signout()" class="signout-button">
             <div class="signout-button-icon">
-                <img src="../../../../../assets/UI/navbar/menu/exit.svg"
-                    alt="Sign Out Button Icon">
-                <img src="../../../../../assets/UI/navbar/menu/exit-active.svg"
-                    alt="Sign Out Button Icon Active">
+                <img src="../../../../../assets/UI/navbar/menu/exit.svg" alt="Sign Out Button Icon">
+                <img src="../../../../../assets/UI/navbar/menu/exit-active.svg" alt="Sign Out Button Icon Active">
             </div>
             <div class="signout-name">Выход</div>
         </button>
+        }
     </div>
 </div>
 <button (click)="toggleNavbarMenuShow()" class="substrate">&nbsp;</button>

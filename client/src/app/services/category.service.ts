@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpService } from "./http.service";
-import { Category } from "@model/category.model";
+import { Category } from "@models/category.model";
 import { Observable, map } from "rxjs";
 import { HttpResponse } from "@angular/common/http";
 

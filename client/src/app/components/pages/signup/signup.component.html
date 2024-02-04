@@ -1,7 +1,7 @@
 <div class="auth">
     <img src="../../../../assets/pages/login/login-bg.jpg" loading="lazy" alt="login image">
     <div class="form__container">
-        <div class="logo">
+        <a routerLink="/" class="logo">
             <svg>
                 <defs>
                     <clipPath id="clip">
@@ -12,25 +12,25 @@
             </svg>
             <div class="roof"></div>
             <h1>Iзбушка</h1>
-        </div>
+        </a>
         <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
             <input [formControl]="signUpForm.controls.email" type="email" name="email" class="my-input-green"
-                placeholder="Email или номер телефона">
-            <input [formControl]="signUpForm.controls.first_name" type="text" name="first_name" class="my-input-green" placeholder="Имя">
-            <input [formControl]="signUpForm.controls.last_name" type="text" name="last_name" class="my-input-green"
-                placeholder="Фамилия">
+                placeholder="Email или номер телефона" autocomplete="email">
+            <input [formControl]="signUpForm.controls.first_name" type="text" name="firstname" class="my-input-green" placeholder="Имя" autocomplete="name">
+            <input [formControl]="signUpForm.controls.last_name" type="text" name="lastname" class="my-input-green"
+                placeholder="Фамилия" autocomplete="family-name">
             <mat-form-field>
                 <mat-label>Выберете город</mat-label>
-                <mat-select [formControl]="signUpForm.controls.location.controls.area">
-                    @for(area of areaList$ | async; track $index) {
+                <mat-select [formControl]="signUpForm.controls.location.controls.area" [value]="(areaList$ | async)?.length && $any(areaList$ | async)[0]._id">
+                    @for(area of areaList$ | async; track area._id) {
                         <mat-option [value]="area._id">{{ area.name }}</mat-option>
                     }
                 </mat-select>
             </mat-form-field>
-            <mat-form-field>
+            <mat-form-field class="region">
                 <mat-label>Выберете район</mat-label>
-                <mat-select [formControl]="signUpForm.controls.location.controls.region">
-                    @for(region of regionList$ | async; track $index) {
+                <mat-select [formControl]="signUpForm.controls.location.controls.region" [value]="(regionList$ | async)?.length && $any(regionList$ | async)[0]._id">
+                    @for(region of regionList$ | async; track region._id) {
                         @if(region.parent === signUpForm.value.location?.area) {
                             <mat-option [value]="region._id">{{ region.name }}</mat-option>
                         }
@@ -38,16 +38,16 @@
                 </mat-select>
             </mat-form-field>
             <input [formControl]="signUpForm.controls.password" name="password" (input)="checkIsPasswordsEqual()" type="password"
-                class="my-input-green" placeholder="Придумайте пароль">
-            <input [formControl]="signUpForm.controls.confirm_password" name="password" (input)="checkIsPasswordsEqual()" type="password"
-                class="my-input-green" placeholder="Подтвердите пароль">
+                class="my-input-green password" placeholder="Придумайте пароль" autocomplete="on">
+            <input [formControl]="signUpForm.controls.confirm_password" name="password_confirm" (input)="checkIsPasswordsEqual()" type="password"
+                class="my-input-green" placeholder="Подтвердите пароль" autocomplete="new-password">
             <div class="policy">
                 Регистрируясь, вы принимаете наши условия
                 <a routerLink="/policy">Политику конфиденциальности</a> и
                 <a routerLink="/policy">Политику в отношении файлов cookie</a>.
             </div>
             <app-my-button text="Регистрация" color="green" [hasBackground]="true"
-                [disabled]="!signUpForm.valid || !isPasswordsEqual"></app-my-button>
+                [disabled]="!signUpForm.valid || !isPasswordsEqual" type="submit"></app-my-button>
             <span>
                 <hr>
                 <span>ИЛИ</span>

@@ -1,18 +1,27 @@
 import { NavbarComponent } from '@UI/navbar/navbar.component';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { Category } from '@model/category.model';
+import { Component, OnInit } from '@angular/core';
+import { Category } from 'models/category.model';
 import { MatSelectModule } from '@angular/material/select';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { RouterModule } from '@angular/router';
 import { MyButtonComponent } from '@UI/my-button/my-button.component';
 import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
 import { MobileNavbarComponent } from '@MUI/mobile-navbar/mobile-navbar.component';
 import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-context-menu.component';
-
+import { Observable } from 'rxjs';
+import { LocationArea, LocationRegion } from 'models/location.model';
+import { Store } from '@ngrx/store';
+import { selectLocationArea, selectLocationRegion } from '@store/location/location.selectors';
+import { PostForm, PostLocationFormGroup } from 'models/post.model';
+import { selectCategories } from '@store/category/category.selectors';
+import { PostService } from '@services/post.service';
+import { CreatePostDTO } from '@dtos/post.dto';
+import { User } from '@models/user.model';
+import { selectUser } from '@store/user/user.selectors';
 @Component({
   selector: 'app-create-post',
   standalone: true,
@@ -30,47 +39,102 @@ import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-cont
     MyButtonComponent,
     MobileMenuComponent,
     MobileNavbarComponent,
-    MobileContextMenuComponent
+    MobileContextMenuComponent,
   ],
   templateUrl: './create-post.component.html',
   styleUrl: './create-post.component.scss'
 })
-export class CreatePostComponent {
+export class CreatePostComponent implements OnInit {
+
+  constructor(
+    private readonly store: Store,
+    private readonly postService: PostService,
+  ) { }
+
+  ngOnInit(): void {
+    this.user$.subscribe((user: User) => {
+      if (user?._id?.length) {
+        this.createPostForm.controls.location.controls.area.setValue(user.location.area)
+        this.createPostForm.controls.location.controls.region.setValue(user.location.region)
+      }
+    })
+
+    this.categoryList$.subscribe((categoryList: Category[]) => {
+      if (!categoryList.length) return;
+      const rootCategoryList = categoryList.filter(c => !c.parent)
+      this.setRootCategory(rootCategoryList[0]._id);
+    })
+  }
+
+  public user$: Observable<User> = this.store.select(selectUser as never);
+  public areaList$: Observable<LocationArea[]> = this.store.select(selectLocationArea as never);
+  public regionList$: Observable<LocationRegion[]> = this.store.select(selectLocationRegion as never);
+
+  public categoryList$: Observable<Category[]> = this.store.select(selectCategories as never)
 
   public imagesPreview: string[] = [];
   public isDragStart: boolean = false;
-
-  public selectedCategoryId: string = '0';
-  public selectedSubCategoryId: string = '0';
-
   public isPriceFree: boolean = false;
 
-  public categoryList: Category[] = [
-    {
-      _id: '0', name: 'Строительный инструмент', children: [
-        { children: [], _id: '01', parent: '0', name: 'Бензо и электрорезы' },
-        { children: [], _id: '02', parent: '0', name: 'Дрели' },
-        { children: [], _id: '03', parent: '0', name: 'Измерительный инструмент' },
-        { children: [], _id: '04', parent: '0', name: 'Ключи, отвёртки' },
-        { children: [], _id: '05', parent: '0', name: 'Краскораспылители, краскопульты' },
-        { children: [], _id: '06', parent: '0', name: 'Кусачки, плоскогубцы, пассатижи' },
-        { children: [], _id: '07', parent: '0', name: 'Лобзики' },
-        { children: [], _id: '08', parent: '0', name: 'Миксеры строительные' },
-        { children: [], _id: '09', parent: '0', name: 'Наборы инструментов' },
-        { children: [], _id: '010', parent: '0', name: 'Ножницы по металлу' },
-      ]
-    },
-    { _id: '1', name: 'Строительное оборудование', children: [] },
-    { _id: '2', name: 'Стройматериалы', children: [] },
-    { _id: '3', name: 'Дома, срубы и сооружения', children: [] },
-    { _id: '4', name: 'Сантехника и отопление', children: [] },
-    { _id: '5', name: 'Отделочные материалы', children: [] },
-    { _id: '6', name: 'Окна и двери', children: [] },
-    { _id: '7', name: 'Ворота, заборы', children: [] },
-    { _id: '8', name: 'Электроснабжение', children: [] },
-    { _id: '9', name: 'Средства индивидуальной защиты', children: [] },
-    { _id: '10', name: 'Прочее для ремонта и стройки', children: [] },
-  ]
+  public createPostForm: FormGroup<PostForm> = new FormGroup<PostForm>({
+    title: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [
+        Validators.required,
+      ],
+    }),
+    body: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [
+        Validators.required,
+        Validators.minLength(20),
+      ],
+    }),
+    price: new FormControl<number | null>(null, {
+      nonNullable: false,
+      validators: [
+        Validators.min(0),
+        Validators.maxLength(6),
+      ],
+    }),
+    category: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [
+        Validators.required,
+      ],
+    }),
+    location: new FormGroup<PostLocationFormGroup>({
+      area: new FormControl<string>('', {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+        ]
+      }),
+      region: new FormControl<string>('', {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+        ]
+      })
+    }),
+    images: new FormControl<FileList>(new DataTransfer().files, {
+      nonNullable: true,
+      validators: [
+        Validators.required,
+        Validators.minLength(1),
+      ],
+    })
+  })
+
+  // Category
+
+  public rootCategory: string = '';
+
+  public setRootCategory(id: string): void {
+    this.rootCategory = id;
+  }
+
+  // Images
 
   public isDragStartSet(state: boolean): void {
     this.isDragStart = state
@@ -85,6 +149,8 @@ export class CreatePostComponent {
 
     if (!files) return;
 
+    this.createPostForm.controls.images.setValue(files);
+
     for (let i = 0; i < files?.length; i++) {
       const file: File = files[i];
       const url = URL.createObjectURL(file);
@@ -94,26 +160,53 @@ export class CreatePostComponent {
 
   public removeImage(index: number): void {
     this.imagesPreview = this.imagesPreview.filter((_, i) => i !== index);
-  }
+    const files: FileList | null | undefined = this.createPostForm.value.images;
+    if (!files?.length) return;
 
-  public get subcategoryList(): Category[] {
-    const selectedCategory = this.categoryList.find(cat => cat._id === this.selectedCategoryId);
-    if (!selectedCategory) return [];
-    return selectedCategory.children;
-  }
+    const fileArr = Array.from(files);
+    fileArr.splice(index, 1);
+    
+    const dt = new DataTransfer()
+    fileArr.forEach((file) => dt.items.add(file));
 
-  public setCategory(id: string): void {
-    this.selectedCategoryId = id;
-  }
-
-  public setSubCategory(id: string): void {
-    this.selectedSubCategoryId = id;
+    this.createPostForm.controls.images.setValue(dt.files);
   }
 
   public setIsPriceFree(state: boolean): void {
     this.isPriceFree = state;
   }
 
-  public post(): void {
+  public onSubmit(): void {    
+    const rawCreatePostForm: CreatePostDTO = {
+      ...this.createPostForm.value,
+      location: this.createPostForm.value.location?.region ?? '',
+    }
+
+    const createPostFormData: FormData = new FormData()
+    
+    !!rawCreatePostForm.title && createPostFormData.append('title', rawCreatePostForm.title)
+    !!rawCreatePostForm.body && createPostFormData.append('body', rawCreatePostForm.body)
+    !!rawCreatePostForm.price && createPostFormData.append('price', rawCreatePostForm.price.toString())
+    !!rawCreatePostForm.category && createPostFormData.append('category', rawCreatePostForm.category)
+    !!rawCreatePostForm.location && createPostFormData.append('location', rawCreatePostForm.location)
+
+    if (rawCreatePostForm.images?.length) {
+      for (let i = 0; i < rawCreatePostForm.images.length; i++) {
+        const file: File | null = rawCreatePostForm.images.item(i);
+        if (!file) continue;
+        createPostFormData.append('files', file);
+      }
+    }
+    this.postService.createPost(createPostFormData).subscribe(data => {
+      console.log(data);
+    })
+  }
+
+  public checkFieldValid(element: HTMLElement): void {
+    if (element.classList.contains('ng-invalid')) {
+      element.classList.add('invalid');
+    } else {
+      element.classList.remove('invalid');
+    }
   }
 }

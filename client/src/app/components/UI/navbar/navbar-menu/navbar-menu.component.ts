@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { resetUser } from '../../../../store/user/user.actions';
 import { Observable, of } from 'rxjs';
-import { User } from '../../../../model/user.model';
+import { User } from '../../../../models/user.model';
 import { selectUser } from '../../../../store/user/user.selectors';
 
 interface IMenuLink {
@@ -29,7 +29,7 @@ export class NavbarMenuComponent {
   @Input() isShow: boolean = false;
   @Input() toggleNavbarMenuShow: () => void = () => { };
 
-  private readonly user$: Observable<User> = this.store.select(selectUser as never)
+  public readonly user$: Observable<User> = this.store.select(selectUser as never)
 
   public menu$: Observable<Menu> = of({
     linkIconStaticPath: '../../../../../assets/UI/navbar/menu/',
@@ -44,7 +44,7 @@ export class NavbarMenuComponent {
 
   constructor(private readonly store: Store) {
     this.user$.subscribe((user: User | null) => {
-      if (user) {
+      if (user?._id?.length) {
         this.menu$ = of({
           linkIconStaticPath: '../../../../../assets/UI/navbar/menu/',
           links: [

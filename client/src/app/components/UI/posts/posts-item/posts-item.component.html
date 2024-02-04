@@ -2,7 +2,7 @@
 <div class="post">
     <div class="post-image">
         <img [src]="post.images.length && post.images[0]"
-        onerror="this.src='../../../assets/pages/home/post-image-error.png'" loading="lazy" alt="post image">
+        onerror="this.src='../../../assets/pages/home/post-image-error.png'" alt="post image">
     </div>
     <div class="info">
         <h6>
@@ -10,7 +10,11 @@
         </h6>
         <p>
             <span class="owner">
-                {{ (user$ | async)?.first_name }}, {{ (user$ | async)?.location?.area?.name }}, {{ (user$ | async)?.location?.region?.name }}
+                {{ (user$ | async)?.first_name }},
+                &nbsp;
+                {{ (getAreaById((user$ | async)?.location?.area ?? '') | async)?.name }},
+                &nbsp;
+                {{ (getRegionById((user$ | async)?.location?.region ?? '') | async)?.name }}
             </span>
             <span class="date number">
                 {{ post.publishDate | date:"d LLL, H:mm" }}

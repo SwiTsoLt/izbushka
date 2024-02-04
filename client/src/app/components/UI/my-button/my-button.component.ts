@@ -16,6 +16,7 @@ function foo() {
 })
 export class MyButtonComponent {
   @Input() text = '';
+  @Input() type = '';
   @Input() color: MyButtonColor = 'green';
   @Input() hasBackground: boolean = false;
   @Input() disabled: boolean = false;

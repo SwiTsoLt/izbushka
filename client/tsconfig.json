@@ -22,14 +22,15 @@
     "useDefineForClassFields": false,
     "lib": [
       "ES2022",
-      "dom"
+      "dom",
+      "dom.iterable"
     ],
     "paths": {
       "@pages/*": ["./components/pages/*"],
       "@UI/*": ["./components/UI/*"],
       "@MUI/*": ["./components/MUI/*"],
       "@dtos/*": ["./dtos/*"],
-      "@model/*": ["./model/*"],
+      "@models/*": ["./models/*"],
       "@services/*": ["./services/*"],
       "@store/*": ["./store/*"],
     }

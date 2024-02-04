@@ -1,4 +1,4 @@
-import { Category } from "@model/category.model";
+import { Category } from "@models/category.model";
 import { createSelector } from "@ngrx/store";
 
 export interface AppState {

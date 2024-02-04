@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { User } from '../model/user.model';
+import { User } from '../models/user.model';
 import { HttpService } from './http.service';
 import { HttpResponse } from '@angular/common/http';
 
@@ -17,13 +17,8 @@ export class UserService {
     );
   }
 
-  public getUserByJWT(access_token: string): Observable<User | null> {
-    const options = {
-      'headers': {
-        'Authorization': 'Bearer ' + access_token
-      }
-    }
-    return this.httpService.get<User>(`/api/user/jwt`, options).pipe(
+  public getUserByJWT(): Observable<User | null> {
+    return this.httpService.get<User>(`/api/user/jwt`).pipe(
       map((response: HttpResponse<User | null>) => response.body)
     )
   }

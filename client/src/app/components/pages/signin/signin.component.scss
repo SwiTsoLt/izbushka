@@ -24,14 +24,14 @@
         min-height: inherit;
         padding: 0 $p-m;
 
-        .logo {
+        a.logo {
             position: relative;
             left: 0;
-            top: 0;
+            top: 50px;
             width: 100%;
-            height: 100px;
-            pointer-events: none;
+            height: fit-content;
             user-select: none;
+            cursor: pointer;
 
             svg {
                 position: absolute;
@@ -61,6 +61,7 @@
                 transform: translateX(-50%);
                 font-family: "MiamaNueva", serif;
                 font-size: 48px;
+                color: $main-black;
                 z-index: 1;
 
                 &::before {
@@ -86,10 +87,11 @@
             height: fit-content;
             max-width: 400px;
             font-size: $fs-m;
+            margin-top: 150px;
 
-            mat-form-field > div:last-child {
-                display: none;
-            }
+            mat-form-field.region, input.password {
+                margin-top: -$p-m;
+            } 
 
             app-my-button {
                 width: 100%;

@@ -5,7 +5,7 @@
         </div>
         <div class="info">
             <div class="name">{{ user.last_name }} {{ user.first_name }}</div>
-            <div class="location">Минск, Заводской</div>
+            <div class="location">{{ (location$ | async)?.area?.name }}, {{ (location$ | async)?.region?.name }}</div>
             <div class="rating">
                 <div class="rating-count">Рейтинг: <span>{{ user.rating || '?' }}</span></div>
                 <div class="rating-stars">
@@ -20,7 +20,7 @@
                 <div class="reviews-count">Отзывов: <span>0</span></div>
             </div>
             
-            @if(!isMe) {
+            @if(user._id !== (current_user$ | async)?._id) {
                 <div class="chat-link">
                     <a routerLink="/chat/{{user._id}}">Написать</a>
                 </div>

@@ -1,7 +1,7 @@
 <div class="auth">
     <img src="../../../../assets/pages/login/login-bg.jpg" loading="lazy" alt="login image">
     <div class="form__container">
-        <div class="logo">
+        <a routerLink="/" class="logo">
             <svg>
                 <defs>
                      <clipPath id="clip">
@@ -11,12 +11,12 @@
             </svg>
             <div class="roof"></div>
             <h1>Iзбушка</h1>
-        </div>
+        </a>
         <form (ngSubmit)="onSubmit()" [formGroup]="signInForm">
-            <input formControlName="email" type="email" name="email" class="my-input-green" placeholder="Email или номер телефона">
-            <input formControlName="password" type="password" name="password" class="my-input-green" placeholder="Пароль">
+            <input formControlName="email" type="email" name="email" class="my-input-green" placeholder="Email" autocomplete="email">
+            <input formControlName="password" type="password" name="password" class="my-input-green" placeholder="Пароль" autocomplete="current-password">
             <a routerLink="/password-recovery">Забыли пароль?</a>
-            <app-my-button text="Вход" color="green" [hasBackground]="true" [disabled]="!signInForm.valid"></app-my-button>
+            <app-my-button text="Вход" type="submit" color="green" [hasBackground]="true" [disabled]="!signInForm.valid"></app-my-button>
             <span>
                 <hr>
                 <span>ИЛИ</span>

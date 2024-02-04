@@ -17,14 +17,7 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {
-      "@pages/*": ["./client/src/app/components/pages/*"],
-      "@UI/*": ["./client/src/app/components/UI/*"],
-      "@MUI/*": ["./client/src/app/components/MUI/*"],
-      "@dtos/*": ["./client/src/app/dtos/*"],
-      "@model/*": ["./client/src/app/model/*"],
-      "@services/*": ["./client/src/app/services/*"],
-      "@store/*": ["./client/src/app/store/*"],
-    },
+    "resolveJsonModule": true,
   },
+  "exclude": ["client"]
 }

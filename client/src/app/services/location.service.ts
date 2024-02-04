@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpService } from "./http.service";
-import { LocationArea, LocationRegion } from "@model/location.model";
+import { LocationArea, LocationRegion } from "@models/location.model";
 import { Observable, map, zip } from "rxjs";
 import { HttpResponse } from "@angular/common/http";
 

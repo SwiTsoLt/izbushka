@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Observable, forkJoin, map, of, take } from 'rxjs';
 import { UserService } from '@services/user.service';
-import { User } from '@model/user.model';
+import { User } from '@models/user.model';
 import { CommonModule } from '@angular/common';
 import { UserCardComponent } from '@UI/user-card/user-card.component';
 import { NavbarComponent } from '@UI/navbar/navbar.component';

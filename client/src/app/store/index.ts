@@ -1,9 +1,9 @@
 import { ActionReducerMap, MetaReducer } from "@ngrx/store";
 import { isDevMode } from "@angular/core";
-import { User } from "@model/user.model";
+import { User } from "@models/user.model";
 import { categoriesNode, categoryReducer } from "./category/category.reducer";
 import { userNode, userReducer } from "./user/user.reducer";
-import { Category } from "@model/category.model";
+import { Category } from "@models/category.model";
 import { UserEffects } from "./user/user.effects";
 import { CategoryEffects } from "./category/category.effects";
 import { locationNode, locationReducer } from "./location/location.reducer";

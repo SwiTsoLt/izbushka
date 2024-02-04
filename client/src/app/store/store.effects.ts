@@ -13,16 +13,14 @@ export class StoreEffects {
         private readonly actions$: Actions
     ) { }
 
-    public getOptions$ = createEffect(() => { return this.actions$.pipe(
-        ofType(StoreActionEnum.getOption),
-        mergeMap(() => {
-            const access_token = window.localStorage.getItem('access_token') ?? '';
-
-            return [
-                getUserByAccessToken({ access_token }),
+    public getOptions$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(StoreActionEnum.getOption),
+            mergeMap(() => [
+                getUserByAccessToken(),
                 getAllCategories(),
                 getAllLocations()
-            ]
-        })
-    ) })
+            ])
+        )
+    })
 }

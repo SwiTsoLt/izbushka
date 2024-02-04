@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { User } from '@model/user.model';
+import { User } from 'models/user.model';
 import * as fromUser from '@store/user/user.selectors';
 import { MyButtonComponent } from '@UI/my-button/my-button.component';
 import { UserCardComponent } from '@UI/user-card/user-card.component';

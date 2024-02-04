@@ -7,7 +7,7 @@ import { NavbarMenuComponent } from './navbar-menu/navbar-menu.component';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { User } from '@model/user.model';
+import { User } from 'models/user.model';
 import { selectUser } from '@store/user/user.selectors';
 import { CommonModule } from '@angular/common';
 

@@ -246,6 +246,10 @@ button {
         caret-color: $main-black;
     }
 
+    &.invalid {
+        border-color: $main-red;
+    }
+
     &:focus {
         border-color: $main-beige-1;
     }

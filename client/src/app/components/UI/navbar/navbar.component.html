@@ -22,7 +22,7 @@
             <app-search-button color="white"></app-search-button>
         </div>
         <div class="create-post">
-            @if($any(user$ | async)._id) {
+            @if((user$ | async)?._id?.length) {
                 <app-my-button text="Подать объявление" [callback]="redirectToCreatePost.bind(this)" color="white" [hasBackground]="true"></app-my-button>
             } @else {
                 <app-my-button text="Войти" [callback]="redirectToSignIn.bind(this)" color="white" [hasBackground]="true"></app-my-button>

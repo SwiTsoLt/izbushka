@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { User } from '@model/user.model';
+import { User } from 'models/user.model';
 import { Store } from '@ngrx/store';
 import { resetUser } from '@store/user/user.actions';
 import { selectUser } from '@store/user/user.selectors';

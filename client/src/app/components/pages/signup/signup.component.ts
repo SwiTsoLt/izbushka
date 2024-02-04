@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { MyButtonComponent } from '@UI/my-button/my-button.component';
 import { Router, RouterModule } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SignUpForm } from '@dtos/auth.dto';
 import { UserService } from '@services/user.service';
 import { getUserByAccessToken } from '@store/user/user.actions';
 import { Store } from '@ngrx/store';
@@ -10,10 +9,12 @@ import { AuthService } from '@services/auth.service';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { LocationArea, LocationRegion } from '@model/location.model';
+import { LocationArea, LocationRegion } from 'models/location.model';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { selectLocationArea, selectLocationRegion } from '@store/location/location.selectors';
+import { SignUpForm, SignUpLocationFromGroup } from 'models/auth.model';
+import { SignUpDTO } from '@dtos/auth.dto';
 
 @Component({
   selector: 'app-registration',
@@ -36,40 +37,40 @@ export class SignUpComponent {
 
   public isPasswordsEqual: boolean = false;
 
-  public signUpForm: FormGroup<SignUpForm> = new FormGroup({
-    email: new FormControl('', {
+  public signUpForm: FormGroup<SignUpForm> = new FormGroup<SignUpForm>({
+    email: new FormControl<string>('', {
       nonNullable: true,
       validators: [
         Validators.required,
         Validators.email
       ]
     }),
-    first_name: new FormControl('', {
+    first_name: new FormControl<string>('', {
       nonNullable: true,
       validators: [
         Validators.required,
         Validators.minLength(1)
       ]
     }),
-    last_name: new FormControl('', {
+    last_name: new FormControl<string>('', {
       nonNullable: true,
       validators: [
         Validators.required,
         Validators.minLength(1)
       ]
     }),
-    location: new FormGroup({
+    location: new FormGroup<SignUpLocationFromGroup>({
       area: new FormControl('', { nonNullable: true }),
       region: new FormControl('', { nonNullable: true }),
     }),
-    password: new FormControl('', {
+    password: new FormControl<string>('', {
       nonNullable: true,
       validators: [
         Validators.required,
         Validators.minLength(6)
       ]
     }),
-    confirm_password: new FormControl('', {
+    confirm_password: new FormControl<string>('', {
       nonNullable: true,
       validators: [
         Validators.required,
@@ -85,10 +86,14 @@ export class SignUpComponent {
   }
 
   public onSubmit(): void {
-    this.authService.signUp(this.signUpForm.value).subscribe(data => {
+    const rawSingUpForm: SignUpDTO = {
+      ...this.signUpForm.value,
+      location: this.signUpForm.value.location?.region
+    }
+    this.authService.signUp(rawSingUpForm).subscribe(data => {
       if (data && data.access_token) {
         window.localStorage.setItem('access_token', data.access_token ?? '');
-        this.store.dispatch(getUserByAccessToken({ access_token: data.access_token }))
+        this.store.dispatch(getUserByAccessToken())
         this.router.navigate(['/home']);
       }
     })
