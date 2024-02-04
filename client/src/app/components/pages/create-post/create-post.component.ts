@@ -7,7 +7,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MyButtonComponent } from '@UI/my-button/my-button.component';
 import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
 import { MobileNavbarComponent } from '@MUI/mobile-navbar/mobile-navbar.component';
@@ -49,6 +49,7 @@ export class CreatePostComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private readonly postService: PostService,
+    private readonly router: Router
   ) { }
 
   ngOnInit(): void {
@@ -199,6 +200,7 @@ export class CreatePostComponent implements OnInit {
     }
     this.postService.createPost(createPostFormData).subscribe(data => {
       console.log(data);
+      this.router.navigate(['/home']);
     })
   }
 
