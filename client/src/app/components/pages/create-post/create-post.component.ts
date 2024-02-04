@@ -55,8 +55,8 @@ export class CreatePostComponent implements OnInit {
   ngOnInit(): void {
     this.user$.subscribe((user: User) => {
       if (user?._id?.length) {
-        this.createPostForm.controls.location.controls.area.setValue(user.location.area)
-        this.createPostForm.controls.location.controls.region.setValue(user.location.region)
+        this.createPostForm.controls.location.controls.area.setValue(user.location.area ?? '')
+        this.createPostForm.controls.location.controls.region.setValue(user.location.region ?? '')
       }
     })
 
@@ -178,10 +178,7 @@ export class CreatePostComponent implements OnInit {
   }
 
   public onSubmit(): void {    
-    const rawCreatePostForm: CreatePostDTO = {
-      ...this.createPostForm.value,
-      location: this.createPostForm.value.location?.region ?? '',
-    }
+    const rawCreatePostForm: CreatePostDTO = this.createPostForm.value
 
     const createPostFormData: FormData = new FormData()
     
@@ -189,7 +186,7 @@ export class CreatePostComponent implements OnInit {
     !!rawCreatePostForm.body && createPostFormData.append('body', rawCreatePostForm.body)
     !!rawCreatePostForm.price && createPostFormData.append('price', rawCreatePostForm.price.toString())
     !!rawCreatePostForm.category && createPostFormData.append('category', rawCreatePostForm.category)
-    !!rawCreatePostForm.location && createPostFormData.append('location', rawCreatePostForm.location)
+    !!rawCreatePostForm.location && createPostFormData.append('location', JSON.stringify(rawCreatePostForm.location))
 
     if (rawCreatePostForm.images?.length) {
       for (let i = 0; i < rawCreatePostForm.images.length; i++) {

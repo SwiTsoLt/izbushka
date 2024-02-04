@@ -41,7 +41,7 @@ export class CategoryService {
     if (postCategoryDTO.parent) {
       await this.errorHandlerService.handleError<Category>(
         this.categoryModel.findByIdAndUpdate(postCategoryDTO.parent, {
-          $push: { children: newCategory._id },
+          $push: { children: new Types.ObjectId(newCategory._id) },
         }),
       );
     }

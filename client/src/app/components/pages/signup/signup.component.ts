@@ -86,10 +86,7 @@ export class SignUpComponent {
   }
 
   public onSubmit(): void {
-    const rawSingUpForm: SignUpDTO = {
-      ...this.signUpForm.value,
-      location: this.signUpForm.value.location?.region
-    }
+    const rawSingUpForm: SignUpDTO = this.signUpForm.value
     this.authService.signUp(rawSingUpForm).subscribe(data => {
       if (data && data.access_token) {
         window.localStorage.setItem('access_token', data.access_token ?? '');

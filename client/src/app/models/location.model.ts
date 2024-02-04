@@ -23,7 +23,7 @@ export class Location {
 
 export class ShortLocation {
     constructor(
-        public area: string,
-        public region: string,
+        public area?: string,
+        public region?: string,
     ) {}
 }

@@ -1,5 +1,7 @@
 // SignIn
 
+import { ShortLocation } from "@models/location.model";
+
 export class SignInDTO {
     constructor(
         public email?: string,
@@ -20,7 +22,7 @@ export class SignUpDTO {
         public email?: string,
         public first_name?: string,
         public last_name?: string,
-        public location?: string,
+        public location?: ShortLocation,
         public password?: string,
         public confirm_password?: string
     ) { }

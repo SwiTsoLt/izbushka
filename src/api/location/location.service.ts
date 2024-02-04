@@ -95,7 +95,7 @@ export class LocationService {
 
     await this.errorHandlerService.handleError<Area>(
       this.areaModel.findByIdAndUpdate(postRegionDTO.parent, {
-        $push: { children: newRegion._id },
+        $push: { children: new Types.ObjectId(newRegion._id) },
       }),
     );
 
@@ -122,7 +122,7 @@ export class LocationService {
 
     await this.errorHandlerService.handleError<Area>(
       this.areaModel.findByIdAndUpdate(deletedRegion.parent, {
-        $pull: { children: { $elemMatch: { _id: id } } },
+        $pull: { children: { $elemMatch: { _id: new Types.ObjectId(id) } } },
       }),
     );
 
