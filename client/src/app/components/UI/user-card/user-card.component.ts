@@ -37,7 +37,6 @@ export class UserCardComponent implements OnInit {
           return { area: userArea, region: userRegion }
         })
       ).subscribe(location => {
-        console.log(location);
         this.location$ = of(location)
       })
   }

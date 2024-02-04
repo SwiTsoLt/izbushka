@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, map, shareReplay, takeLast, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,9 @@ export class HttpService {
   public get<T>(url: string, options: Record<string, unknown> = {}): Observable<HttpResponse<T | null>> {
     return this.httpClient.get<T>(url, this.normalizeOptions(options))
       .pipe(
+        takeLast(1),
         map(this.handleUpdateAccessToken),
+        shareReplay(1),
         catchError(this.handleError)
       );
   }
@@ -20,7 +22,9 @@ export class HttpService {
   public post<T>(url: string, data: unknown, options = {}): Observable<HttpResponse<T | null>> {
     return this.httpClient.post<T | null>(url, data ?? {}, this.normalizeOptions(options))
       .pipe(
+        takeLast(1),
         map(this.handleUpdateAccessToken),
+        shareReplay(1),
         catchError(this.handleError)
       )
   }

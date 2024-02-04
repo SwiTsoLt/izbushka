@@ -11,7 +11,7 @@ export class UserRepository {
     constructor(
         private readonly dataSource: StaticDataSource,
         private readonly userService: UserService
-        ) {}
+    ) { }
 
     public getUsers(): Observable<User[]> {
         return this.dataSource.getUsers()

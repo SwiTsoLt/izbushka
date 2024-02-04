@@ -36,9 +36,5 @@ export class HomeComponent {
 
   constructor(
     public postRepository: PostRepository,
-  ) {
-    this.posts$.subscribe(posts => {
-      console.log(posts);
-    })
-  }
+  ) {}
 }

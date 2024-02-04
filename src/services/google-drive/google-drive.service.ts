@@ -48,16 +48,7 @@ export class GoogleDriveService {
     return link;
   }
 
-  private async generatePublicLink(id: string): Promise<string | null> {
-    try {
-      const response = await this.drive.files.get({
-        fileId: id,
-        fields: 'webContentLink',
-      });
-      return response.data.webContentLink;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
+  private async generatePublicLink(id: string): Promise<string> {
+    return `https://lh3.google.com/u/0/d/${id}`;
   }
 }

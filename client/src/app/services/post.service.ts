@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpService } from "./http.service";
 import { Post } from "@models/post.model";
-import { Observable, map } from "rxjs";
+import { Observable, map, takeLast } from "rxjs";
 import { HttpResponse } from "@angular/common/http";
 
 @Injectable({
@@ -13,6 +13,7 @@ export class PostService {
 
   public getPage(page: number): Observable<Post[]> {
     return this.httpService.get<Post[]>(`/api/post?page=${page}`).pipe(
+      takeLast(1),
       map((response: HttpResponse<Post[] | null>) => {
         if (!response.body) return [];
         return response.body;
@@ -25,6 +26,7 @@ export class PostService {
     return this.httpService.post<Post | null>('/api/post', createPostDTO, {
       reportProgress: true,
     }).pipe(
+      takeLast(1),
       map((response: HttpResponse<Post | null>) => response.body)
     )
   }

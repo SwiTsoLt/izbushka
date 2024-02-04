@@ -15,9 +15,15 @@ export class UserEffects {
     getUserByAccessToken$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(UserActionsEnum.getUserByAccessToken),
-            exhaustMap(() => this.userService.getUserByJWT().pipe(
-                map<User | null, { type: string, user: User | null }>((user: User | null) => ({ type: UserActionsEnum.getUserByAccessTokenSuccess, user }))
-            )),
+            exhaustMap(() => {
+                if (!window.localStorage.getItem('access_token'))
+                    return of({ type: UserActionsEnum.getUserByAccessTokenError });
+
+                return this.userService.getUserByJWT().pipe(
+                    map<User | null, { type: string, user: User | null }>((user: User | null) =>
+                        ({ type: UserActionsEnum.getUserByAccessTokenSuccess, user })
+                    ))
+            }),
             catchError(() => of({ type: UserActionsEnum.getUserByAccessTokenError }))
         )
     })

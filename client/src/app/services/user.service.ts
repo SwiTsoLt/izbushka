@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, takeLast } from 'rxjs';
 import { User } from '../models/user.model';
 import { HttpService } from './http.service';
 import { HttpResponse } from '@angular/common/http';
@@ -13,12 +13,16 @@ export class UserService {
 
   public getUserById(id: string): Observable<User | null> {
     return this.httpService.get<User>(`/api/user/${id}`).pipe(
-      map((response: HttpResponse<User | null>) => response.body)
+      takeLast(1),
+      map((response: HttpResponse<User | null>) => {
+        return response.body
+      })
     );
   }
 
   public getUserByJWT(): Observable<User | null> {
     return this.httpService.get<User>(`/api/user/jwt`).pipe(
+      takeLast(1),
       map((response: HttpResponse<User | null>) => response.body)
     )
   }

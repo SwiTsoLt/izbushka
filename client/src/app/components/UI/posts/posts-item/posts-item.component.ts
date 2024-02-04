@@ -31,10 +31,8 @@ export class PostsItemComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.post);
     if (!this.post?.owner) return;
     this.user$ = this.getUserById(this.post.owner);
-    this.user$.subscribe(console.log)
   }
 
   public getUserById(id: string): Observable<User | null> {
