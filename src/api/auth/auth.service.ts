@@ -12,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { JWTPayload } from '../../models/jwt.model';
 import { JwtService } from '@nestjs/jwt';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
+import { rolesEnum } from '../../interfaces/roles/roles.interface';
 
 @Injectable()
 export class AuthService {
@@ -50,7 +51,7 @@ export class AuthService {
         region: new Types.ObjectId(signUpDTO.location.region),
       },
       password: passwordHash,
-      roles: ['USER'],
+      roles: [rolesEnum.user],
       posts: [],
       registration_date: Date.now(),
     });

@@ -18,6 +18,7 @@ import { CreatePostDTO, UpdatePostDTO } from '../../dtos/post.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { MultiSharpPipe } from '../../pipes/multisharp.pipe';
 import { IMultiSharpResult } from '../../pipes/multisharp.pipe';
+import { Auth } from '../../decorators/auth/auth.decorator';
 
 @Controller('/api/post')
 export class PostController {
@@ -38,6 +39,7 @@ export class PostController {
   // Post
 
   @Post()
+  @Auth()
   @UseInterceptors(AnyFilesInterceptor())
   public async post(
     @Headers('Authorization') auth: string,
@@ -50,6 +52,7 @@ export class PostController {
   // Patch
 
   @Patch('/:id')
+  @Auth()
   public async update(
     @Param('id') id: Types.ObjectId,
     @Body() updatePostDTO: UpdatePostDTO,
@@ -60,6 +63,7 @@ export class PostController {
   // Delete
 
   @Delete('/:id')
+  @Auth()
   public async delete(@Param('id') id: Types.ObjectId): Promise<MyPost> {
     return this.postService.delete(id);
   }

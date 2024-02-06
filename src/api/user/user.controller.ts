@@ -13,6 +13,8 @@ import { User } from '../../schemas/user.schema';
 import { Response } from 'express';
 import { Types } from 'mongoose';
 import { UpdateUserDTO } from 'src/dtos/user.dto';
+import { Auth } from '../../decorators/auth/auth.decorator';
+import { rolesEnum } from '../../interfaces/roles/roles.interface';
 
 @Controller('api/user')
 export class UserController {
@@ -21,6 +23,7 @@ export class UserController {
   // Get
 
   @Get()
+  @Auth(rolesEnum.moderator, rolesEnum.admin)
   public async getAll(): Promise<User[]> {
     return this.userService.getAll();
   }
@@ -42,6 +45,7 @@ export class UserController {
   // Patch
 
   @Patch('/:id')
+  @Auth()
   public async update(
     @Param('id') id: Types.ObjectId,
     @Body() updateUserDTO: UpdateUserDTO,
@@ -52,6 +56,7 @@ export class UserController {
   // Delete
 
   @Delete('/:id')
+  @Auth()
   public async delete(@Param('id') id: Types.ObjectId): Promise<User> {
     return this.userService.delete(id);
   }

@@ -1,5 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { GoogleService } from './google.service';
+import { Auth } from '../../decorators/auth/auth.decorator';
+import { rolesEnum } from '../../interfaces/roles/roles.interface';
 
 export let oAuth2Client = null;
 
@@ -8,6 +10,7 @@ export class GoogleController {
   constructor(private readonly googleService: GoogleService) {}
 
   @Get()
+  @Auth(rolesEnum.admin)
   public async googleAuth() {
     const client = await this.googleService
       .loadOAuth2Client()

@@ -268,7 +268,7 @@ button {
 
 .my-input-white,
 .my-input-white::placeholder {
-    color: $main-white;
+    color: $main-black;
     border-color: $main-white;
 
     &:-webkit-autofill,
@@ -283,12 +283,10 @@ button {
 }
 
 .my-input-beige {
-    color: $main-beige-1;
     border-color: $main-beige-1;
 }
 
 .my-input-green {
-    color: $main-green-3;
     border-color: $main-green-3-10;
 
     &:focus {
@@ -301,7 +299,6 @@ button {
 }
 
 .my-input-none {
-    color: $main-black;
     border-color: transparent;
 }
 
