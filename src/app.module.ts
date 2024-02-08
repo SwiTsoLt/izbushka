@@ -49,4 +49,5 @@ const rootPath = join(__dirname, '..', 'client', 'dist', 'client', 'browser');
     },
   ],
 })
+
 export class AppModule {}
