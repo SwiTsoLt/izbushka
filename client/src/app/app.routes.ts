@@ -24,11 +24,13 @@ export const routes: Routes = [
   { path: 'favorite', component: FavoriteComponent },
   { path: 'chats', component: ChatsComponent },
   {
-    path: 'settings', component: SettingsComponent, children: [
+    path: 'settings',
+    component: SettingsComponent,
+    children: [
       { path: 'profile', component: ProfileComponent },
       { path: 'security', component: SecurityComponent },
       { path: '**', redirectTo: '/settings/profile', pathMatch: 'full' },
-    ]
+    ],
   },
   { path: 'policy', component: PolicyComponent },
   { path: 'password-recovery', component: PasswordRecoveryComponent },

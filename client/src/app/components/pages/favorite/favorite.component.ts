@@ -12,13 +12,16 @@ import { Observable, of } from 'rxjs';
 @Component({
   selector: 'app-favorite',
   standalone: true,
-  imports: [NavbarComponent, MobileMenuComponent, MobileNavbarComponent, PostsComponent, MobileContextMenuComponent],
-  providers: [
-    { provide: PostRepository },
-    { provide: StaticDataSource },
+  imports: [
+    NavbarComponent,
+    MobileMenuComponent,
+    MobileNavbarComponent,
+    PostsComponent,
+    MobileContextMenuComponent,
   ],
+  providers: [{ provide: PostRepository }, { provide: StaticDataSource }],
   templateUrl: './favorite.component.html',
-  styleUrl: './favorite.component.scss'
+  styleUrl: './favorite.component.scss',
 })
 export class FavoriteComponent implements OnInit {
   constructor(private readonly postRepository: PostRepository) {}

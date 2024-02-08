@@ -1,11 +1,11 @@
-import { Category } from "@models/category.model";
-import { createSelector } from "@ngrx/store";
+import { Category } from '@models/category.model';
+import { createSelector } from '@ngrx/store';
 
 export interface AppState {
-    categories: Category[]
+  categories: Category[];
 }
 
 export const selectCategories = createSelector(
-    (state: AppState) => state,
-    state => state.categories
-)
+  (state: AppState) => state,
+  (state) => state.categories,
+);

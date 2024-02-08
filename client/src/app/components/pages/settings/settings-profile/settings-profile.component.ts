@@ -14,10 +14,12 @@ import { UserCardComponent } from '@UI/user-card/user-card.component';
   standalone: true,
   imports: [CommonModule, MyButtonComponent, RouterModule, UserCardComponent],
   templateUrl: './settings-profile.component.html',
-  styleUrl: './settings-profile.component.scss'
+  styleUrl: './settings-profile.component.scss',
 })
 export class ProfileComponent {
-  public user$: Observable<User> = this.store.select(fromUser.selectUser as never);
+  public user$: Observable<User> = this.store.select(
+    fromUser.selectUser as never,
+  );
 
   constructor(private readonly store: Store) {}
 }

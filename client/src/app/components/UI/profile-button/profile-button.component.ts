@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './profile-button.component.html',
-  styleUrl: './profile-button.component.scss'
+  styleUrl: './profile-button.component.scss',
 })
 export class ProfileButtonComponent {
   @Input() src = '';

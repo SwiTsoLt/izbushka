@@ -12,7 +12,7 @@ function foo() {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './my-button.component.html',
-  styleUrl: './my-button.component.scss'
+  styleUrl: './my-button.component.scss',
 })
 export class MyButtonComponent {
   @Input() text = '';

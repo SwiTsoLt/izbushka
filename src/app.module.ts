@@ -11,6 +11,10 @@ import { MyJwtService } from './services/jwt/jwt.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { ApiModule } from './api/api.module';
+import { CacheModule } from '@nestjs/cache-manager';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { RedisOptions } from './interfaces/redis.interface';
+import { HttpCacheInterceptor } from './interceptors/http-cache/http-cache.interceptor';
 
 const rootPath = join(__dirname, '..', 'client', 'dist', 'client', 'browser');
 
@@ -30,9 +34,18 @@ const rootPath = join(__dirname, '..', 'client', 'dist', 'client', 'browser');
     MulterModule.register({
       storage: memoryStorage(),
     }),
+    CacheModule.registerAsync(RedisOptions),
     ApiModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ErrorHandlerService, MyJwtService],
+  providers: [
+    AppService,
+    ErrorHandlerService,
+    MyJwtService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: HttpCacheInterceptor,
+    },
+  ],
 })
 export class AppModule {}

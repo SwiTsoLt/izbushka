@@ -15,13 +15,22 @@ import { selectUser } from '@store/user/user.selectors';
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, UserCardComponent, RouterModule, MobileContextMenuComponent, MobileMenuComponent, MobileNavbarComponent],
+  imports: [
+    CommonModule,
+    NavbarComponent,
+    UserCardComponent,
+    RouterModule,
+    MobileContextMenuComponent,
+    MobileMenuComponent,
+    MobileNavbarComponent,
+  ],
   templateUrl: './user.component.html',
-  styleUrl: './user.component.scss'
+  styleUrl: './user.component.scss',
 })
 export class UserComponent implements OnInit {
-
-  public user$: Observable<User | null> = this.store.select(selectUser as never);
+  public user$: Observable<User | null> = this.store.select(
+    selectUser as never,
+  );
   public isMe$: Observable<boolean> = of(false);
 
   constructor(
@@ -29,20 +38,20 @@ export class UserComponent implements OnInit {
     private readonly router: Router,
     private readonly userService: UserService,
     private readonly store: Store,
-    ) {}
+  ) {}
 
   ngOnInit(): void {
     forkJoin(
       this.route.paramMap.pipe(
         take(1),
         map((params) => {
-          return params.get('id')
-        })
+          return params.get('id');
+        }),
       ),
       this.user$.pipe(
         take(2),
-        map(user => user?._id)
-      )
+        map((user) => user?._id),
+      ),
     ).subscribe(([find_user_id, current_user_id]) => {
       if (!find_user_id) {
         this.router.navigate(['/']);
@@ -53,7 +62,7 @@ export class UserComponent implements OnInit {
         return;
       }
 
-      this.user$ = this.userService.getUserById(find_user_id)
-    })
+      this.user$ = this.userService.getUserById(find_user_id);
+    });
   }
 }

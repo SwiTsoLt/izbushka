@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [RouterModule],
   templateUrl: './navbar-menu-link.component.html',
-  styleUrl: './navbar-menu-link.component.scss'
+  styleUrl: './navbar-menu-link.component.scss',
 })
 export class NavbarMenuLinkComponent {
   @Input() href: string | undefined;

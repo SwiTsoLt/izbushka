@@ -1,4 +1,4 @@
-import { Injectable, PipeTransform } from '@nestjs/common';
+import { Injectable, type PipeTransform } from '@nestjs/common';
 import * as sharp from 'sharp';
 
 @Injectable()

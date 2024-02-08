@@ -5,25 +5,24 @@ import { HttpService } from './http.service';
 import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService) {}
 
   public getUserById(id: string): Observable<User | null> {
     return this.httpService.get<User>(`/api/user/${id}`).pipe(
       takeLast(1),
       map((response: HttpResponse<User | null>) => {
-        return response.body
-      })
+        return response.body;
+      }),
     );
   }
 
   public getUserByJWT(): Observable<User | null> {
     return this.httpService.get<User>(`/api/user/jwt`).pipe(
       takeLast(1),
-      map((response: HttpResponse<User | null>) => response.body)
-    )
+      map((response: HttpResponse<User | null>) => response.body),
+    );
   }
 }

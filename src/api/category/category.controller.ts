@@ -8,11 +8,11 @@ import {
   Post,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
-import { Category } from '../../schemas/category.schema';
+import { type Category } from '../../schemas/category.schema';
 import { Types } from 'mongoose';
 import { PostCategoryDTO, UpdateCategoryDTO } from '../../dtos/category.dto';
 import { Auth } from '../../decorators/auth/auth.decorator';
-import { rolesEnum } from '../../interfaces/roles/roles.interface';
+import { rolesEnum } from '../../interfaces/roles.interface';
 
 @Controller('api/category')
 export class CategoryController {
@@ -22,12 +22,12 @@ export class CategoryController {
 
   @Get()
   public async getAll(): Promise<Category[]> {
-    return this.categoryService.getAll();
+    return await this.categoryService.getAll();
   }
 
   @Get('/:id')
   public async getById(@Param('id') id: Types.ObjectId): Promise<Category> {
-    return this.categoryService.getById(id);
+    return await this.categoryService.getById(id);
   }
 
   // Post
@@ -37,7 +37,7 @@ export class CategoryController {
   public async post(
     @Body() postCategoryDTO: PostCategoryDTO,
   ): Promise<Category> {
-    return this.categoryService.post(postCategoryDTO);
+    return await this.categoryService.post(postCategoryDTO);
   }
 
   // Patch
@@ -48,7 +48,7 @@ export class CategoryController {
     @Param('id') id: Types.ObjectId,
     @Body() updateCategoryDTO: UpdateCategoryDTO,
   ): Promise<Category> {
-    return this.categoryService.update(id, updateCategoryDTO);
+    return await this.categoryService.update(id, updateCategoryDTO);
   }
 
   // Delete
@@ -56,6 +56,6 @@ export class CategoryController {
   @Delete('/:id')
   @Auth(rolesEnum.admin)
   public async delete(@Param('id') id: Types.ObjectId): Promise<Category> {
-    return this.categoryService.delete(id);
+    return await this.categoryService.delete(id);
   }
 }

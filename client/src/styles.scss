@@ -30,6 +30,7 @@ $client-theme: mat.define-light-theme((color: (primary: $client-primary,
 @include mat.all-component-themes($client-theme);
 
 /* You can add global styles to this file, and also import other style files */
+
 @import './app/variables.scss';
 
 /* ---------- Reset styles ---------- */
@@ -268,7 +269,7 @@ button {
 
 .my-input-white,
 .my-input-white::placeholder {
-    color: $main-black;
+    color: $main-white;
     border-color: $main-white;
 
     &:-webkit-autofill,

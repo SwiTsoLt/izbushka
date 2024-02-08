@@ -6,8 +6,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [SearchButtonComponent],
   templateUrl: './mobile-navbar.component.html',
-  styleUrl: './mobile-navbar.component.scss'
+  styleUrl: './mobile-navbar.component.scss',
 })
-export class MobileNavbarComponent {
-
-}
+export class MobileNavbarComponent {}

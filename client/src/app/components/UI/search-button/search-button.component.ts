@@ -12,7 +12,7 @@ function foo() {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './search-button.component.html',
-  styleUrl: './search-button.component.scss'
+  styleUrl: './search-button.component.scss',
 })
 export class SearchButtonComponent {
   @Input() color: SearchButtonColor = 'black';

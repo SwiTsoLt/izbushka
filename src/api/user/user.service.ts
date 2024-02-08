@@ -2,7 +2,10 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from '../../schemas/user.schema';
 import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { GetUserByJWTResponse, UpdateUserDTO } from '../../dtos/user.dto';
+import {
+  type GetUserByJWTResponse,
+  type UpdateUserDTO,
+} from '../../dtos/user.dto';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
 import { MyJwtService } from '../../services/jwt/jwt.service';
 
@@ -17,13 +20,13 @@ export class UserService {
   // Get
 
   public async getAll(): Promise<User[]> {
-    return this.errorHandlerService.handleError<User[]>(
+    return await this.errorHandlerService.handleError<User[]>(
       this.userModel.find().select('-password').exec(),
     );
   }
 
   public async getById(id: string): Promise<User> {
-    return this.errorHandlerService.handleError<User>(
+    return await this.errorHandlerService.handleError<User>(
       this.userModel.findById(id).select('-password').exec(),
     );
   }
@@ -54,7 +57,7 @@ export class UserService {
     updateUserDTO: UpdateUserDTO,
   ): Promise<User> {
     console.log(updateUserDTO);
-    return this.errorHandlerService.handleError<User>(
+    return await this.errorHandlerService.handleError<User>(
       this.userModel.findByIdAndUpdate(id, {
         ...updateUserDTO,
         location: {
@@ -68,7 +71,7 @@ export class UserService {
   // Delete
 
   public async delete(id: Types.ObjectId): Promise<User> {
-    return this.errorHandlerService.handleError(
+    return await this.errorHandlerService.handleError(
       this.userModel.findByIdAndDelete(id),
     );
   }

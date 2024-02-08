@@ -21,20 +21,14 @@ import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-cont
     HomeAsideComponent,
     MobileNavbarComponent,
     MobileMenuComponent,
-    MobileContextMenuComponent
+    MobileContextMenuComponent,
   ],
-  providers: [
-    { provide: PostRepository },
-    { provide: StaticDataSource },
-  ],
+  providers: [{ provide: PostRepository }, { provide: StaticDataSource }],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-
   public posts$: Observable<Post[]> = this.postRepository.getPage(0);
 
-  constructor(
-    public postRepository: PostRepository,
-  ) {}
+  constructor(public postRepository: PostRepository) {}
 }

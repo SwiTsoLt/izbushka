@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { GoogleService } from '../../api/google/google.service';
-import { drive_v3, google } from 'googleapis';
+import { type drive_v3, google } from 'googleapis';
 import { Readable } from 'stream';
 
 export interface IUploadFileParams {
@@ -45,7 +45,7 @@ export class GoogleDriveService {
     console.log(response.data);
     const link = this.generatePublicLink(response.data.id);
     if (!link) return null;
-    return link;
+    return await link;
   }
 
   private async generatePublicLink(id: string): Promise<string> {

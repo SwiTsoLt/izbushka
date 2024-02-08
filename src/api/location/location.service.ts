@@ -4,10 +4,10 @@ import { Region } from '../../schemas/region.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import {
-  PostAreaDTO,
-  PostRegionDTO,
-  UpdateAreaDTO,
-  UpdateRegionDTO,
+  type PostAreaDTO,
+  type PostRegionDTO,
+  type UpdateAreaDTO,
+  type UpdateRegionDTO,
 } from '../../dtos/location.dto';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
 
@@ -24,13 +24,13 @@ export class LocationService {
   // Area Get
 
   public async getAreaAll(): Promise<Area[]> {
-    return this.errorHandlerService.handleError<Area[]>(
+    return await this.errorHandlerService.handleError<Area[]>(
       this.areaModel.find().exec(),
     );
   }
 
   public async getAreaById(id: Types.ObjectId): Promise<Area> {
-    return this.errorHandlerService.handleError<Area>(
+    return await this.errorHandlerService.handleError<Area>(
       this.areaModel.findById(id).exec(),
     );
   }
@@ -38,7 +38,7 @@ export class LocationService {
   // Area Post
 
   public async postArea(postAreaDTO: PostAreaDTO): Promise<Area> {
-    return this.errorHandlerService.handleError<Area>(
+    return await this.errorHandlerService.handleError<Area>(
       new this.areaModel({ ...postAreaDTO, children: [] }).save(),
     );
   }
@@ -49,7 +49,7 @@ export class LocationService {
     id: Types.ObjectId,
     updateAreaDTO: UpdateAreaDTO,
   ): Promise<Area> {
-    return this.errorHandlerService.handleError<Area>(
+    return await this.errorHandlerService.handleError<Area>(
       this.areaModel.findByIdAndUpdate(id, updateAreaDTO).exec(),
     );
   }
@@ -75,13 +75,13 @@ export class LocationService {
   // Region Get
 
   public async getRegionAll(): Promise<Region[]> {
-    return this.errorHandlerService.handleError<Region[]>(
+    return await this.errorHandlerService.handleError<Region[]>(
       this.regionModel.find().exec(),
     );
   }
 
   public async getRegionById(id: Types.ObjectId): Promise<Region> {
-    return this.errorHandlerService.handleError<Region>(
+    return await this.errorHandlerService.handleError<Region>(
       this.regionModel.findById(id).exec(),
     );
   }
@@ -108,7 +108,7 @@ export class LocationService {
     id: Types.ObjectId,
     updateRegionDTO: UpdateRegionDTO,
   ): Promise<Region> {
-    return this.errorHandlerService.handleError<Region>(
+    return await this.errorHandlerService.handleError<Region>(
       this.regionModel.findByIdAndUpdate(id, updateRegionDTO).exec(),
     );
   }

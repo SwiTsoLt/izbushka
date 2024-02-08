@@ -8,10 +8,9 @@ describe('MobileContextMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MobileContextMenuComponent]
-    })
-    .compileComponents();
-    
+      imports: [MobileContextMenuComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(MobileContextMenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

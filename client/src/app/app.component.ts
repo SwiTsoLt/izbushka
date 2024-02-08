@@ -9,20 +9,12 @@ import { getOptions } from '@store/store.actions';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    HomeComponent,
-    SettingsComponent,
-  ],
+  imports: [CommonModule, RouterOutlet, HomeComponent, SettingsComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-
-  constructor(
-    private readonly store: Store
-  ) { }
+  constructor(private readonly store: Store) {}
 
   ngOnInit(): void {
     this.store.dispatch(getOptions());

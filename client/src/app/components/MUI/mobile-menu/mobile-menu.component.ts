@@ -6,8 +6,9 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [RouterModule],
   templateUrl: './mobile-menu.component.html',
-  styleUrl: './mobile-menu.component.scss'
+  styleUrl: './mobile-menu.component.scss',
 })
 export class MobileMenuComponent {
-  @Output() toggleMobileContextMenuShow: EventEmitter<boolean> = new EventEmitter();
+  @Output() toggleMobileContextMenuShow: EventEmitter<boolean> =
+    new EventEmitter();
 }

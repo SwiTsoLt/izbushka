@@ -1,5 +1,5 @@
-import { Types } from 'mongoose';
-import { Location } from '../models/location.model';
+import { type Types } from 'mongoose';
+import { type Location } from '../models/location.model';
 
 export class CreatePostDTO {
   title: string;

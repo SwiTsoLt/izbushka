@@ -6,8 +6,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [NavbarComponent],
   templateUrl: './policy.component.html',
-  styleUrl: './policy.component.scss'
+  styleUrl: './policy.component.scss',
 })
-export class PolicyComponent {
-
-}
+export class PolicyComponent {}

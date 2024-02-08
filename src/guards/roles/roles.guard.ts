@@ -1,44 +1,42 @@
 import {
-  CanActivate,
-  ExecutionContext,
+  type CanActivate,
+  type ExecutionContext,
   ForbiddenException,
+  Inject,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Observable } from 'rxjs';
-import { Request } from 'express';
-import { JwtService } from '@nestjs/jwt';
+import { type Request } from 'express';
+import { MyJwtService } from 'src/services/jwt/jwt.service';
+import { type JWTPayload } from 'src/models/jwt.model';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
-    private readonly jwtService: JwtService,
+    @Inject(MyJwtService) private readonly myJwtService: MyJwtService,
   ) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const roles = this.reflector.getAllAndOverride<string[]>('roles', [
       context.getHandler(),
       context.getClass(),
     ]);
+
     if (!roles) return true;
+
     const request: Request = context.switchToHttp().getRequest();
-    const auth = request.headers['authorization'];
-    if (!auth) throw new UnauthorizedException();
-    const [type, token] = auth.split(' ');
-    if (type !== 'Bearer') throw new UnauthorizedException();
-    const isVerify = this.jwtService.verify(token);
-    if (!isVerify) throw new UnauthorizedException();
-    const tokenData = this.jwtService.decode(token);
-    return this.matchRoles(roles, tokenData.roles);
+    const authHeaders = request.headers.authorization;
+
+    const payload: JWTPayload =
+      await this.myJwtService.decodeAccessToken(authHeaders);
+    return this.matchRoles(roles, payload.roles);
   }
 
   private matchRoles(roles: string[], userRoles: string[]): boolean {
-    if (!userRoles.every((userRole) => roles.indexOf(userRole) === -1))
+    if (!userRoles.every((userRole) => !roles.includes(userRole))) {
       throw new ForbiddenException();
+    }
     return true;
   }
 }

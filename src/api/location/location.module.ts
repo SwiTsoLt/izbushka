@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Area, AreaSchema } from '../../schemas/area.schema';
 import { Region, RegionSchema } from '../../schemas/region.schema';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
+import { MyJwtService } from '../../services/jwt/jwt.service';
 
 @Module({
   imports: [
@@ -14,6 +15,6 @@ import { ErrorHandlerService } from '../../services/error-handler/error-handler.
     ]),
   ],
   controllers: [LocationController],
-  providers: [LocationService, ErrorHandlerService],
+  providers: [LocationService, ErrorHandlerService, MyJwtService],
 })
 export class LocationModule {}

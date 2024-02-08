@@ -8,8 +8,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { LocationService } from './location.service';
-import { Area } from '../../schemas/area.schema';
-import { Region } from '../../schemas/region.schema';
+import { type Area } from '../../schemas/area.schema';
+import { type Region } from '../../schemas/region.schema';
 import { Types } from 'mongoose';
 import {
   PostAreaDTO,
@@ -18,7 +18,7 @@ import {
   UpdateRegionDTO,
 } from '../../dtos/location.dto';
 import { Auth } from '../../decorators/auth/auth.decorator';
-import { rolesEnum } from '../../interfaces/roles/roles.interface';
+import { rolesEnum } from '../../interfaces/roles.interface';
 
 /*
     Area - Город
@@ -35,12 +35,12 @@ export class LocationController {
 
   @Get('/area')
   public async getAreaAll(): Promise<Area[]> {
-    return this.locationService.getAreaAll();
+    return await this.locationService.getAreaAll();
   }
 
   @Get('/area/:id')
   public async getAreaById(@Param('id') id: Types.ObjectId): Promise<Area> {
-    return this.locationService.getAreaById(id);
+    return await this.locationService.getAreaById(id);
   }
 
   // Area Post
@@ -48,7 +48,7 @@ export class LocationController {
   @Post('/area')
   @Auth(rolesEnum.admin)
   public async postArea(@Body() postAreaDTO: PostAreaDTO): Promise<Area> {
-    return this.locationService.postArea(postAreaDTO);
+    return await this.locationService.postArea(postAreaDTO);
   }
 
   // Area Patch
@@ -58,14 +58,14 @@ export class LocationController {
     @Param('id') id: Types.ObjectId,
     @Body() updateAreaDTO: UpdateAreaDTO,
   ): Promise<Area> {
-    return this.locationService.updateArea(id, updateAreaDTO);
+    return await this.locationService.updateArea(id, updateAreaDTO);
   }
 
   // Area Delete
   @Delete('/area/:id')
   @Auth(rolesEnum.admin)
   public async deleteArea(@Param('id') id: Types.ObjectId): Promise<Area> {
-    return this.locationService.deleteArea(id);
+    return await this.locationService.deleteArea(id);
   }
 
   // Region
@@ -74,12 +74,12 @@ export class LocationController {
 
   @Get('/region')
   public async getRegionAll(): Promise<Region[]> {
-    return this.locationService.getRegionAll();
+    return await this.locationService.getRegionAll();
   }
 
   @Get('/region/:id')
   public async getRegionById(@Param('id') id: Types.ObjectId): Promise<Region> {
-    return this.locationService.getRegionById(id);
+    return await this.locationService.getRegionById(id);
   }
 
   // Region Post
@@ -89,7 +89,7 @@ export class LocationController {
   public async postRegion(
     @Body() postRegionDTO: PostRegionDTO,
   ): Promise<Region> {
-    return this.locationService.postRegion(postRegionDTO);
+    return await this.locationService.postRegion(postRegionDTO);
   }
 
   // Region Patch
@@ -99,13 +99,13 @@ export class LocationController {
     @Param('id') id: Types.ObjectId,
     @Body() updateRegionDTO: UpdateRegionDTO,
   ): Promise<Region> {
-    return this.locationService.updateRegion(id, updateRegionDTO);
+    return await this.locationService.updateRegion(id, updateRegionDTO);
   }
 
   // Region Delete
   @Delete('/region/:id')
   @Auth(rolesEnum.admin)
   public async deleteRegion(@Param('id') id: Types.ObjectId): Promise<Region> {
-    return this.locationService.deleteRegion(id);
+    return await this.locationService.deleteRegion(id);
   }
 }

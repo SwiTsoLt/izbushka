@@ -1,0 +1,349 @@
+{
+  "unspecified-properties-position": "bottom",
+  "clean-empty-lines": true,
+  "rule-nested-empty-line-before": [
+    true,
+    {
+      "except": ["first-nested"],
+      "ignore": ["after-comment"]
+    }
+  ],
+  "at-rule-nested-empty-line-before": [
+    true,
+    {
+      "except": ["first-nested"],
+      "ignore": ["after-comment"]
+    }
+  ],
+  "declaration-empty-line-before": [
+    true,
+    {
+      "except": ["after-comment", "first-nested"],
+      "ignore": ["after-declaration", "inside-single-line-block"]
+    }
+  ],
+  "comment-empty-line-before": [
+    true,
+    {
+      "except": ["first-nested"],
+      "ignore": ["after-comment"]
+    }
+  ],
+  "order": [
+    "custom-properties",
+    "dollar-variables",
+    "declarations",
+    "at-rules",
+    "rules"
+  ],
+  "properties-order": [
+    {
+      "properties": [
+        "position",
+        "top",
+        "right",
+        "bottom",
+        "left",
+        "z-index",
+        "float",
+        "clear",
+        "display",
+        "visibility",
+        "overflow",
+        "overflow-x",
+        "overflow-y",
+        "overflow-style",
+        "zoom",
+        "clip",
+        "resize",
+        "cursor"
+      ]
+    },
+    {
+      "properties": [
+        "flex-direction",
+        "flex-flow",
+        "flex-wrap",
+        "align-items",
+        "align-content",
+        "justify-content",
+        "flex",
+        "flex-basis",
+        "flex-grow",
+        "flex-shrink",
+        "align-self",
+        "order"
+      ]
+    },
+    {
+      "properties": [
+        "box-sizing",
+        "box-shadow",
+        "box-decoration-break",
+        "width",
+        "min-width",
+        "max-width",
+        "height",
+        "min-height",
+        "max-height"
+      ]
+    },
+    {
+      "properties": [
+        "margin",
+        "margin-top",
+        "margin-right",
+        "margin-bottom",
+        "margin-left",
+        "padding",
+        "padding-top",
+        "padding-right",
+        "padding-bottom",
+        "padding-left"
+      ]
+    },
+    {
+      "properties": [
+        "font",
+        "font-family",
+        "font-size",
+        "font-size-adjust",
+        "font-weight",
+        "font-style",
+        "font-variant",
+        "font-variant-alternates",
+        "font-variant-caps",
+        "font-variant-east-asian",
+        "font-variant-ligatures",
+        "font-variant-numeric",
+        "font-variant-position",
+        "font-effect",
+        "font-emphasize",
+        "font-emphasize-position",
+        "font-emphasize-style",
+        "font-smooth",
+        "-webkit-font-smoothing",
+        "font-stretch",
+        "font-feature-settings",
+        "font-kerning",
+        "font-language-override",
+        "font-synthesis"
+      ]
+    },
+    {
+      "properties": [
+        "vertical-align",
+        "text-align",
+        "text-align-last",
+        "text-decoration",
+        "text-decoration-color",
+        "text-decoration-line",
+        "text-decoration-skip",
+        "text-decoration-skip-ink",
+        "text-decoration-style",
+        "text-underline-position",
+        "text-emphasis",
+        "text-emphasis-color",
+        "text-emphasis-position",
+        "text-emphasis-style",
+        "text-height",
+        "text-indent",
+        "text-justify",
+        "text-orientation",
+        "text-outline",
+        "text-overflow",
+        "text-replace",
+        "text-shadow",
+        "text-size-adjust",
+        "text-transform",
+        "text-wrap",
+        "line-height",
+        "line-break",
+        "letter-spacing",
+        "white-space",
+        "white-space-collapse",
+        "word-break",
+        "word-spacing",
+        "word-wrap",
+        "overflow-wrap",
+        "hanging-punctuation",
+        "hyphens",
+        "caret-color",
+        "user-select",
+        "tab-size",
+        "writing-mode",
+        "direction",
+        "unicode-bidi"
+      ]
+    },
+    {
+      "properties": [
+        "content",
+        "quotes",
+        "counter-increment",
+        "counter-reset"
+      ]
+    },
+    {
+      "properties": [
+        "color",
+        "opacity"
+      ]
+    },
+    {
+      "properties": [
+        "background",
+        "background-attachment",
+        "background-clip",
+        "background-color",
+        "background-image",
+        "background-origin",
+        "background-position",
+        "background-position-x",
+        "background-position-y",
+        "background-repeat",
+        "background-size",
+        "background-break"
+      ]
+    },
+    {
+      "properties": [
+        "border",
+        "border-break",
+        "border-collapse",
+        "border-color",
+        "border-image",
+        "border-top-image",
+        "border-right-image",
+        "border-bottom-image",
+        "border-left-image",
+        "border-corner-image",
+        "border-top-left-image",
+        "border-top-right-image",
+        "border-bottom-right-image",
+        "border-bottom-left-image",
+        "border-fit",
+        "border-length",
+        "border-spacing",
+        "border-style",
+        "border-width",
+        "border-top",
+        "border-top-width",
+        "border-top-style",
+        "border-top-color",
+        "border-right",
+        "border-right-width",
+        "border-right-style",
+        "border-right-color",
+        "border-bottom",
+        "border-bottom-width",
+        "border-bottom-style",
+        "border-bottom-color",
+        "border-left",
+        "border-left-width",
+        "border-left-style",
+        "border-left-color",
+        "border-radius",
+        "border-top-right-radius",
+        "border-top-left-radius",
+        "border-bottom-right-radius",
+        "border-bottom-left-radius"
+      ]
+    },
+    {
+      "properties": [
+        "outline",
+        "outline-offset",
+        "outline-width",
+        "outline-style",
+        "outline-color"
+      ]
+    },
+    {
+      "properties": [
+        "table-layout",
+        "caption-side",
+        "empty-cells"
+      ]
+    },
+    {
+      "properties": [
+        "list-style",
+        "list-style-position",
+        "list-style-type",
+        "list-style-image"
+      ]
+    },
+    {
+      "properties": [
+        "columns",
+        "column-count",
+        "column-fill",
+        "column-gap",
+        "column-rule",
+        "column-rule-color",
+        "column-rule-style",
+        "column-rule-width",
+        "column-span",
+        "column-width",
+        "break-after",
+        "break-inside",
+        "break-before"
+      ]
+    },
+    {
+      "properties": [
+        "transition",
+        "transition-delay",
+        "transition-duration",
+        "transition-property",
+        "transition-timing-function"
+      ]
+    },
+    {
+      "properties": [
+        "backface-visibility",
+        "perspective",
+        "perspective-origin",
+        "transform",
+        "transform-box",
+        "transform-origin",
+        "transform-style"
+      ]
+    },
+    {
+      "properties": [
+        "animation",
+        "animation-name",
+        "animation-duration",
+        "animation-timing-function",
+        "animation-delay",
+        "animation-direction",
+        "animation-iteration-count",
+        "animation-fill-mode",
+        "animation-play-state"
+      ]
+    },
+    {
+      "properties": [
+        "page-break-before",
+        "page-break-inside",
+        "page-break-after",
+        "orphans",
+        "widows"
+      ]
+    },
+    {
+      "properties": [
+        "pointer-events",
+        "touch-action",
+        "appearance",
+        "filter",
+        "filter:progid:DXImageTransform.Microsoft.Alpha",
+        "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader",
+        "filter:progid:DXImageTransform.Microsoft.gradient",
+        "backdrop-filter"
+      ]
+    }
+  ]
+}

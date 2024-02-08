@@ -33,6 +33,7 @@
       "@models/*": ["./models/*"],
       "@services/*": ["./services/*"],
       "@store/*": ["./store/*"],
+      "@var/*": ["./*"],
     }
   },
   "angularCompilerOptions": {

@@ -14,19 +14,22 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, MyButtonComponent, ProfileButtonComponent, SearchButtonComponent, NavbarMenuComponent, RouterModule],
+  imports: [
+    CommonModule,
+    MyButtonComponent,
+    ProfileButtonComponent,
+    SearchButtonComponent,
+    NavbarMenuComponent,
+    RouterModule,
+  ],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
-
   public isNavbarMenuShow: boolean = false;
   public user$: Observable<User> = this.store.select(selectUser as never);
 
-  constructor(
-    private readonly router: Router,
-    private readonly store: Store
-  ) { }
+  constructor(private readonly router: Router, private readonly store: Store) {}
 
   public redirectToSignIn(): void {
     this.router.navigate(['/signin']);

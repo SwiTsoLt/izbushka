@@ -6,8 +6,6 @@ import { NavbarComponent } from '@UI/navbar/navbar.component';
   standalone: true,
   imports: [NavbarComponent],
   templateUrl: './my-posts.component.html',
-  styleUrl: './my-posts.component.scss'
+  styleUrl: './my-posts.component.scss',
 })
-export class MyPostsComponent {
-
-}
+export class MyPostsComponent {}

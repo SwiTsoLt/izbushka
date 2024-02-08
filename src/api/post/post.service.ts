@@ -4,9 +4,9 @@ import { Model, Types } from 'mongoose';
 import { Post } from '../../schemas/post.schema';
 import { User } from '../../schemas/user.schema';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
-import { CreatePostDTO, UpdatePostDTO } from '../../dtos/post.dto';
+import { type CreatePostDTO, type UpdatePostDTO } from '../../dtos/post.dto';
 import { MyJwtService } from '../../services/jwt/jwt.service';
-import { IMultiSharpResult } from '../../pipes/multisharp.pipe';
+import { type IMultiSharpResult } from '../../pipes/multisharp.pipe';
 import { GoogleDriveService } from '../../services/google-drive/google-drive.service';
 
 @Injectable()
@@ -36,7 +36,7 @@ export class PostService {
   }
 
   public async getById(id: Types.ObjectId): Promise<Post> {
-    return this.errorHandlerService.handleError<Post>(
+    return await this.errorHandlerService.handleError<Post>(
       this.postModel.findById(id).exec(),
     );
   }
@@ -50,7 +50,7 @@ export class PostService {
   ): Promise<Post> {
     const { sub } = await this.myJwtService.decodeAccessToken(access_token);
 
-    const promiseArr: Promise<string>[] = [];
+    const promiseArr: Array<Promise<string>> = [];
     results.forEach(async (result) => {
       promiseArr.push(
         this.errorHandlerService.handleError<string>(
@@ -93,7 +93,7 @@ export class PostService {
     id: Types.ObjectId,
     updatePostDTO: UpdatePostDTO,
   ): Promise<Post> {
-    return this.errorHandlerService.handleError<Post>(
+    return await this.errorHandlerService.handleError<Post>(
       this.postModel
         .findByIdAndUpdate(id, {
           ...updatePostDTO,
@@ -110,7 +110,7 @@ export class PostService {
   // Delete
 
   public async delete(id: Types.ObjectId): Promise<Post> {
-    return this.errorHandlerService.handleError<Post>(
+    return await this.errorHandlerService.handleError<Post>(
       this.postModel.findByIdAndDelete(id).exec(),
     );
   }

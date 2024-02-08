@@ -7,10 +7,13 @@ import { NavbarComponent } from '@UI/navbar/navbar.component';
 @Component({
   selector: 'app-chats',
   standalone: true,
-  imports: [NavbarComponent, MobileMenuComponent, MobileNavbarComponent, MobileContextMenuComponent],
+  imports: [
+    NavbarComponent,
+    MobileMenuComponent,
+    MobileNavbarComponent,
+    MobileContextMenuComponent,
+  ],
   templateUrl: './chats.component.html',
-  styleUrl: './chats.component.scss'
+  styleUrl: './chats.component.scss',
 })
-export class ChatsComponent {
-
-}
+export class ChatsComponent {}

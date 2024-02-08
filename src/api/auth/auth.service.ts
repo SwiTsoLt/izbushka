@@ -1,18 +1,18 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import {
-  SignInDTO,
-  SignInResponseDTO,
-  SignUpDTO,
-  SignUpResponseDTO,
+  type SignInDTO,
+  type SignInResponseDTO,
+  type SignUpDTO,
+  type SignUpResponseDTO,
 } from '../../dtos/auth.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../../schemas/user.schema';
 import { Model, Types } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { JWTPayload } from '../../models/jwt.model';
+import { type JWTPayload } from '../../models/jwt.model';
 import { JwtService } from '@nestjs/jwt';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
-import { rolesEnum } from '../../interfaces/roles/roles.interface';
+import { rolesEnum } from '../../interfaces/roles.interface';
 
 @Injectable()
 export class AuthService {

@@ -5,8 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './terms-of-service.component.html',
-  styleUrl: './terms-of-service.component.scss'
+  styleUrl: './terms-of-service.component.scss',
 })
-export class TermsOfServiceComponent {
-
-}
+export class TermsOfServiceComponent {}

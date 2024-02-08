@@ -8,10 +8,9 @@ describe('SearchButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SearchButtonComponent]
-    })
-    .compileComponents();
-    
+      imports: [SearchButtonComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(SearchButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

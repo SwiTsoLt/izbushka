@@ -1,16 +1,31 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { EMPTY, Observable, catchError, map, shareReplay, takeLast, throwError } from 'rxjs';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpResponse,
+} from '@angular/common/http';
+import {
+  EMPTY,
+  Observable,
+  catchError,
+  map,
+  shareReplay,
+  takeLast
+} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HttpService {
+  constructor(private httpClient: HttpClient) {}
 
-  constructor(private httpClient: HttpClient) { }
-
-  public get<T>(url: string, options: Record<string, unknown> = {}): Observable<HttpResponse<T | null>> {
-    return this.httpClient.get<T>(url, this.normalizeOptions(options))
+  public get<T>(
+    url: string,
+    options: Record<string, unknown> = {},
+  ): Observable<HttpResponse<T | null>> {
+    return this.httpClient
+      .get<T>(url, this.normalizeOptions(options))
       .pipe(
         takeLast(1),
         map(this.handleUpdateAccessToken),
@@ -19,20 +34,27 @@ export class HttpService {
       );
   }
 
-  public post<T>(url: string, data: unknown, options = {}): Observable<HttpResponse<T | null>> {
-    return this.httpClient.post<T | null>(url, data ?? {}, this.normalizeOptions(options))
+  public post<T>(
+    url: string,
+    data: unknown,
+    options = {},
+  ): Observable<HttpResponse<T | null>> {
+    return this.httpClient
+      .post<T | null>(url, data ?? {}, this.normalizeOptions(options))
       .pipe(
         takeLast(1),
         map(this.handleUpdateAccessToken),
         catchError(this.handleError),
         shareReplay(1),
-      )
+      );
   }
 
   // Private
 
-  private handleUpdateAccessToken<T>(response: HttpResponse<T>): HttpResponse<T> {
-    const authorizationHeader = response.headers.get('Authorization')
+  private handleUpdateAccessToken<T>(
+    response: HttpResponse<T>,
+  ): HttpResponse<T> {
+    const authorizationHeader = response.headers.get('Authorization');
 
     if (!authorizationHeader) return response;
 
@@ -42,7 +64,7 @@ export class HttpService {
     if (!token) return response;
 
     window.localStorage.setItem('access_token', token);
-    return response
+    return response;
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
@@ -53,19 +75,21 @@ export class HttpService {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong.
       console.error(
-        `Backend returned code ${error.status}, body was: `, error.error);
+        `Backend returned code ${error.status}, body was: `,
+        error.error,
+      );
     }
     // Return an observable with a user-facing error message.
     console.error('Something bad happened; please try again later.');
-    return EMPTY
+    return EMPTY;
   }
 
   private normalizeOptions(options: Record<string, unknown>): {
-    observe: 'response',
-    [key: string]: unknown
+    observe: 'response';
+    [key: string]: unknown;
   } {
     const access_token = window.localStorage.getItem('access_token') ?? '';
-    let headers = new HttpHeaders({ 'Authorization': `Bearer ${access_token}` });
+    let headers = new HttpHeaders({ Authorization: `Bearer ${access_token}` });
     if ('headers' in options) {
       const newHeaders = options['headers'] as Record<string, unknown>;
       headers = new HttpHeaders({ ...headers, ...newHeaders });
@@ -73,7 +97,7 @@ export class HttpService {
     return {
       observe: 'response',
       ...options,
-      headers
+      headers,
     };
   }
 }

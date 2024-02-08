@@ -8,10 +8,9 @@ describe('MobileNavbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MobileNavbarComponent]
-    })
-    .compileComponents();
-    
+      imports: [MobileNavbarComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(MobileNavbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

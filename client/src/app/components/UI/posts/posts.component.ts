@@ -9,11 +9,9 @@ import { Observable, of } from 'rxjs';
   selector: 'app-posts',
   standalone: true,
   imports: [CommonModule, PostsItemComponent],
-  providers: [
-    { provide: UserRepository }
-  ],
+  providers: [{ provide: UserRepository }],
   templateUrl: './posts.component.html',
-  styleUrl: './posts.component.scss'
+  styleUrl: './posts.component.scss',
 })
 export class PostsComponent {
   @Input() posts$: Observable<Post[]> = of([]);

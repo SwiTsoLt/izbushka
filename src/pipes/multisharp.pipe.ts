@@ -1,4 +1,4 @@
-import { Injectable, PipeTransform } from '@nestjs/common';
+import { Injectable, type PipeTransform } from '@nestjs/common';
 import * as sharp from 'sharp';
 import * as path from 'path';
 import * as uuid from 'uuid';
@@ -13,7 +13,7 @@ export class MultiSharpPipe
   implements PipeTransform<Express.Multer.File[], Promise<IMultiSharpResult[]>>
 {
   async transform(images: Express.Multer.File[]): Promise<IMultiSharpResult[]> {
-    return new Promise<IMultiSharpResult[]>((resolve) => {
+    return await new Promise<IMultiSharpResult[]>((resolve) => {
       const bufferArray: IMultiSharpResult[] = [];
 
       images.forEach(async (image, index) => {

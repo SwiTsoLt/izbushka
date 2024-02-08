@@ -1,6 +1,6 @@
 // SingIn
 
-import { Location } from '../models/location.model';
+import { type Location } from '../models/location.model';
 
 export class SignInDTO {
   email: string;

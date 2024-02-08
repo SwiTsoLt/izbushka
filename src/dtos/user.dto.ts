@@ -1,5 +1,5 @@
-import { Location } from '../models/location.model';
-import { User } from '../schemas/user.schema';
+import { type Location } from '../models/location.model';
+import { type User } from '../schemas/user.schema';
 
 export class GetUserByJWTResponse {
   user: User;
