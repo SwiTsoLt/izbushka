@@ -38,6 +38,8 @@ export class GoogleService {
   public async getCredentials() {
     return await new Promise((resolve, reject) => {
       try {
+        if (this.credentialsPath === null) return reject(null);
+
         fs.readFile(
           this.credentialsPath,
           { flag: 'r+', encoding: 'utf8' },
@@ -62,6 +64,8 @@ export class GoogleService {
     return await new Promise<OAuth2Client | null>(async (resolve, reject) => {
       try {
         const cred: any = await this.getCredentials();
+
+        if (this.tokenPath === null) return reject(null);
 
         fs.readFile(
           this.tokenPath,
@@ -123,6 +127,8 @@ export class GoogleService {
 
     const payload = JSON.stringify(client.credentials);
 
+    if (!this.tokenPath) return;
+
     fs.writeFile(this.tokenPath, payload, () => {
       console.log('Credential has been successful saved!');
     });
@@ -155,12 +161,16 @@ export class GoogleService {
   }
 
   private get credentialsPath() {
-    if (fs.existsSync(this.CREDENTIALS_PATH_PROD)) return this.CREDENTIALS_PATH_PROD;
-    return this.CREDENTIALS_PATH_DEV;
+    if (fs.existsSync(this.CREDENTIALS_PATH_PROD))
+      return this.CREDENTIALS_PATH_PROD;
+    if (fs.existsSync(this.CREDENTIALS_PATH_DEV))
+      return this.CREDENTIALS_PATH_DEV;
+    return null;
   }
-  
+
   private get tokenPath() {
     if (fs.existsSync(this.TOKEN_PATH_PROD)) return this.TOKEN_PATH_PROD;
-    return this.TOKEN_PATH_DEV;
+    if (fs.existsSync(this.TOKEN_PATH_DEV)) return this.TOKEN_PATH_DEV;
+    return null;
   }
 }
