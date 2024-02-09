@@ -22,8 +22,8 @@ const rootPath = join(__dirname, '..', 'client', 'dist', 'client', 'browser');
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['assets/.env'],
-      // envFilePath: ['assets/.env.development'],
+      // envFilePath: ['assets/.env'],
+      envFilePath: ['assets/.env.development'],
     }),
     MongooseModule.forRoot(new ConfigService().get<string>('MONGO_URI')),
     ServeStaticModule.forRoot({ rootPath }),
@@ -49,5 +49,4 @@ const rootPath = join(__dirname, '..', 'client', 'dist', 'client', 'browser');
     },
   ],
 })
-
 export class AppModule {}

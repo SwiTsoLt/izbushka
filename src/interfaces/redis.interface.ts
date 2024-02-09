@@ -10,18 +10,25 @@ export const RedisOptions = {
   isGlobal: true,
   imports: [ConfigModule],
   useFactory: async (configService: ConfigService) => {
-    const store = await redisStore({
+    const env = process.env.NODE_ENV;
+
+    let redisStoreOptions: unknown = {
       url: configService.get<string>('REDIS_URL'),
-      // socket: {
-      //   host: configService.get<string>('REDIS_HOST'),
-      //   port: parseInt(configService.get<string>('REDIS_PORT')),
-      //   tls: true,
-      // },
-      // username: configService.get<string>('REDIS_USER'),
-    });
+    };
+
+    if (env === 'development') {
+      redisStoreOptions = {
+        socket: {
+          host: configService.get<string>('REDIS_HOST'),
+          port: parseInt(configService.get<string>('REDIS_PORT')),
+        },
+      };
+    }
+
+    const store = await redisStore(redisStoreOptions);
     return {
       store: () => store as unknown as CacheStore,
     };
   },
   inject: [ConfigService],
-}
+};

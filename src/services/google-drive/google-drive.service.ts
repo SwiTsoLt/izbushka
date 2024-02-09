@@ -14,11 +14,14 @@ export class GoogleDriveService {
   private drive: drive_v3.Drive | null = null;
 
   constructor(private readonly googleService: GoogleService) {
-    this.googleService.loadOAuth2Client().then((auth) => {
-      this.drive = google.drive({ version: 'v3', auth });
-    }).catch(error => {
-      console.error(error);
-    });
+    this.googleService
+      .loadOAuth2Client()
+      .then((auth) => {
+        this.drive = google.drive({ version: 'v3', auth });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   public async uploadFile(params: IUploadFileParams) {
