@@ -5,17 +5,26 @@ import { Request } from 'express';
 @Injectable()
 export class HttpCacheInterceptor extends CacheInterceptor {
   trackBy(context: ExecutionContext): string | undefined {
-    const request: Request = context.switchToHttp().getRequest();
+    try {
+      const request: Request = context.switchToHttp().getRequest();
 
-    const isGetRequest = request.method === 'GET';
-    const excludePaths = ['/api/user/jwt'];
+      const isGetRequest = request.method === 'GET';
+      const excludePaths = [
+        '/api/user/jwt',
+        '/api/google',
+        '/api/google/callback',
+      ];
 
-    if (
-      !isGetRequest ||
-      (isGetRequest && excludePaths.includes(request.path))
-    ) {
+      if (
+        !isGetRequest ||
+        (isGetRequest && excludePaths.includes(request.path))
+      ) {
+        return undefined;
+      }
+      return request.url;
+    } catch (error) {
+      console.error(error);
       return undefined;
     }
-    return request.url;
   }
 }

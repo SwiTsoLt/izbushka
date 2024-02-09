@@ -21,7 +21,10 @@ export class GoogleController {
       return 'Success load oauth client';
     }
 
-    await this.googleService.generateOAuth2Client();
+    await this.googleService.generateOAuth2Client().catch((error) => {
+      console.error(error);
+      return null;
+    });
   }
 
   @Get('/callback')
@@ -32,6 +35,9 @@ export class GoogleController {
         console.error(error);
         return null;
       });
-    await this.googleService.saveCredentials(oAuth2Client);
+    await this.googleService.saveCredentials(oAuth2Client).catch((error) => {
+      console.error(error);
+      return null;
+    });
   }
 }

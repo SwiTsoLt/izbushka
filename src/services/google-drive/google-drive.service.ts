@@ -16,6 +16,8 @@ export class GoogleDriveService {
   constructor(private readonly googleService: GoogleService) {
     this.googleService.loadOAuth2Client().then((auth) => {
       this.drive = google.drive({ version: 'v3', auth });
+    }).catch(error => {
+      console.error(error);
     });
   }
 

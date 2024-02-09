@@ -11,16 +11,17 @@ export const RedisOptions: CacheModuleAsyncOptions = {
   imports: [ConfigModule],
   useFactory: async (configService: ConfigService) => {
     const store = await redisStore({
-      socket: {
-        host: configService.get<string>('REDIS_HOST'),
-        port: parseInt(configService.get<string>('REDIS_PORT')),
-        tls: true,
-      },
-      username: configService.get<string>('REDIS_USER'),
+      url: configService.get<string>('REDIS_URL'),
+      // socket: {
+      //   host: configService.get<string>('REDIS_HOST'),
+      //   port: parseInt(configService.get<string>('REDIS_PORT')),
+      //   tls: true,
+      // },
+      // username: configService.get<string>('REDIS_USER'),
     });
     return {
       store: () => store,
     };
   },
   inject: [ConfigService],
-};
+}

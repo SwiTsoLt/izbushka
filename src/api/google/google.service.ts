@@ -80,7 +80,10 @@ export class GoogleService {
             const client: OAuth2Client = new google.auth.OAuth2({
               clientId: cred.client_id,
               clientSecret: cred.client_secret,
-              redirectUri: cred.redirect_uris[0],
+              redirectUri:
+                this.credentialsPath === this.CREDENTIALS_PATH_PROD
+                  ? cred.redirect_uris[0]
+                  : cred.redirect_uris[1],
               credentials: keys,
             });
             resolve(client);
@@ -127,8 +130,6 @@ export class GoogleService {
 
     const payload = JSON.stringify(client.credentials);
 
-    if (!this.tokenPath) return;
-
     fs.writeFile(this.tokenPath, payload, () => {
       console.log('Credential has been successful saved!');
     });
@@ -169,8 +170,8 @@ export class GoogleService {
   }
 
   private get tokenPath() {
-    if (fs.existsSync(this.TOKEN_PATH_PROD)) return this.TOKEN_PATH_PROD;
-    if (fs.existsSync(this.TOKEN_PATH_DEV)) return this.TOKEN_PATH_DEV;
+    if (fs.existsSync(this.CREDENTIALS_PATH_PROD)) return this.TOKEN_PATH_PROD;
+    if (fs.existsSync(this.CREDENTIALS_PATH_DEV)) return this.TOKEN_PATH_DEV;
     return null;
   }
 }
