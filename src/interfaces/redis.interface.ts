@@ -1,4 +1,4 @@
-import { CacheModuleAsyncOptions } from '@nestjs/common';
+import { CacheStore } from '@nestjs/cache-manager';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { redisStore } from 'cache-manager-redis-store';
 
@@ -6,7 +6,7 @@ export enum RedisKeys {
   category = 'CATEGORY',
 }
 
-export const RedisOptions: CacheModuleAsyncOptions = {
+export const RedisOptions = {
   isGlobal: true,
   imports: [ConfigModule],
   useFactory: async (configService: ConfigService) => {
@@ -20,7 +20,7 @@ export const RedisOptions: CacheModuleAsyncOptions = {
       // username: configService.get<string>('REDIS_USER'),
     });
     return {
-      store: () => store,
+      store: () => store as unknown as CacheStore,
     };
   },
   inject: [ConfigService],
