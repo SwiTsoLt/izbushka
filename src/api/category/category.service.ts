@@ -17,12 +17,9 @@ export class CategoryService {
 
   // Get
   public async getAll(): Promise<Category[]> {
-    return this.errorHandlerService
-      .handleError<Category[]>(this.categoryModel.find().exec())
-      .then((res) => {
-        console.log('get from server');
-        return res;
-      });
+    return this.errorHandlerService.handleError<Category[]>(
+      this.categoryModel.find().exec(),
+    );
   }
 
   public async getById(id: Types.ObjectId): Promise<Category> {
