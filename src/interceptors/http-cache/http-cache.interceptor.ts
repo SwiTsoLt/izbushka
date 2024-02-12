@@ -10,6 +10,7 @@ export class HttpCacheInterceptor extends CacheInterceptor {
 
       const isGetRequest = request.method === 'GET';
       const excludePaths = [
+        'api/auth',
         '/api/user/jwt',
         '/api/google',
         '/api/google/callback',
@@ -17,7 +18,8 @@ export class HttpCacheInterceptor extends CacheInterceptor {
 
       if (
         !isGetRequest ||
-        (isGetRequest && excludePaths.includes(request.path))
+        (isGetRequest &&
+          excludePaths.some((path) => request.path.includes(path)))
       ) {
         return undefined;
       }

@@ -10,21 +10,17 @@ export class GoogleController {
   constructor(private readonly googleService: GoogleService) {}
 
   @Get()
-  @Auth(rolesEnum.admin)
-  public async googleAuth() {
-    const client = await this.googleService
-      .loadOAuth2Client()
-      .catch(() => null);
+  // @Auth(rolesEnum.admin)
+  public googleAuth() {
+    const client = this.googleService.loadOAuth2Client();
+    if (!client) return null;
 
     if (client?.credentials) {
       oAuth2Client = client;
       return 'Success load oauth client';
     }
 
-    await this.googleService.generateOAuth2Client().catch((error) => {
-      console.error(error);
-      return null;
-    });
+    this.googleService.generateOAuth2Client();
   }
 
   @Get('/callback')
@@ -35,9 +31,20 @@ export class GoogleController {
         console.error(error);
         return null;
       });
-    await this.googleService.saveCredentials(oAuth2Client).catch((error) => {
-      console.error(error);
-      return null;
-    });
+    this.googleService.saveAccessTokens(oAuth2Client);
+  }
+
+  @Get('/token/expiry')
+  @Auth(rolesEnum.admin)
+  getAuthTokenExpiryDate() {
+    return this.googleService.getAuthTokenExpiryDate();
+  }
+
+  @Get('/token/update')
+  @Auth(rolesEnum.admin)
+  public async updateAuthTokens() {
+    oAuth2Client = await this.googleService
+      .updateAuthTokens()
+      .catch((error) => console.error(error));
   }
 }

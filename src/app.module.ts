@@ -15,6 +15,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { RedisOptions } from './interfaces/redis.interface';
 import { HttpCacheInterceptor } from './interceptors/http-cache/http-cache.interceptor';
+import { GoogleService } from './api/google/google.service';
 
 const rootPath = join(__dirname, '..', 'client', 'dist', 'client', 'browser');
 
@@ -43,10 +44,16 @@ const rootPath = join(__dirname, '..', 'client', 'dist', 'client', 'browser');
     AppService,
     ErrorHandlerService,
     MyJwtService,
+    GoogleService,
     {
       provide: APP_INTERCEPTOR,
       useClass: HttpCacheInterceptor,
     },
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(googleService: GoogleService) {
+    const delay = 1000 * 60 * 45;
+    setInterval(() => googleService.updateAuthTokens(), delay);
+  }
+}

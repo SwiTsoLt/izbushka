@@ -21,6 +21,7 @@ export class AuthGuard implements CanActivate {
     if (!authHeaders) throw new UnauthorizedException();
 
     await this.myJwtService.decodeAccessToken(authHeaders).catch(() => {
+      console.log('unauth1');
       throw new UnauthorizedException();
     });
 
