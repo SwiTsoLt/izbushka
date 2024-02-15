@@ -18,26 +18,25 @@ export class MyJwtService extends JwtService {
     });
   }
 
-  public async decodeAccessToken(access_token: string): Promise<JWTPayload> {
-    if (!access_token) {
+  public async decodeAuth(auth: string): Promise<JWTPayload> {
+    if (!auth) {
       throw new UnauthorizedException();
     }
 
-    const [type, token] = access_token.split(' ');
+    const [type, token] = auth.split(' ');
 
-    if (type !== 'Bearer') {
+    if (type.toUpperCase() !== 'BEARER' || !token?.length) {
       throw new UnauthorizedException();
     }
 
-    const isTokenVerify = await this.verifyAsync(token).catch((err) => {
+    const { sub, roles } = await this.verifyAsync(token).catch((err) => {
       throw new HttpException(err, HttpStatus.UNAUTHORIZED);
     });
 
-    if (!isTokenVerify) {
+    if (!sub?.length || !roles.length) {
       throw new UnauthorizedException();
     }
 
-    const payload = this.decode(token);
-    return payload;
+    return { sub, roles };
   }
 }

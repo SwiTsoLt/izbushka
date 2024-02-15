@@ -29,13 +29,13 @@ export class RolesGuard implements CanActivate {
     if (!rolesWhiteList) return true;
 
     const request: Request = context.switchToHttp().getRequest();
-    const authHeaders = request.headers.authorization;
+    const auth = request.headers.authorization;
 
-    if (!authHeaders) throw new UnauthorizedException();
+    if (!auth) throw new UnauthorizedException();
 
     const { sub, roles } =
       await this.errorHandlerService.handleError<JWTPayload>(
-        this.myJwtService.decodeAccessToken(authHeaders),
+        this.myJwtService.decodeAuth(auth),
       );
 
     if (!sub || !roles) throw new UnauthorizedException();

@@ -32,10 +32,10 @@ export class UserController {
   @Get('/jwt')
   @Auth()
   public async getByJWT(
-    @Headers('Authorization') authHeaders: string,
+    @Headers('Authorization') auth: string,
     @Res() res: Response,
   ): Promise<Response<User>> {
-    const { user, access_token } = await this.userService.getByJWT(authHeaders);
+    const { user, access_token } = await this.userService.getByJWT(auth);
     return res.setHeader('Authorization', 'Bearer ' + access_token).send(user);
   }
 

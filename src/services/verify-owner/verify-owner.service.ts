@@ -36,7 +36,7 @@ export class VerifyOwnerService {
     if (!refId) return false;
     const access_token = auth.split(' ')[1];
     const { sub } = await this.errorHandlerService.handleError(
-      this.myJwtService.decodeAccessToken(access_token),
+      this.myJwtService.decodeAuth(access_token),
     );
     return refId === sub;
   }

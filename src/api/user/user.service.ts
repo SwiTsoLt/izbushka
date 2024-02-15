@@ -37,9 +37,8 @@ export class UserService {
     );
   }
 
-  public async getByJWT(authHeaders: string): Promise<GetUserByJWTResponse> {
-    const access_token = authHeaders.split(' ')[1];
-    const { sub } = await this.myJwtService.decodeAccessToken(access_token);
+  public async getByJWT(auth: string): Promise<GetUserByJWTResponse> {
+    const { sub } = await this.myJwtService.decodeAuth(auth);
 
     if (!sub) {
       throw new UnauthorizedException();

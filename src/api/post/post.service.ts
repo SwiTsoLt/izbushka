@@ -50,7 +50,7 @@ export class PostService {
     createPostDTO: CreatePostDTO,
     results: IMultiSharpResult[],
   ): Promise<Post> {
-    const { sub } = await this.myJwtService.decodeAccessToken(access_token);
+    const { sub } = await this.myJwtService.decodeAuth(access_token);
 
     const promiseArr: Array<Promise<string>> = [];
     results.forEach(async (result) => {
