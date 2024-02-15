@@ -20,8 +20,7 @@ import {
   MultiSharpPipe,
   type IMultiSharpResult,
 } from '../../pipes/multisharp.pipe';
-import { Auth } from '../../decorators/auth/auth.decorator';
-import { Owner } from '../../decorators/owner/owner.decorator';
+import { Auth } from '../../decorators/auth.decorator';
 
 @Controller('/api/post')
 export class PostController {
@@ -55,7 +54,6 @@ export class PostController {
   // Patch
 
   @Patch('/:id')
-  @Owner()
   public async update(
     @Param('id') id: Types.ObjectId,
     @Body() updatePostDTO: UpdatePostDTO,
@@ -66,7 +64,6 @@ export class PostController {
   // Delete
 
   @Delete('/:id')
-  @Owner()
   public async delete(@Param('id') id: Types.ObjectId): Promise<MyPost> {
     return await this.postService.delete(id);
   }

@@ -21,11 +21,10 @@ export class GoogleService {
     __dirname,
     '../../../',
     'assets',
-    'secret',
     'token.json',
   );
 
-  private readonly TOKEN_PATH_PROD = '/etc/secrets/token.json';
+  // private readonly TOKEN_PATH_PROD = '/etc/secrets/token.json';
 
   private readonly SCOPES: string[] = ['https://www.googleapis.com/auth/drive'];
 
@@ -186,7 +185,7 @@ export class GoogleService {
   }
 
   private get tokenPath() {
-    if (fs.existsSync(this.CREDENTIALS_PATH_PROD)) return this.TOKEN_PATH_PROD;
+    // if (fs.existsSync(this.CREDENTIALS_PATH_PROD)) return this.TOKEN_PATH_PROD;
     if (fs.existsSync(this.CREDENTIALS_PATH_DEV)) return this.TOKEN_PATH_DEV;
     return null;
   }

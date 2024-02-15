@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { GoogleService } from './google.service';
-import { Auth } from '../../decorators/auth/auth.decorator';
 import { rolesEnum } from '../../interfaces/roles.interface';
+import { Roles } from '../../decorators/roles.decorator';
 
 export let oAuth2Client = null;
 
@@ -10,7 +10,7 @@ export class GoogleController {
   constructor(private readonly googleService: GoogleService) {}
 
   @Get()
-  // @Auth(rolesEnum.admin)
+  @Roles(rolesEnum.admin)
   public googleAuth() {
     const client = this.googleService.loadOAuth2Client();
     if (!client) return null;
@@ -35,13 +35,13 @@ export class GoogleController {
   }
 
   @Get('/token/expiry')
-  @Auth(rolesEnum.admin)
+  @Roles(rolesEnum.admin)
   getAuthTokenExpiryDate() {
     return this.googleService.getAuthTokenExpiryDate();
   }
 
   @Get('/token/update')
-  @Auth(rolesEnum.admin)
+  @Roles(rolesEnum.admin)
   public async updateAuthTokens() {
     oAuth2Client = await this.googleService
       .updateAuthTokens()

@@ -13,9 +13,8 @@ import { type User } from '../../schemas/user.schema';
 import { Response } from 'express';
 import { Types } from 'mongoose';
 import { UpdateUserDTO } from 'src/dtos/user.dto';
-import { Auth } from '../../decorators/auth/auth.decorator';
 import { rolesEnum } from '../../interfaces/roles.interface';
-import { Owner } from '../../decorators/owner/owner.decorator';
+import { Roles } from '../../decorators/roles.decorator';
 
 @Controller('api/user')
 export class UserController {
@@ -24,7 +23,7 @@ export class UserController {
   // Get
 
   @Get()
-  @Auth(rolesEnum.moderator, rolesEnum.admin)
+  @Roles(rolesEnum.moderator, rolesEnum.admin)
   public async getAll(): Promise<User[]> {
     return await this.userService.getAll();
   }
@@ -46,7 +45,6 @@ export class UserController {
   // Patch
 
   @Patch('/:id')
-  @Owner()
   public async update(
     @Param('id') id: Types.ObjectId,
     @Body() updateUserDTO: UpdateUserDTO,
@@ -57,7 +55,6 @@ export class UserController {
   // Delete
 
   @Delete('/:id')
-  @Owner()
   public async delete(@Param('id') id: Types.ObjectId): Promise<User> {
     return await this.userService.delete(id);
   }

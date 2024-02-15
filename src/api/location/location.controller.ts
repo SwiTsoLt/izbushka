@@ -17,8 +17,8 @@ import {
   UpdateAreaDTO,
   UpdateRegionDTO,
 } from '../../dtos/location.dto';
-import { Auth } from '../../decorators/auth/auth.decorator';
 import { rolesEnum } from '../../interfaces/roles.interface';
+import { Roles } from '../../decorators/roles.decorator';
 
 /*
     Area - Город
@@ -46,14 +46,14 @@ export class LocationController {
   // Area Post
 
   @Post('/area')
-  @Auth(rolesEnum.admin)
+  @Roles(rolesEnum.admin)
   public async postArea(@Body() postAreaDTO: PostAreaDTO): Promise<Area> {
     return await this.locationService.postArea(postAreaDTO);
   }
 
   // Area Patch
   @Patch('/area/:id')
-  @Auth(rolesEnum.admin)
+  @Roles(rolesEnum.admin)
   public async updateArea(
     @Param('id') id: Types.ObjectId,
     @Body() updateAreaDTO: UpdateAreaDTO,
@@ -63,7 +63,7 @@ export class LocationController {
 
   // Area Delete
   @Delete('/area/:id')
-  @Auth(rolesEnum.admin)
+  @Roles(rolesEnum.admin)
   public async deleteArea(@Param('id') id: Types.ObjectId): Promise<Area> {
     return await this.locationService.deleteArea(id);
   }
@@ -85,7 +85,7 @@ export class LocationController {
   // Region Post
 
   @Post('/region')
-  @Auth(rolesEnum.admin)
+  @Roles(rolesEnum.admin)
   public async postRegion(
     @Body() postRegionDTO: PostRegionDTO,
   ): Promise<Region> {
@@ -94,7 +94,7 @@ export class LocationController {
 
   // Region Patch
   @Patch('/region/:id')
-  @Auth(rolesEnum.admin)
+  @Roles(rolesEnum.admin)
   public async updateRegion(
     @Param('id') id: Types.ObjectId,
     @Body() updateRegionDTO: UpdateRegionDTO,
@@ -104,7 +104,7 @@ export class LocationController {
 
   // Region Delete
   @Delete('/region/:id')
-  @Auth(rolesEnum.admin)
+  @Roles(rolesEnum.admin)
   public async deleteRegion(@Param('id') id: Types.ObjectId): Promise<Region> {
     return await this.locationService.deleteRegion(id);
   }

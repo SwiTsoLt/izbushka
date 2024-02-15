@@ -11,8 +11,8 @@ import { CategoryService } from './category.service';
 import { type Category } from '../../schemas/category.schema';
 import { Types } from 'mongoose';
 import { PostCategoryDTO, UpdateCategoryDTO } from '../../dtos/category.dto';
-import { Auth } from '../../decorators/auth/auth.decorator';
 import { rolesEnum } from '../../interfaces/roles.interface';
+import { Roles } from '../../decorators/roles.decorator';
 
 @Controller('api/category')
 export class CategoryController {
@@ -33,7 +33,7 @@ export class CategoryController {
   // Post
 
   @Post()
-  @Auth(rolesEnum.admin)
+  @Roles(rolesEnum.admin)
   public async post(
     @Body() postCategoryDTO: PostCategoryDTO,
   ): Promise<Category> {
@@ -43,7 +43,7 @@ export class CategoryController {
   // Patch
 
   @Patch('/:id')
-  @Auth(rolesEnum.admin)
+  @Roles(rolesEnum.admin)
   public async update(
     @Param('id') id: Types.ObjectId,
     @Body() updateCategoryDTO: UpdateCategoryDTO,
@@ -54,7 +54,7 @@ export class CategoryController {
   // Delete
 
   @Delete('/:id')
-  @Auth(rolesEnum.admin)
+  @Roles(rolesEnum.admin)
   public async delete(@Param('id') id: Types.ObjectId): Promise<Category> {
     return await this.categoryService.delete(id);
   }
