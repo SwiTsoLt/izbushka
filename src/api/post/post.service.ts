@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Post } from '../../schemas/post.schema';
@@ -8,6 +8,7 @@ import { type CreatePostDTO, type UpdatePostDTO } from '../../dtos/post.dto';
 import { MyJwtService } from '../../services/jwt/jwt.service';
 import { type IMultiSharpResult } from '../../pipes/multisharp.pipe';
 import { GoogleDriveService } from '../../services/google-drive/google-drive.service';
+import { VerifyOwnerService } from '../../services/verify-owner/verify-owner.service';
 
 @Injectable()
 export class PostService {
@@ -17,6 +18,7 @@ export class PostService {
     private readonly errorHandlerService: ErrorHandlerService,
     private readonly myJwtService: MyJwtService,
     private readonly googleDriveService: GoogleDriveService,
+    private readonly verifyOwnerService: VerifyOwnerService,
   ) {}
 
   private readonly PAGE_SIZE = 10;
@@ -92,7 +94,12 @@ export class PostService {
   public async update(
     id: Types.ObjectId,
     updatePostDTO: UpdatePostDTO,
+    auth: string,
   ): Promise<Post> {
+    const isPostOwnerVerified = await this.errorHandlerService.handleError(
+      this.verifyOwnerService.verifyPostOwner(id, auth),
+    );
+    if (!isPostOwnerVerified) throw new ForbiddenException();
     return await this.errorHandlerService.handleError<Post>(
       this.postModel
         .findByIdAndUpdate(id, {
@@ -109,7 +116,11 @@ export class PostService {
 
   // Delete
 
-  public async delete(id: Types.ObjectId): Promise<Post> {
+  public async delete(id: Types.ObjectId, auth: string): Promise<Post> {
+    const isPostOwnerVerified = await this.errorHandlerService.handleError(
+      this.verifyOwnerService.verifyPostOwner(id, auth),
+    );
+    if (!isPostOwnerVerified) throw new ForbiddenException();
     return await this.errorHandlerService.handleError<Post>(
       this.postModel.findByIdAndDelete(id).exec(),
     );

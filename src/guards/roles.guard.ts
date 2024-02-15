@@ -8,35 +8,39 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { type Request } from 'express';
-import { MyJwtService } from 'src/services/jwt/jwt.service';
-import { type JWTPayload } from 'src/models/jwt.model';
+import { MyJwtService } from '../services/jwt/jwt.service';
+import { type JWTPayload } from '../models/jwt.model';
+import { ErrorHandlerService } from '../services/error-handler/error-handler.service';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     @Inject(MyJwtService) private readonly myJwtService: MyJwtService,
-  ) { }
+    private readonly errorHandlerService: ErrorHandlerService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const roles = this.reflector.getAllAndOverride<string[]>('roles', [
+    const rolesWhiteList = this.reflector.getAllAndOverride<string[]>('roles', [
       context.getHandler(),
       context.getClass(),
     ]);
 
-    if (!roles) return true;
+    if (!rolesWhiteList) return true;
 
     const request: Request = context.switchToHttp().getRequest();
     const authHeaders = request.headers.authorization;
 
     if (!authHeaders) throw new UnauthorizedException();
 
-    const payload: JWTPayload =
-      await this.myJwtService.decodeAccessToken(authHeaders);
+    const { sub, roles } =
+      await this.errorHandlerService.handleError<JWTPayload>(
+        this.myJwtService.decodeAccessToken(authHeaders),
+      );
 
-    if (!payload?.sub) throw new UnauthorizedException();
+    if (!sub || !roles) throw new UnauthorizedException();
 
-    return this.matchRoles(roles, payload.roles);
+    return this.matchRoles(rolesWhiteList, roles);
   }
 
   private matchRoles(roles: string[], userRoles: string[]): boolean {

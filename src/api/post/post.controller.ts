@@ -57,14 +57,18 @@ export class PostController {
   public async update(
     @Param('id') id: Types.ObjectId,
     @Body() updatePostDTO: UpdatePostDTO,
+    @Headers('Authorization') auth: string,
   ) {
-    return await this.postService.update(id, updatePostDTO);
+    return await this.postService.update(id, updatePostDTO, auth);
   }
 
   // Delete
 
   @Delete('/:id')
-  public async delete(@Param('id') id: Types.ObjectId): Promise<MyPost> {
-    return await this.postService.delete(id);
+  public async delete(
+    @Param('id') id: Types.ObjectId,
+    @Headers('Authorization') auth: string,
+  ): Promise<MyPost> {
+    return await this.postService.delete(id, auth);
   }
 }

@@ -2,12 +2,17 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { GoogleService } from './google.service';
 import { rolesEnum } from '../../interfaces/roles.interface';
 import { Roles } from '../../decorators/roles.decorator';
+import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
+import { IUpdateAccessTokenResponse } from '../../interfaces/google.interface';
 
 export let oAuth2Client = null;
 
 @Controller('/api/google')
 export class GoogleController {
-  constructor(private readonly googleService: GoogleService) {}
+  constructor(
+    private readonly googleService: GoogleService,
+    private readonly errorHandlerService: ErrorHandlerService,
+  ) {}
 
   @Get()
   @Roles(rolesEnum.admin)
@@ -36,15 +41,20 @@ export class GoogleController {
 
   @Get('/token/expiry')
   @Roles(rolesEnum.admin)
-  getAuthTokenExpiryDate() {
-    return this.googleService.getAuthTokenExpiryDate();
+  public async getAuthTokenExpiryDate() {
+    return this.errorHandlerService.handleError(
+      new Promise((res) => res(this.googleService.getAuthTokenExpiryDate())),
+    );
   }
 
   @Get('/token/update')
   @Roles(rolesEnum.admin)
   public async updateAuthTokens() {
-    oAuth2Client = await this.googleService
-      .updateAuthTokens()
-      .catch((error) => console.error(error));
+    const { client, message } =
+      await this.errorHandlerService.handleError<IUpdateAccessTokenResponse>(
+        this.googleService.updateAuthTokens(),
+      );
+    oAuth2Client = client;
+    return { message };
   }
 }

@@ -4,6 +4,10 @@ import { google } from 'googleapis';
 import * as open from 'open';
 import * as path from 'path';
 import * as fs from 'fs';
+import {
+  IGetAuthTokenExpiryDateResponse,
+  IUpdateAccessTokenResponse,
+} from '../../interfaces/google.interface';
 
 @Injectable()
 export class GoogleService {
@@ -94,13 +98,13 @@ export class GoogleService {
     });
   }
 
-  public getAuthTokenExpiryDate() {
+  public getAuthTokenExpiryDate(): IGetAuthTokenExpiryDateResponse {
     if (!this.tokenPath) return null;
     const content = fs.readFileSync(this.tokenPath, 'utf-8');
     const token = JSON.parse(content);
     const d = token.expiry_date - Date.now();
     if (d < 0) {
-      return 'token expire';
+      return { error: 'token expire' };
     }
 
     const hours = Math.floor(d / 1000 / 60 / 60);
@@ -113,7 +117,7 @@ export class GoogleService {
     };
   }
 
-  public updateAuthTokens() {
+  public updateAuthTokens(): Promise<IUpdateAccessTokenResponse> {
     return new Promise((resolve, reject) => {
       const client = this.loadOAuth2Client(false);
       if (!client) return null;
@@ -131,7 +135,7 @@ export class GoogleService {
         });
 
         client.setCredentials(tokens);
-        return resolve(client);
+        return resolve({ client, message: 'Success update auth tokens' });
       });
     });
   }

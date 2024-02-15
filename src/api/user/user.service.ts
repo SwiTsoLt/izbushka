@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { User } from '../../schemas/user.schema';
 import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -8,6 +12,7 @@ import {
 } from '../../dtos/user.dto';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
 import { MyJwtService } from '../../services/jwt/jwt.service';
+import { VerifyOwnerService } from '../../services/verify-owner/verify-owner.service';
 
 @Injectable()
 export class UserService {
@@ -15,6 +20,7 @@ export class UserService {
     @InjectModel(User.name) private readonly userModel: Model<User>,
     private readonly myJwtService: MyJwtService,
     private readonly errorHandlerService: ErrorHandlerService,
+    private readonly verifyOwnerService: VerifyOwnerService,
   ) {}
 
   // Get
@@ -31,7 +37,8 @@ export class UserService {
     );
   }
 
-  public async getByJWT(access_token: string): Promise<GetUserByJWTResponse> {
+  public async getByJWT(authHeaders: string): Promise<GetUserByJWTResponse> {
+    const access_token = authHeaders.split(' ')[1];
     const { sub } = await this.myJwtService.decodeAccessToken(access_token);
 
     if (!sub) {
@@ -55,24 +62,34 @@ export class UserService {
   public async update(
     id: Types.ObjectId,
     updateUserDTO: UpdateUserDTO,
+    auth: string,
   ): Promise<User> {
-    console.log(updateUserDTO);
+    const isUserOwnerVerified = await this.errorHandlerService.handleError(
+      this.verifyOwnerService.verifyUserOwner(id, auth),
+    );
+    if (!isUserOwnerVerified) throw new ForbiddenException();
     return await this.errorHandlerService.handleError<User>(
-      this.userModel.findByIdAndUpdate(id, {
-        ...updateUserDTO,
-        location: {
-          area: new Types.ObjectId(updateUserDTO.location.area),
-          region: new Types.ObjectId(updateUserDTO.location.region),
-        },
-      }),
+      this.userModel
+        .findByIdAndUpdate(id, {
+          ...updateUserDTO,
+          location: {
+            area: new Types.ObjectId(updateUserDTO.location.area),
+            region: new Types.ObjectId(updateUserDTO.location.region),
+          },
+        })
+        .exec(),
     );
   }
 
   // Delete
 
-  public async delete(id: Types.ObjectId): Promise<User> {
+  public async delete(id: Types.ObjectId, auth: string): Promise<User> {
+    const isUserOwnerVerified = await this.errorHandlerService.handleError(
+      this.verifyOwnerService.verifyUserOwner(id, auth),
+    );
+    if (!isUserOwnerVerified) throw new ForbiddenException();
     return await this.errorHandlerService.handleError(
-      this.userModel.findByIdAndDelete(id),
+      this.userModel.findByIdAndDelete(id).exec(),
     );
   }
 }

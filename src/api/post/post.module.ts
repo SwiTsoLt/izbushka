@@ -8,6 +8,7 @@ import { ErrorHandlerService } from '../../services/error-handler/error-handler.
 import { MyJwtService } from '../../services/jwt/jwt.service';
 import { GoogleDriveService } from '../../services/google-drive/google-drive.service';
 import { GoogleService } from '../google/google.service';
+import { VerifyOwnerService } from '../../services/verify-owner/verify-owner.service';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { GoogleService } from '../google/google.service';
     MyJwtService,
     GoogleDriveService,
     GoogleService,
+    VerifyOwnerService,
   ],
 })
 export class PostModule {}
