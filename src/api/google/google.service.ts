@@ -40,9 +40,11 @@ export class GoogleService {
     checkAccessTokenExpiry: boolean = true,
   ): OAuth2Client | null {
     const credentials = this.credentials;
+    console.log('cred: ', credentials);
     if (!credentials) return null;
 
     const token = this.token;
+    console.log('token: ', token);
     if (checkAccessTokenExpiry && (!token || token.expiry_date < Date.now()))
       return null;
 

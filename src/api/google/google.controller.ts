@@ -18,10 +18,10 @@ export class GoogleController {
   // @Roles(rolesEnum.admin)
   public googleAuth() {
     let client = this.googleService.loadOAuth2Client();
+    console.log(client);
     if (!client) {
       client = this.googleService.generateOAuth2Client();
     }
-        
     console.log(client);
 
     if (client?.credentials) {
