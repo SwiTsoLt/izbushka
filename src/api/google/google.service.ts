@@ -46,17 +46,10 @@ export class GoogleService {
     if (checkAccessTokenExpiry && (!token || token.expiry_date < Date.now()))
       return null;
 
-    const redirectUri =
-      this.credentialsPath === this.CREDENTIALS_PATH_PROD
-        ? credentials.redirect_uris[0]
-        : credentials.redirect_uris[1];
-
-    console.log(redirectUri);
-
     const client: OAuth2Client = new google.auth.OAuth2({
       clientId: credentials.client_id,
       clientSecret: credentials.client_secret,
-      redirectUri,
+      redirectUri: this.redirectUri,
       credentials: token,
     });
 
@@ -203,5 +196,12 @@ export class GoogleService {
   private get tokenPath() {
     if (fs.existsSync(this.TOKEN_PATH)) return this.TOKEN_PATH;
     return null;
+  }
+
+  private get redirectUri() {
+    const cred = this.credentials;
+    return this.credentialsPath === this.CREDENTIALS_PATH_PROD
+      ? cred.redirect_uris[0]
+      : cred.redirect_uris[1];
   }
 }
