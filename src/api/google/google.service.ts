@@ -99,7 +99,7 @@ export class GoogleService {
   }
 
   public getAuthTokenExpiryDate(): IGetAuthTokenExpiryDateResponse {
-    if (!this.tokenPath) return null;
+    if (!this.tokenPath) return { error: 'token not found' };
     const content = fs.readFileSync(this.tokenPath, 'utf-8');
     const token = JSON.parse(content);
     const d = token.expiry_date - Date.now();
@@ -119,24 +119,30 @@ export class GoogleService {
 
   public updateAuthTokens(): Promise<IUpdateAccessTokenResponse> {
     return new Promise((resolve, reject) => {
-      const client = this.loadOAuth2Client(false);
-      if (!client) return null;
+      try {
+        const client = this.loadOAuth2Client(false);
+        if (!client) return reject({ error: 'oauth2 client not found' });
+        if (!this.tokenPath) return reject({ error: 'token not found' });
 
-      client.refreshAccessToken((error, tokens) => {
-        if (error) return reject(error);
+        client.refreshAccessToken((error, tokens) => {
+          if (error) return reject(error);
 
-        const payload = {
-          ...this.token,
-          ...tokens,
-        };
+          const payload = {
+            ...this.token,
+            ...tokens,
+          };
 
-        fs.writeFile(this.tokenPath, JSON.stringify(payload), () => {
-          console.log('Credential has been successful saved!');
+          fs.writeFile(this.tokenPath, JSON.stringify(payload), () => {
+            console.log('Credential has been successful saved!');
+          });
+
+          client.setCredentials(tokens);
+          return resolve({ client, message: 'Success update auth tokens' });
         });
-
-        client.setCredentials(tokens);
-        return resolve({ client, message: 'Success update auth tokens' });
-      });
+      } catch (error) {
+        console.error(error);
+        reject(error);
+      }
     });
   }
 
@@ -190,7 +196,7 @@ export class GoogleService {
 
   private get tokenPath() {
     // if (fs.existsSync(this.CREDENTIALS_PATH_PROD)) return this.TOKEN_PATH_PROD;
-    if (fs.existsSync(this.CREDENTIALS_PATH_DEV)) return this.TOKEN_PATH_DEV;
+    if (fs.existsSync(this.TOKEN_PATH_DEV)) return this.TOKEN_PATH_DEV;
     return null;
   }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, InternalServerErrorException, Query } from '@nestjs/common';
 import { GoogleService } from './google.service';
 import { rolesEnum } from '../../interfaces/roles.interface';
 import { Roles } from '../../decorators/roles.decorator';
@@ -15,7 +15,7 @@ export class GoogleController {
   ) {}
 
   @Get()
-  @Roles(rolesEnum.admin)
+  // @Roles(rolesEnum.admin)
   public googleAuth() {
     const client = this.googleService.loadOAuth2Client();
     if (!client) return null;
@@ -53,7 +53,9 @@ export class GoogleController {
     const { client, message } =
       await this.errorHandlerService.handleError<IUpdateAccessTokenResponse>(
         this.googleService.updateAuthTokens(),
-      );
+      ).catch((error) => {
+        throw new InternalServerErrorException();
+      });
     oAuth2Client = client;
     return { message };
   }
