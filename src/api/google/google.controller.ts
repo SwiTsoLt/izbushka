@@ -21,6 +21,8 @@ export class GoogleController {
     if (!client) {
       client = this.googleService.generateOAuth2Client();
     }
+        
+    console.log(client);
 
     if (client?.credentials) {
       oAuth2Client = client;
