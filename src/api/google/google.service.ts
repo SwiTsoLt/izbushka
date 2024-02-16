@@ -46,11 +46,9 @@ export class GoogleService {
     checkAccessTokenExpiry: boolean = true,
   ): OAuth2Client | null {
     const credentials = this.credentials;
-    console.log('cred: ', credentials);
     if (!credentials) return null;
 
     const token = this.token;
-    console.log('token: ', token);
     if (checkAccessTokenExpiry && (!token || token.expiry_date < Date.now()))
       return null;
 
@@ -67,7 +65,6 @@ export class GoogleService {
   public generateOAuth2Client(): OAuth2Client {
     const oAuth2Client = this.emptyOAuth2Client;
     const authUrl = oAuth2Client.generateAuthUrl(this.authUrlConfig);
-    console.log(authUrl);
     open(authUrl);
     return oAuth2Client;
   }
@@ -129,6 +126,8 @@ export class GoogleService {
         if (!client) return reject({ error: 'oauth2 client not found' });
         if (!this.tokenPath) return reject({ error: 'token not found' });
 
+        console.log('client cred: ', client.credentials);
+
         client.refreshAccessToken((error, tokens) => {
           if (error) return reject(error);
 
@@ -177,9 +176,6 @@ export class GoogleService {
 
   private get emptyOAuth2Client(): OAuth2Client {
     const credentials = this.credentials;
-
-    console.log(this.redirectUri);
-
     return new google.auth.OAuth2({
       clientId: credentials.client_id,
       clientSecret: credentials.client_secret,
