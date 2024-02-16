@@ -64,6 +64,7 @@ export class GoogleService {
   public generateOAuth2Client(): OAuth2Client {
     const oAuth2Client = this.emptyOAuth2Client;
     const authUrl = oAuth2Client.generateAuthUrl(this.authUrlConfig);
+    console.log(authUrl);
     open(authUrl);
     return oAuth2Client;
   }
