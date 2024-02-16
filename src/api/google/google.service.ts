@@ -165,10 +165,12 @@ export class GoogleService {
   private get emptyOAuth2Client(): OAuth2Client {
     const credentials = this.credentials;
 
+    console.log(this.redirectUri);
+
     return new google.auth.OAuth2({
       clientId: credentials.client_id,
       clientSecret: credentials.client_secret,
-      redirectUri: credentials.redirect_uris[0],
+      redirectUri: this.redirectUri,
     });
   }
 
