@@ -21,14 +21,12 @@ export class GoogleService {
 
   private readonly CREDENTIALS_PATH_PROD = '/etc/secrets/credentials.json';
 
-  private readonly TOKEN_PATH_DEV = path.resolve(
+  private readonly TOKEN_PATH = path.resolve(
     __dirname,
     '../../../',
     'assets',
     'token.json',
   );
-
-  // private readonly TOKEN_PATH_PROD = '/etc/secrets/token.json';
 
   private readonly SCOPES: string[] = ['https://www.googleapis.com/auth/drive'];
 
@@ -74,8 +72,13 @@ export class GoogleService {
     return await new Promise<OAuth2Client>(async (resolve, reject) => {
       try {
         const oauth2client = this.emptyOAuth2Client;
-
         const { tokens } = await oauth2client.getToken(code).catch(() => null);
+
+        if (!this.tokenPath) {
+          oauth2client.setCredentials(tokens);
+          console.log('Authentication successful!');
+          return resolve(oauth2client);
+        }
 
         if (!tokens.refresh_token) {
           const content = fs.readFileSync(this.tokenPath, 'utf-8');
@@ -91,9 +94,9 @@ export class GoogleService {
 
         oauth2client.setCredentials(tokens);
         console.log('Authentication successful!');
-        resolve(oauth2client);
+        return resolve(oauth2client);
       } catch (error) {
-        reject(error);
+        return reject(error);
       }
     });
   }
@@ -148,7 +151,7 @@ export class GoogleService {
 
   public saveAccessTokens(client: OAuth2Client): void {
     const payload = JSON.stringify(client.credentials);
-    fs.writeFile(this.tokenPath, payload, () => {
+    fs.writeFile(this.TOKEN_PATH, payload, () => {
       console.log('Credential has been successful saved!');
     });
   }
@@ -195,8 +198,7 @@ export class GoogleService {
   }
 
   private get tokenPath() {
-    // if (fs.existsSync(this.CREDENTIALS_PATH_PROD)) return this.TOKEN_PATH_PROD;
-    if (fs.existsSync(this.TOKEN_PATH_DEV)) return this.TOKEN_PATH_DEV;
+    if (fs.existsSync(this.TOKEN_PATH)) return this.TOKEN_PATH;
     return null;
   }
 }

@@ -17,15 +17,15 @@ export class GoogleController {
   @Get()
   // @Roles(rolesEnum.admin)
   public googleAuth() {
-    const client = this.googleService.loadOAuth2Client();
-    if (!client) return null;
+    let client = this.googleService.loadOAuth2Client();
+    if (!client) {
+      client = this.googleService.generateOAuth2Client();
+    }
 
     if (client?.credentials) {
       oAuth2Client = client;
       return 'Success load oauth client';
     }
-
-    this.googleService.generateOAuth2Client();
   }
 
   @Get('/callback')
