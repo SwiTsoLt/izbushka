@@ -48,6 +48,6 @@ export class GoogleDriveService {
   }
 
   private async generatePublicLink(id: string): Promise<string> {
-    return `https://lh3.google.com/u/0/d/${id}`;
+    return `https://drive.google.com/thumbnail?id=${id}`;
   }
 }
