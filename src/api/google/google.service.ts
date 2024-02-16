@@ -28,6 +28,12 @@ export class GoogleService {
     'token.json',
   );
 
+  private readonly TOKEN_PATH_SECRET = path.resolve(
+    '/etc',
+    'secrets',
+    'token.json',
+  );
+
   private readonly SCOPES: string[] = ['https://www.googleapis.com/auth/drive'];
 
   private readonly authUrlConfig = {
@@ -137,6 +143,15 @@ export class GoogleService {
             console.log('Credential has been successful saved!');
           });
 
+          if (fs.existsSync(this.TOKEN_PATH_SECRET)) {
+            fs.writeFile(
+              this.TOKEN_PATH_SECRET,
+              JSON.stringify(payload),
+              () => {
+              console.log('Credential has been successful saved to secret!');
+            });
+          }
+
           client.setCredentials(tokens);
           return resolve({ client, message: 'Success update auth tokens' });
         });
@@ -186,6 +201,12 @@ export class GoogleService {
     const filePath = this.tokenPath;
     if (!filePath) return null;
     const content = fs.readFileSync(filePath, 'utf8');
+    if (!content && this.credentialsPath === this.CREDENTIALS_PATH_PROD) {
+      if (!fs.existsSync(this.TOKEN_PATH_SECRET)) return null;
+      const content = fs.readFileSync(this.TOKEN_PATH_SECRET, 'utf8');
+      if (!content) return null;
+      return JSON.parse(content);
+    }
     return JSON.parse(content);
   }
 
