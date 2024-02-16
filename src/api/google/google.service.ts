@@ -134,7 +134,7 @@ export class GoogleService {
             ...tokens,
           };
 
-          fs.writeFile(this.tokenPath, JSON.stringify(payload), () => {
+          fs.writeFile(this.TOKEN_PATH, JSON.stringify(payload), () => {
             console.log('Credential has been successful saved!');
           });
 
