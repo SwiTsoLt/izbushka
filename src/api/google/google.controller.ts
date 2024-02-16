@@ -1,9 +1,10 @@
-import { Controller, Get, InternalServerErrorException, Query } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { GoogleService } from './google.service';
 import { rolesEnum } from '../../interfaces/roles.interface';
 import { Roles } from '../../decorators/roles.decorator';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
 import { IUpdateAccessTokenResponse } from '../../interfaces/google.interface';
+import { OAuth2Client } from 'google-auth-library';
 
 export let oAuth2Client = null;
 
@@ -16,13 +17,20 @@ export class GoogleController {
 
   @Get()
   // @Roles(rolesEnum.admin)
-  public googleAuth() {
-    let client = this.googleService.loadOAuth2Client();
-    console.log(client);
+  public async googleAuth() {
+    let client: OAuth2Client =
+      await this.errorHandlerService.handleError<OAuth2Client>(
+        new Promise((resolve) =>
+          resolve(this.googleService.loadOAuth2Client()),
+        ),
+      );
     if (!client) {
-      client = this.googleService.generateOAuth2Client();
+      client = await this.errorHandlerService.handleError<OAuth2Client>(
+        new Promise((resolve) =>
+          resolve(this.googleService.generateOAuth2Client()),
+        ),
+      );
     }
-    console.log(client);
 
     if (client?.credentials) {
       oAuth2Client = client;
@@ -32,12 +40,10 @@ export class GoogleController {
 
   @Get('/callback')
   public async handleCallback(@Query('code') code: string): Promise<void> {
-    oAuth2Client = await this.googleService
-      .handleCallback(code)
-      .catch((error) => {
-        console.error(error);
-        return null;
-      });
+    oAuth2Client = await this.errorHandlerService.handleError<OAuth2Client>(
+      this.googleService.handleCallback(code),
+    );
+
     this.googleService.saveAccessTokens(oAuth2Client);
   }
 
@@ -55,9 +61,7 @@ export class GoogleController {
     const { client, message } =
       await this.errorHandlerService.handleError<IUpdateAccessTokenResponse>(
         this.googleService.updateAuthTokens(),
-      ).catch((error) => {
-        throw new InternalServerErrorException();
-      });
+      );
     oAuth2Client = client;
     return { message };
   }

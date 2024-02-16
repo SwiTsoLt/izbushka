@@ -18,6 +18,8 @@ export class ErrorHandlerService {
 
       return result;
     } catch (error) {
+      console.error(error);
+
       if (error.status === 401) {
         throw new UnauthorizedException();
       }
@@ -30,7 +32,21 @@ export class ErrorHandlerService {
         throw new BadRequestException();
       }
 
-      console.error(error);
+      if (error?.response?.data?.error === 'invalid_grant') {
+        throw new UnauthorizedException(
+          {
+            ...error?.response?.data,
+            status: error?.response?.status,
+            statusText: error?.response?.statusText,
+            request: error?.response?.request,
+          },
+          {
+            cause: error?.response?.data?.error,
+            description: error?.response?.data?.error_description,
+          },
+        );
+      }
+
       throw new InternalServerErrorException();
     }
   }

@@ -126,8 +126,6 @@ export class GoogleService {
         if (!client) return reject({ error: 'oauth2 client not found' });
         if (!this.tokenPath) return reject({ error: 'token not found' });
 
-        console.log('client cred: ', client.credentials);
-
         client.refreshAccessToken((error, tokens) => {
           if (error) return reject(error);
 
@@ -145,8 +143,9 @@ export class GoogleService {
               this.TOKEN_PATH_SECRET,
               JSON.stringify(payload),
               () => {
-              console.log('Credential has been successful saved to secret!');
-            });
+                console.log('Credential has been successful saved to secret!');
+              },
+            );
           }
 
           client.setCredentials(tokens);
@@ -164,6 +163,11 @@ export class GoogleService {
     fs.writeFile(this.TOKEN_PATH, payload, () => {
       console.log('Credential has been successful saved!');
     });
+    if (this.credentialsPath === this.CREDENTIALS_PATH_PROD) {
+      fs.writeFile(this.TOKEN_PATH_SECRET, payload, () => {
+        console.log('Credential has been successful saved secret!');
+      });
+    }
   }
 
   // Drive
