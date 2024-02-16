@@ -218,6 +218,7 @@ export class GoogleService {
 
   private get tokenPath() {
     if (fs.existsSync(this.TOKEN_PATH)) return this.TOKEN_PATH;
+    if (fs.existsSync(this.TOKEN_PATH)) return this.TOKEN_PATH_SECRET;
     return null;
   }
 
