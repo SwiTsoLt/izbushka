@@ -51,6 +51,8 @@ export class GoogleService {
         ? credentials.redirect_uris[0]
         : credentials.redirect_uris[1];
 
+    console.log(redirectUri);
+
     const client: OAuth2Client = new google.auth.OAuth2({
       clientId: credentials.client_id,
       clientSecret: credentials.client_secret,
