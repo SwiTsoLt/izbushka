@@ -2,17 +2,17 @@ import { Injectable } from '@angular/core';
 import { Post } from './post.model';
 import { StaticDataSource } from './static.datasource';
 import { Observable, map } from 'rxjs';
-import { PostService } from '@services/post.service';
+import { CacheRepository } from './cache.repository';
 
 @Injectable()
 export class PostRepository {
   constructor(
     private readonly dataSource: StaticDataSource,
-    private readonly postService: PostService,
+    private readonly cacheRepository: CacheRepository,
   ) {}
 
   public getPage(page: number): Observable<Post[]> {
-    return this.postService.getPage(page);
+    return this.cacheRepository.getPostsPage(page);
   }
 
   public getPosts(categoryID = null): Observable<Post[]> {

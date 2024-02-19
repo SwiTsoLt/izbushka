@@ -10,12 +10,13 @@ import {
   selectLocationArea,
   selectLocationRegion,
 } from '@store/location/location.selectors';
+import { CacheRepository } from '@models/cache.repository';
 
 @Component({
   selector: 'app-posts-item',
   standalone: true,
   imports: [CommonModule],
-  providers: [{ provide: UserRepository }],
+  providers: [{ provide: UserRepository} , { provide: CacheRepository }],
   templateUrl: './posts-item.component.html',
   styleUrl: './posts-item.component.scss',
 })
@@ -36,11 +37,9 @@ export class PostsItemComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.post?.owner) return;
-    this.user$ = this.getUserById(this.post.owner);
-  }
-
-  public getUserById(id: string): Observable<User | null> {
-    return this.userRepository.getUser(id);
+    this.userRepository.getUserById(this.post.owner).subscribe(user => {
+      this.user$ = of(user);
+    });
   }
 
   public get area$(): Observable<LocationArea | null> {

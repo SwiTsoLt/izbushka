@@ -14,6 +14,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideRouter(routes),
     provideStore(fromStoreReference.reducers, {
+      runtimeChecks: {
+        strictStateImmutability: false,
+      },
       metaReducers: fromStoreReference.metaReducers,
     }),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),

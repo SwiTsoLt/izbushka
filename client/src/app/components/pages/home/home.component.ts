@@ -10,6 +10,7 @@ import { HomeAsideComponent } from './home-aside/home-aside.component';
 import { MobileNavbarComponent } from '@MUI/mobile-navbar/mobile-navbar.component';
 import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
 import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-context-menu.component';
+import { CacheRepository } from '@models/cache.repository';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,11 @@ import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-cont
     MobileMenuComponent,
     MobileContextMenuComponent,
   ],
-  providers: [{ provide: PostRepository }, { provide: StaticDataSource }],
+  providers: [
+    { provide: PostRepository },
+    { provide: CacheRepository },
+    { provide: StaticDataSource },
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

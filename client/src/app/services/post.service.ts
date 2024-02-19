@@ -8,20 +8,21 @@ import { HttpResponse } from '@angular/common/http';
   providedIn: 'root',
 })
 export class PostService {
-  constructor(private httpService: HttpService) {}
+  constructor(
+    private readonly httpService: HttpService,
+  ) { }
 
-  public getPage(page: number): Observable<Post[]> {
+  public getPage(page: number = 0): Observable<Post[]> {
     return this.httpService.get<Post[]>(`/api/post?page=${page}`).pipe(
       takeLast(1),
       map((response: HttpResponse<Post[] | null>) => {
         if (!response.body) return [];
         return response.body;
       }),
-    );
+    )
   }
 
   public createPost(createPostDTO: FormData): Observable<Post | null> {
-    console.log(createPostDTO);
     return this.httpService
       .post<Post | null>('/api/post', createPostDTO, {
         reportProgress: true,
