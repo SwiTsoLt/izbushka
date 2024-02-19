@@ -11,6 +11,7 @@ export class User {
     public rating: number,
     public roles: string[],
     public posts: string[],
+    public favorites: string[],
     public location: ShortLocation,
     public registration_date: number,
   ) {}

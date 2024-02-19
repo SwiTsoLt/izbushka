@@ -1,21 +1,25 @@
 import { Injectable } from '@angular/core';
 import { User } from './user.model';
-import { StaticDataSource } from './static.datasource';
 import { Observable } from 'rxjs';
 import { CacheRepository } from './cache.repository';
+import { UserService } from '@services/user.service';
 
 @Injectable()
 export class UserRepository {
   constructor(
-    private readonly dataSource: StaticDataSource,
     private readonly cacheRepository: CacheRepository,
-  ) {}
-
-  public getUsers(): Observable<User[]> {
-    return this.dataSource.getUsers();
-  }
+    private readonly userService: UserService,
+  ) { }
 
   public getUserById(id: string): Observable<User | null> {
-    return this.cacheRepository.getUserById(id);
+    return new Observable<User | null>((subscriber) => {
+      this.cacheRepository.getUserById(id).subscribe((cacheUser: User | null) => {
+        if (cacheUser) return subscriber.next(cacheUser);
+        this.userService.getUserById(id).subscribe((user: User | null) => {
+          user && this.cacheRepository.setUser(user);
+          subscriber.next(user);
+        })
+      });
+    })
   }
 }

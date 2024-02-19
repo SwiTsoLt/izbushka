@@ -1,45 +1,37 @@
 import { Injectable } from '@angular/core';
 import { Post } from './post.model';
-import { StaticDataSource } from './static.datasource';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { CacheRepository } from './cache.repository';
+import { PostService } from '@services/post.service';
 
 @Injectable()
 export class PostRepository {
   constructor(
-    private readonly dataSource: StaticDataSource,
     private readonly cacheRepository: CacheRepository,
+    private readonly postService: PostService,
   ) {}
 
   public getPage(page: number): Observable<Post[]> {
-    return this.cacheRepository.getPostsPage(page);
+    return new Observable<Post[]>((subscriber) => {
+      this.cacheRepository.getPostsPage(page).subscribe((cachePosts: Post[]) => {
+        if (cachePosts.length) return subscriber.next(cachePosts);
+        this.postService.getPage(page).subscribe(posts => {
+          posts.forEach(post => this.cacheRepository.setPost(post));
+          return subscriber.next(posts)
+      })
+      });
+    })
   }
 
-  public getPosts(categoryID = null): Observable<Post[]> {
-    return this.dataSource
-      .getPosts()
-      .pipe(map((posts) => posts.filter(this.isPostValid)))
-      .pipe(
-        map((posts) =>
-          posts.filter((p: Post) => !categoryID || categoryID === p.category),
-        ),
-      );
-  }
-
-  public getPost(id: string): Observable<Post | undefined> {
-    return this.dataSource.getPost(id).pipe(
-      map((post: Post | undefined) => {
-        if (!post) return undefined;
-        if (!this.isPostValid(post)) return undefined;
-        return post;
-      }),
-    );
-  }
-
-  // Private
-
-  private isPostValid(post: Post): boolean {
-    if (!post) return false;
-    return Object.keys(post).every((key) => !!post[key as keyof Post]);
+  public getPostById(id: string): Observable<Post | null> {
+    return new Observable<Post | null>((subscriber) => {
+      this.cacheRepository.getPostById(id).subscribe((cacheUser: Post | null) => {
+        if (cacheUser) return subscriber.next(cacheUser);
+        this.postService.getPostById(id).subscribe((post: Post | null) => {
+          post && this.cacheRepository.setPost(post);
+          return subscriber.next(post);
+        })
+      })
+    })
   }
 }

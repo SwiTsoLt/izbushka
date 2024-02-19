@@ -1,3 +1,16 @@
-<div class="my-posts">
+<div class="my-posts standard-page">
     <app-navbar></app-navbar>
+    <app-mobile-navbar></app-mobile-navbar>
+    <app-mobile-menu (toggleMobileContextMenuShow)="ctx.isShow = !ctx.isShow"></app-mobile-menu>
+    <app-mobile-context-menu #ctx></app-mobile-context-menu>
+
+    <div class="container">
+        <div class="page-title">
+            <h2>Мои объявления</h2>
+        </div>
+        <hr>
+        <div class="page-body">
+            <app-posts [posts$]="posts$"></app-posts>
+        </div>
+    </div>
 </div>

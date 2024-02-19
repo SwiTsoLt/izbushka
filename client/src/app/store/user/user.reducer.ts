@@ -12,6 +12,7 @@ export const initialState: User = {
   last_name: '',
   roles: [],
   posts: [],
+  favorites: [],
   avatar: '',
   rating: 0,
   location: {

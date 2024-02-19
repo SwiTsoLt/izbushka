@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { PostRepository } from 'models/post.repository';
 import { Post } from 'models/post.model';
 import { NavbarComponent } from '@UI/navbar/navbar.component';
-import { StaticDataSource } from 'models/static.datasource';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { PostsComponent } from '@UI/posts/posts.component';
@@ -24,11 +23,7 @@ import { CacheRepository } from '@models/cache.repository';
     MobileMenuComponent,
     MobileContextMenuComponent,
   ],
-  providers: [
-    { provide: PostRepository },
-    { provide: CacheRepository },
-    { provide: StaticDataSource },
-  ],
+  providers: [{ provide: PostRepository }, { provide: CacheRepository }],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

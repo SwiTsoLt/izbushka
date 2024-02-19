@@ -22,6 +22,16 @@ export class PostService {
     )
   }
 
+  public getPostById(id: string): Observable<Post | null> {
+    return this.httpService.get<Post | null>(`/api/post/${id}`).pipe(
+      takeLast(1),
+      map((response: HttpResponse<Post | null>) => {
+        if (!response.body) return null;
+        return response.body;
+      }),
+    )
+  }
+
   public createPost(createPostDTO: FormData): Observable<Post | null> {
     return this.httpService
       .post<Post | null>('/api/post', createPostDTO, {

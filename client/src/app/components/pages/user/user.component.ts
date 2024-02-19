@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Observable, forkJoin, map, of, take } from 'rxjs';
+import { Observable, map, of, take, zip } from 'rxjs';
 import { User } from '@models/user.model';
 import { CommonModule } from '@angular/common';
 import { UserCardComponent } from '@UI/user-card/user-card.component';
@@ -10,7 +10,7 @@ import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
 import { MobileNavbarComponent } from '@MUI/mobile-navbar/mobile-navbar.component';
 import { Store } from '@ngrx/store';
 import { selectUser } from '@store/user/user.selectors';
-import { CacheRepository } from '@models/cache.repository';
+import { UserRepository } from '@models/user.repository';
 
 @Component({
   selector: 'app-user',
@@ -24,7 +24,7 @@ import { CacheRepository } from '@models/cache.repository';
     MobileMenuComponent,
     MobileNavbarComponent,
   ],
-  providers: [{ provide: CacheRepository }],
+  providers: [{ provide: UserRepository }],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
 })
@@ -37,12 +37,12 @@ export class UserComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly cacheRepository: CacheRepository,
+    private readonly userRepository: UserRepository,
     private readonly store: Store,
   ) {}
 
   ngOnInit(): void {
-    forkJoin(
+    zip(
       this.route.paramMap.pipe(
         take(1),
         map((params) => {
@@ -63,7 +63,7 @@ export class UserComponent implements OnInit {
         return;
       }
 
-      this.user$ = this.cacheRepository.getUserById(find_user_id);
+      this.user$ = this.userRepository.getUserById(find_user_id);
     });
   }
 }
