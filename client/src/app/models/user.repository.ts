@@ -21,7 +21,6 @@ export class UserRepository {
           user && this.cacheRepository.setUser(user);
           subscriber.next(user);
         })
-
       });
     })
   }
