@@ -12,6 +12,7 @@ import { ProfileComponent } from '@pages/settings/settings-profile/settings-prof
 import { SecurityComponent } from '@pages/settings/security/security.component';
 import { UserComponent } from '@pages/user/user.component';
 import { CreatePostComponent } from '@pages/create-post/create-post.component';
+import { PostComponent } from '@pages/post/post.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -19,6 +20,7 @@ export const routes: Routes = [
   { path: 'signin', component: SignInComponent },
   { path: 'signup', component: SignUpComponent },
   { path: 'user/:id', component: UserComponent },
+  { path: 'post/:id', component: PostComponent },
   { path: 'create-post', component: CreatePostComponent },
   { path: 'my-posts', component: MyPostsComponent },
   { path: 'favorite', component: FavoriteComponent },

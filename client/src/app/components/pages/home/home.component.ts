@@ -23,7 +23,7 @@ import { CacheRepository } from '@models/cache.repository';
     MobileMenuComponent,
     MobileContextMenuComponent,
   ],
-  providers: [{ provide: PostRepository }, { provide: CacheRepository }],
+  providers: [PostRepository, CacheRepository],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

@@ -8,7 +8,7 @@ export interface ILocations {
 // Actions
 
 export enum LocationActionsEnum {
-  getAllLocations = '[App Component] Get All Locations',
-  getAllLocationsSuccess = '[App Component] Get All Locations Success',
-  getAllLocationsError = '[App Component] Get All Locations Error',
+  getAllLocations = '[App Component] [Location] Get All',
+  getAllLocationsSuccess = '[App Component] [Location] Get All Success',
+  getAllLocationsError = '[App Component] [Location] Get All Error',
 }

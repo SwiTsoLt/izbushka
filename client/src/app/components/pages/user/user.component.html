@@ -13,13 +13,7 @@
             </div>
             <hr>
             <div class="posts-body">
-                @for(post of (user$ | async)?.posts; track $index) {
-
-                } @empty {
-                    <div class="empty-block">
-                        <p>Здесь пока что пусто...</p>                        
-                    </div>
-                }
+                <app-posts [posts$]="posts$"></app-posts>
             </div>
         </div>
         } @else {

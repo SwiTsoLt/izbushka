@@ -11,19 +11,20 @@ import {
   selectLocationRegion,
 } from '@store/location/location.selectors';
 import { CacheRepository } from '@models/cache.repository';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-posts-item',
   standalone: true,
-  imports: [CommonModule],
-  providers: [{ provide: UserRepository} , { provide: CacheRepository }],
+  imports: [CommonModule, RouterModule],
+  providers: [UserRepository, CacheRepository],
   templateUrl: './posts-item.component.html',
   styleUrl: './posts-item.component.scss',
 })
 export class PostsItemComponent implements OnInit {
   @Input() post: Post | undefined;
 
-  public user$: Observable<User | null> = of();
+  public user$: Observable<User | null> = of(null);
 
   private readonly locationArea$: Observable<LocationArea[]> =
     this.store.select(selectLocationArea as never);
@@ -37,14 +38,13 @@ export class PostsItemComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.post?.owner) return;
-    this.userRepository.getUserById(this.post.owner).subscribe(user => {
-      this.user$ = of(user);
-    });
+    this.user$ = this.userRepository.getUserById(this.post.owner)
   }
 
   public get area$(): Observable<LocationArea | null> {
     return new Observable((subscriber) => {
       this.user$.subscribe((user: User | null) => {
+        console.log(user);
         this.locationArea$.subscribe((areaArr: LocationArea[]) => {
           subscriber.next(
             areaArr.find((area) => area._id === user?.location.area) ?? null,

@@ -5,6 +5,7 @@ import { getUserByAccessToken } from './user/user.actions';
 import { getAllCategories } from './category/category.actions';
 import { getAllLocations } from './location/location.actions';
 import { StoreActionEnum } from './store.interface';
+import { getInfo } from './info/info.actions';
 
 @Injectable()
 export class StoreEffects {
@@ -17,6 +18,7 @@ export class StoreEffects {
         getUserByAccessToken(),
         getAllCategories(),
         getAllLocations(),
+        getInfo(),
       ]),
     );
   });

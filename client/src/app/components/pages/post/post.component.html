@@ -1,0 +1,29 @@
+<div class="post standard-page">
+    <app-navbar></app-navbar>
+    <app-mobile-navbar></app-mobile-navbar>
+    <app-mobile-menu (toggleMobileContextMenuShow)="ctx.isShow = !ctx.isShow"></app-mobile-menu>
+    <app-mobile-context-menu #ctx></app-mobile-context-menu>
+
+    <div class="container">
+        @if ((post$ | async)?._id) {
+            <div class="page-body">
+                <div class="gallery">
+                    <div class="gallery__main-image">
+                        <img [src]="$any((post$ | async)).images[0]" alt="">
+                    </div>
+                    <div class="gallery__image-list">
+                        <div class="gallery__image-list-inner">
+                            @for(imageUrl of $any(post$ | async).images; track $index) {
+                                <div class="gallery__image-list-inner__item">
+                                    <img [src]="imageUrl" alt="">
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        } @else {
+            <div>Post not found</div>
+        }
+    </div>
+</div>

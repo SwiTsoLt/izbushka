@@ -1,5 +1,7 @@
 <div class="posts">
-    @for(post of posts$ | async; track $index) {
-        <app-posts-item [post]="post"></app-posts-item>
+    @for(post of posts$ | async; track $index) {        
+            <app-posts-item [post]="post"></app-posts-item>
+    } @empty {
+        <p>Здесь пока что пусто...</p>
     }
 </div>

@@ -12,12 +12,16 @@ import { LocationEffects } from './location/location.effects';
 import { StoreEffects } from './store.effects';
 import { cacheNode, cacheReducer } from './cache/cache.reducer';
 import { Cache } from '@models/cache.model';
+import { infoNode, infoReducer } from './info/info.reducer';
+import { Info } from '@models/info.model';
+import { InfoEffects } from './info/info.effects';
 
 export interface IState {
   [userNode]: User;
   [categoriesNode]: Category[];
   [locationNode]: ILocations;
   [cacheNode]: Cache;
+  [infoNode]: Info;
 }
 
 export const reducers: ActionReducerMap<IState> = {
@@ -25,6 +29,7 @@ export const reducers: ActionReducerMap<IState> = {
   [categoriesNode]: categoryReducer,
   [locationNode]: locationReducer,
   [cacheNode]: cacheReducer,
+  [infoNode]: infoReducer,
 };
 
 export const metaReducers: MetaReducer<IState>[] = !isDevMode() ? [] : [];
@@ -34,4 +39,5 @@ export const effects = [
   UserEffects,
   CategoryEffects,
   LocationEffects,
+  InfoEffects,
 ];

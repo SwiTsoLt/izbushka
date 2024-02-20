@@ -1,5 +1,5 @@
 @if(post && (user$ | async)) {
-<div class="post">
+<a routerLink="/post/{{post._id}}" target="_blank" class="post">
     <div class="post-image">
         <img [src]="post.images.length && post.images[0]"
         onerror="this.src='../../../assets/pages/home/post-image-error.webp'" alt="post image">
@@ -21,5 +21,5 @@
         </h4>
     </div>
     <button class="favoriteButton bgimage" [ngClass]="{'active': true}">&nbsp;</button>
-</div>
+</a>
 }

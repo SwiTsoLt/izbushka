@@ -6,8 +6,6 @@ import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ErrorHandlerService } from './services/error-handler/error-handler.service';
-import { MyJwtService } from './services/jwt/jwt.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { ApiModule } from './api/api.module';
@@ -41,8 +39,6 @@ const rootPath = join(__dirname, '..', 'client', 'dist', 'client', 'browser');
   controllers: [AppController],
   providers: [
     AppService,
-    ErrorHandlerService,
-    MyJwtService,
     GoogleService,
     {
       provide: APP_INTERCEPTOR,
