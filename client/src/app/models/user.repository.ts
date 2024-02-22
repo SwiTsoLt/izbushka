@@ -3,7 +3,6 @@ import { User } from './user.model';
 import { Observable } from 'rxjs';
 import { CacheRepository } from './cache.repository';
 import { UserService } from '@services/user.service';
-import { initialState as initialUser } from '@store/user/user.reducer';
 
 @Injectable()
 export class UserRepository {

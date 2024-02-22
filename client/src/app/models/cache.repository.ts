@@ -9,7 +9,9 @@ import { User } from "./user.model";
 import { selectInfo } from "@store/info/info.selectors";
 import { Info } from "./info.model";
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+  })
 export class CacheRepository {
     private readonly PAGE_SIZE = 10;
     private readonly info$: Observable<Info> = this.store.select(selectInfo as never);

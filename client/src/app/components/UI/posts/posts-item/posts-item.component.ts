@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { UserRepository } from '../../../../models/user.repository';
 import { Post } from '../../../../models/post.model';
 import { User } from '../../../../models/user.model';
-import { Observable, of } from 'rxjs';
+import { Observable, of, take } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { LocationArea, LocationRegion } from '@models/location.model';
 import {
@@ -25,6 +25,7 @@ export class PostsItemComponent implements OnInit {
   @Input() post: Post | undefined;
 
   public user$: Observable<User | null> = of(null);
+  public area$: Observable<LocationArea | null> = of(null);
 
   private readonly locationArea$: Observable<LocationArea[]> =
     this.store.select(selectLocationArea as never);
@@ -37,19 +38,21 @@ export class PostsItemComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (!this.post?.owner) return;
-    this.user$ = this.userRepository.getUserById(this.post.owner)
+    this.initUser();
+    this.initUserArea();
   }
 
-  public get area$(): Observable<LocationArea | null> {
-    return new Observable((subscriber) => {
-      this.user$.subscribe((user: User | null) => {
-        console.log(user);
-        this.locationArea$.subscribe((areaArr: LocationArea[]) => {
-          subscriber.next(
-            areaArr.find((area) => area._id === user?.location.area) ?? null,
-          );
-        });
+  private initUser(): void {
+    if (!this.post?.owner) return;
+    this.user$ = this.userRepository.getUserById(this.post.owner).pipe(take(1))
+  }
+
+  private initUserArea(): void {
+    this.user$.pipe(take(1)).subscribe((user: User | null) => {
+      if (!user) return;
+      this.locationArea$.subscribe((areaArr: LocationArea[]) => {
+        const area = areaArr.find((area) => area._id === user.location.area) ?? null;
+        this.area$ = of(area);
       });
     });
   }
