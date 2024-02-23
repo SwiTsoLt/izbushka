@@ -78,3 +78,14 @@
         }
     }
 }
+
+@media screen and (max-width: $mobile-w) {
+    .user-card>.avatar>img {
+        width: 100px;
+        height: 100px;
+    }
+
+    div.user-card>div.info {
+        width: fit-content;
+    }
+}

@@ -2,10 +2,11 @@
 
 .page-body {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: $p-l;
     width: 100%;
     height: fit-content;
+    padding-bottom: $p-l;
 
     .gallery {
         display: flex;
@@ -174,5 +175,52 @@
                 color: $main-black;
             }
         }
+    }
+}
+
+@media screen and (max-width: $mobile-w) {
+    .page-body {
+        padding-bottom: $mob-p-s;
+
+        .info {
+            padding: 0 $mob-p-s;
+    
+            .owner {
+                width: 100%;
+                border: none;
+                padding: 0;
+                &:hover {}
+        
+                app-user-card {
+                    width: fit-content;
+                }
+            }
+        }
+    }
+
+    .page-body>.gallery>.gallery__main-image {
+        border: none;
+        background-color: transparent;
+        border-radius: 0;
+
+        img {
+            object-position: top;
+        }
+    }
+
+    .page-body>.gallery>.gallery__image-list {
+        border: none;
+        background-color: transparent;
+        padding: 0  $mob-p-s;
+
+        &::-webkit-scrollbar {
+            height: 0;
+        }
+    }
+
+    .container {
+        padding-top: $mob-nav-height !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
     }
 }

@@ -9,7 +9,7 @@
     }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: $tablet-w) {
     .home>app-navbar {
         display: none;
     }
