@@ -1,10 +1,10 @@
 @if(post && (user$ | async)) {
-<a routerLink="/post/{{post._id}}" target="_blank" class="post">
-    <div class="post-image">
+<div class="post">
+    <a routerLink="/post/{{post._id}}" class="post-image">
         <img [src]="post.images.length && post.images[0]"
         onerror="this.src='../../../assets/pages/home/post-image-error.webp'" alt="post image">
-    </div>
-    <div class="info">
+    </a>
+    <a routerLink="/post/{{post._id}}" class="info">
         <h6>
             {{ post.title }}
         </h6>
@@ -19,7 +19,10 @@
                 {{ post.price }} руб
             </span>
         </h4>
+    </a>
+    <div class="favorite-button">
+        <input id="favoriteInput_{{post._id}}" (change)="toggleFavoritePost()" type="checkbox" [disabled]="!(me$ | async)?._id" [checked]="isPostFavorite$ | async">
+        <label for="favoriteInput_{{post._id}}" class="bgimage"></label>
     </div>
-    <button class="favoriteButton bgimage" [ngClass]="{'active': true}">&nbsp;</button>
-</a>
+</div>
 }

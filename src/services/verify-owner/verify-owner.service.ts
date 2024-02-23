@@ -27,6 +27,7 @@ export class VerifyOwnerService {
     const postId = await this.errorHandlerService.handleError<Types.ObjectId>(
       this.postModel.findById<Types.ObjectId>(refId, '_id').exec(),
     );
+
     return this.verify(postId, auth);
   }
 
@@ -34,9 +35,8 @@ export class VerifyOwnerService {
 
   private async verify(refId: Types.ObjectId, auth: string) {
     if (!refId) return false;
-    const access_token = auth.split(' ')[1];
     const { sub } = await this.errorHandlerService.handleError(
-      this.myJwtService.decodeAuth(access_token),
+      this.myJwtService.decodeAuth(auth),
     );
     return refId === sub;
   }

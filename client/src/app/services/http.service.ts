@@ -37,7 +37,7 @@ export class HttpService {
   public post<T>(
     url: string,
     data: unknown,
-    options = {},
+    options: Record<string, unknown> = {},
   ): Observable<HttpResponse<T | null>> {
     return this.httpClient
       .post<T | null>(url, data ?? {}, this.normalizeOptions(options))
@@ -47,6 +47,21 @@ export class HttpService {
         catchError(this.handleError),
         shareReplay(1),
       );
+  }
+
+  public patch<T>(
+    url: string,
+    data: unknown,
+    options: Record<string, unknown> = {},
+  ): Observable<HttpResponse<T | null>> {
+    return this.httpClient
+    .patch<T | null>(url, data ?? {}, this.normalizeOptions(options))
+    .pipe(
+      takeLast(1),
+      map(this.handleUpdateAccessToken),
+      catchError(this.handleError),
+      shareReplay(1),
+    );
   }
 
   // Private
@@ -89,7 +104,7 @@ export class HttpService {
     [key: string]: unknown;
   } {
     const access_token = window.localStorage.getItem('access_token') ?? '';
-    let headers = new HttpHeaders({ Authorization: `Bearer ${access_token}` });
+    let headers = new HttpHeaders({ Authorization: `Bearer ${access_token.trim()}` });
     if ('headers' in options) {
       const newHeaders = options['headers'] as Record<string, unknown>;
       headers = new HttpHeaders({ ...headers, ...newHeaders });

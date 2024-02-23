@@ -7,7 +7,7 @@ import {
 } from '../../dtos/auth.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../../schemas/user.schema';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { type JWTPayload } from '../../models/jwt.model';
 import { JwtService } from '@nestjs/jwt';
@@ -47,12 +47,13 @@ export class AuthService {
     const user = new this.userModel({
       ...signUpDTO,
       location: {
-        area: new Types.ObjectId(signUpDTO.location.area),
-        region: new Types.ObjectId(signUpDTO.location.region),
+        area: signUpDTO.location.area,
+        region: signUpDTO.location.region,
       },
       password: passwordHash,
       roles: [rolesEnum.user],
       posts: [],
+      favorites: [],
       registration_date: Date.now(),
     });
     await this.errorHandlerService.handleError<User>(user.save());

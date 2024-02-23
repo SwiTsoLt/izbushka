@@ -4,7 +4,9 @@ import { Observable } from 'rxjs';
 import { CacheRepository } from './cache.repository';
 import { PostService } from '@services/post.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PostRepository {
   constructor(
     private readonly cacheRepository: CacheRepository,

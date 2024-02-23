@@ -35,6 +35,9 @@ export class User {
   @Prop({ required: true })
   posts: Types.ObjectId[];
 
+  @Prop({ required: true })
+  favorites: Types.ObjectId[];
+
   @Prop()
   rating: number;
 

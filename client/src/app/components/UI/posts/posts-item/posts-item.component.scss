@@ -34,6 +34,10 @@
         transform: scale(1.1);
     }
 
+    a > * {
+        color: $main-black;
+    }
+
     .info {
         display: grid;
         grid-template-rows: auto auto 1fr;
@@ -66,20 +70,36 @@
         }
     }
 
-    .favoriteButton {
+    .favorite-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         position: absolute;
         right: $p-m;
         bottom: $p-m;
         width: $icon-m;
         height: $icon-m;
-        background-image: url('../../../../../assets/UI/post/heart.svg');
-        background-color: transparent;
-        cursor: pointer;
         z-index: 1;
-        transition: background-image $anim-tr $anim-mode;
 
-        &.active {
-            background-image: url('../../../../../assets/UI/post/heart-full.svg');
+        input {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            visibility: hidden;
+            cursor: pointer;
+
+            &:checked~label {
+                background-image: url('../../../../../assets/UI/post/heart-full.svg');
+            }
+        }
+
+        label {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('../../../../../assets/UI/post/heart.svg');
+            cursor: pointer;
+            transition: background-image $anim-tr $anim-mode;
         }
     }
 }

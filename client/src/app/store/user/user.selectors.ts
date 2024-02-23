@@ -9,3 +9,8 @@ export const selectUser = createSelector(
   (state: AppState) => state,
   (state) => state.user,
 );
+
+export const selectUserFavorites = createSelector(
+  (state: AppState) => state,
+  (state) => state.user.favorites,
+);

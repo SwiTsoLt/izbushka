@@ -68,15 +68,7 @@ export class UserService {
     );
     if (!isUserOwnerVerified) throw new ForbiddenException();
     return await this.errorHandlerService.handleError<User>(
-      this.userModel
-        .findByIdAndUpdate(id, {
-          ...updateUserDTO,
-          location: {
-            area: new Types.ObjectId(updateUserDTO.location.area),
-            region: new Types.ObjectId(updateUserDTO.location.region),
-          },
-        })
-        .exec(),
+      this.userModel.findByIdAndUpdate(id, updateUserDTO, { new: true }).exec(),
     );
   }
 

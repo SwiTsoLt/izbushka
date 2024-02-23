@@ -36,7 +36,8 @@ nav {
         display: flex;
         column-gap: $p-s;
         min-height: fit-content;
-        padding: 0 $p-m;
+        padding-top: 0;
+        padding-bottom: 0;
         z-index: 2;
 
         a.logo {

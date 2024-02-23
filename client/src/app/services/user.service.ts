@@ -25,4 +25,13 @@ export class UserService {
       map((response: HttpResponse<User | null>) => response.body),
     );
   }
+
+  public updateUser(id: string, newUser: Record<string, unknown>) {
+    return this.httpService.patch<User>(`/api/user/${id}`, newUser).pipe(
+      takeLast(1),
+      map((response: HttpResponse<User | null>) => {
+        return response.body;
+      })
+    )
+  }
 }

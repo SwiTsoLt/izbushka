@@ -8,8 +8,7 @@ import { NavbarComponent } from '@UI/navbar/navbar.component';
 import { PostsComponent } from '@UI/posts/posts.component';
 import { Observable, map, of, zip } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { selectUser } from '@store/user/user.selectors';
-import { User } from '@models/user.model';
+import { selectUserFavorites } from '@store/user/user.selectors';
 import { CacheRepository } from '@models/cache.repository';
 
 @Component({
@@ -28,7 +27,7 @@ import { CacheRepository } from '@models/cache.repository';
 })
 export class FavoriteComponent implements OnInit {
 
-  public user$: Observable<User> = this.store.select(selectUser as never);
+  public favorites$: Observable<string[]> = this.store.select(selectUserFavorites as never);
   public posts$: Observable<Post[]> = of([]);
 
   constructor(
@@ -37,12 +36,13 @@ export class FavoriteComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.user$.subscribe(user => {
-      if (user?.favorites?.length) {
+    this.favorites$.subscribe(favorites => {
+      if (favorites?.length) {
         const postList$: Observable<Post | null>[] = [];
-        user.favorites.forEach((postId) => {
+        favorites.forEach((postId) => {
           postList$.push(this.postRepository.getPostById(postId));
         })
+        
         this.posts$ = zip(postList$).pipe(
           map((posts: (Post | null)[]) => {
             const filteredPosts: Post[] = posts.filter((post: Post | null) => !!post) as unknown as Post[];
