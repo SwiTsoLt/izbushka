@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Category, CategorySchema } from '../../schemas/category.schema';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
 import { MyJwtService } from '../../services/jwt/jwt.service';
+import { CacheService } from '../../services/cache/cache.service';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { MyJwtService } from '../../services/jwt/jwt.service';
     ]),
   ],
   controllers: [CategoryController],
-  providers: [CategoryService, ErrorHandlerService, MyJwtService],
+  providers: [CategoryService, ErrorHandlerService, MyJwtService, CacheService],
 })
 export class CategoryModule {}

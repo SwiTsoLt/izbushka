@@ -6,6 +6,7 @@ import { Area, AreaSchema } from '../../schemas/area.schema';
 import { Region, RegionSchema } from '../../schemas/region.schema';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
 import { MyJwtService } from '../../services/jwt/jwt.service';
+import { CacheService } from '../../services/cache/cache.service';
 
 @Module({
   imports: [
@@ -15,6 +16,6 @@ import { MyJwtService } from '../../services/jwt/jwt.service';
     ]),
   ],
   controllers: [LocationController],
-  providers: [LocationService, ErrorHandlerService, MyJwtService],
+  providers: [LocationService, ErrorHandlerService, MyJwtService, CacheService],
 })
 export class LocationModule {}

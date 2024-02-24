@@ -10,6 +10,7 @@ import {
   type UpdateRegionDTO,
 } from '../../dtos/location.dto';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
+import { CacheService } from '../../services/cache/cache.service';
 
 @Injectable()
 export class LocationService {
@@ -17,6 +18,7 @@ export class LocationService {
     @InjectModel(Area.name) private readonly areaModel: Model<Area>,
     @InjectModel(Region.name) private readonly regionModel: Model<Region>,
     private readonly errorHandlerService: ErrorHandlerService,
+    private readonly cacheService: CacheService,
   ) {}
 
   // Area
@@ -38,6 +40,7 @@ export class LocationService {
   // Area Post
 
   public async postArea(postAreaDTO: PostAreaDTO): Promise<Area> {
+    await this.cacheService.deleteLocationAreas();
     return await this.errorHandlerService.handleError<Area>(
       new this.areaModel({ ...postAreaDTO, children: [] }).save(),
     );
@@ -49,6 +52,7 @@ export class LocationService {
     id: Types.ObjectId,
     updateAreaDTO: UpdateAreaDTO,
   ): Promise<Area> {
+    await this.cacheService.deleteLocationAreaById(id);
     return await this.errorHandlerService.handleError<Area>(
       this.areaModel.findByIdAndUpdate(id, updateAreaDTO).exec(),
     );
@@ -57,6 +61,8 @@ export class LocationService {
   // Area Delete
 
   public async deleteArea(id: Types.ObjectId): Promise<Area> {
+    await this.cacheService.deleteLocationAreaById(id);
+
     const deletedArea = await this.errorHandlerService.handleError<Area>(
       this.areaModel.findByIdAndDelete(id).exec(),
     );
@@ -89,6 +95,8 @@ export class LocationService {
   // Region Post
 
   public async postRegion(postRegionDTO: PostRegionDTO): Promise<Region> {
+    await this.cacheService.deleteLocationRegions();
+
     const newRegion = await this.errorHandlerService.handleError(
       new this.regionModel(postRegionDTO).save(),
     );
@@ -108,6 +116,8 @@ export class LocationService {
     id: Types.ObjectId,
     updateRegionDTO: UpdateRegionDTO,
   ): Promise<Region> {
+    await this.cacheService.deleteLocationRegionById(id);
+
     return await this.errorHandlerService.handleError<Region>(
       this.regionModel.findByIdAndUpdate(id, updateRegionDTO).exec(),
     );
@@ -116,6 +126,8 @@ export class LocationService {
   // Region Delete
 
   public async deleteRegion(id: Types.ObjectId): Promise<Region> {
+    await this.cacheService.deleteLocationRegionById(id);
+
     const deletedRegion = await this.errorHandlerService.handleError<Region>(
       this.regionModel.findByIdAndDelete(id).exec(),
     );

@@ -45,22 +45,26 @@ export class GoogleService {
   public loadOAuth2Client(
     checkAccessTokenExpiry: boolean = true,
   ): OAuth2Client {
-    const credentials = this.credentials;
-    if (!credentials)
-      throw new InternalServerErrorException({}, 'no credentials');
+    try {
+      const credentials = this.credentials;
+      if (!credentials)
+        throw new InternalServerErrorException({}, 'no credentials');
 
-    const token = this.token;
-    if (checkAccessTokenExpiry && (!token || token.expiry_date < Date.now()))
-      throw new InternalServerErrorException({}, 'token expired');
+      const token = this.token;
+      if (checkAccessTokenExpiry && (!token || token.expiry_date < Date.now()))
+        throw new InternalServerErrorException({}, 'token expired');
 
-    const client: OAuth2Client = new google.auth.OAuth2({
-      clientId: credentials.client_id,
-      clientSecret: credentials.client_secret,
-      redirectUri: this.redirectUri,
-      credentials: token,
-    });
+      const client: OAuth2Client = new google.auth.OAuth2({
+        clientId: credentials.client_id,
+        clientSecret: credentials.client_secret,
+        redirectUri: this.redirectUri,
+        credentials: token,
+      });
 
-    return client;
+      return client;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   public generateOAuth2Client(): OAuth2Client {

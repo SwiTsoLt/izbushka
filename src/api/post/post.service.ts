@@ -9,6 +9,8 @@ import { MyJwtService } from '../../services/jwt/jwt.service';
 import { type IMultiSharpResult } from '../../pipes/multisharp.pipe';
 import { GoogleDriveService } from '../../services/google-drive/google-drive.service';
 import { VerifyOwnerService } from '../../services/verify-owner/verify-owner.service';
+import { rolesEnum } from '../../interfaces/roles.interface';
+import { CacheService } from '../../services/cache/cache.service';
 
 @Injectable()
 export class PostService {
@@ -19,6 +21,7 @@ export class PostService {
     private readonly myJwtService: MyJwtService,
     private readonly googleDriveService: GoogleDriveService,
     private readonly verifyOwnerService: VerifyOwnerService,
+    private readonly cacheService: CacheService,
   ) {}
 
   private readonly PAGE_SIZE = 10;
@@ -50,6 +53,8 @@ export class PostService {
     createPostDTO: CreatePostDTO,
     results: IMultiSharpResult[],
   ): Promise<Post> {
+    await this.cacheService.deletePosts();
+
     const { sub } = await this.myJwtService.decodeAuth(access_token);
 
     const promiseArr: Array<Promise<string>> = [];
@@ -96,8 +101,10 @@ export class PostService {
     updatePostDTO: UpdatePostDTO,
     auth: string,
   ): Promise<Post> {
+    await this.cacheService.deletePostById(id);
+
     const isPostOwnerVerified = await this.errorHandlerService.handleError(
-      this.verifyOwnerService.verifyPostOwner(id, auth),
+      this.verifyOwnerService.verifyPostOwner(id, auth, rolesEnum.admin),
     );
     if (!isPostOwnerVerified) throw new ForbiddenException();
     return await this.errorHandlerService.handleError<Post>(
@@ -117,8 +124,10 @@ export class PostService {
   // Delete
 
   public async delete(id: Types.ObjectId, auth: string): Promise<Post> {
+    await this.cacheService.deletePostById(id);
+
     const isPostOwnerVerified = await this.errorHandlerService.handleError(
-      this.verifyOwnerService.verifyPostOwner(id, auth),
+      this.verifyOwnerService.verifyPostOwner(id, auth, rolesEnum.admin),
     );
     if (!isPostOwnerVerified) throw new ForbiddenException();
     return await this.errorHandlerService.handleError<Post>(

@@ -7,12 +7,14 @@ import {
   type UpdateCategoryDTO,
 } from '../../dtos/category.dto';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
+import { CacheService } from '../../services/cache/cache.service';
 
 @Injectable()
 export class CategoryService {
   constructor(
     @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
     private readonly errorHandlerService: ErrorHandlerService,
+    private readonly cacheService: CacheService,
   ) {}
 
   // Get
@@ -31,6 +33,8 @@ export class CategoryService {
   // Post
 
   public async post(postCategoryDTO: PostCategoryDTO): Promise<Category> {
+    await this.cacheService.deleteCategories();
+
     const newCategory = await this.errorHandlerService.handleError(
       new this.categoryModel({
         ...postCategoryDTO,
@@ -56,6 +60,8 @@ export class CategoryService {
     id: Types.ObjectId,
     updateCategoryDTO: UpdateCategoryDTO,
   ): Promise<Category> {
+    await this.cacheService.deleteCategoryById(id);
+
     return await this.errorHandlerService.handleError<Category>(
       this.categoryModel.findByIdAndUpdate(id, updateCategoryDTO).exec(),
     );
@@ -64,6 +70,8 @@ export class CategoryService {
   // Delete
 
   public async delete(id: Types.ObjectId): Promise<Category> {
+    await this.cacheService.deleteCategoryById(id);
+
     const deletedCategory =
       await this.errorHandlerService.handleError<Category>(
         this.categoryModel.findByIdAndDelete(id),

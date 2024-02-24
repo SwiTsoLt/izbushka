@@ -14,6 +14,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { RedisOptions } from './interfaces/redis.interface';
 import { HttpCacheInterceptor } from './interceptors/http-cache/http-cache.interceptor';
 import { GoogleService } from './api/google/google.service';
+import { CacheService } from './services/cache/cache.service';
 
 const rootPath = join(__dirname, '..', 'client', 'dist', 'client', 'browser');
 
@@ -44,6 +45,7 @@ const rootPath = join(__dirname, '..', 'client', 'dist', 'client', 'browser');
       provide: APP_INTERCEPTOR,
       useClass: HttpCacheInterceptor,
     },
+    CacheService,
   ],
 })
 export class AppModule {

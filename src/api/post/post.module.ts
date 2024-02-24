@@ -9,6 +9,7 @@ import { MyJwtService } from '../../services/jwt/jwt.service';
 import { GoogleDriveService } from '../../services/google-drive/google-drive.service';
 import { GoogleService } from '../google/google.service';
 import { VerifyOwnerService } from '../../services/verify-owner/verify-owner.service';
+import { CacheService } from '../../services/cache/cache.service';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { VerifyOwnerService } from '../../services/verify-owner/verify-owner.ser
     GoogleDriveService,
     GoogleService,
     VerifyOwnerService,
+    CacheService,
   ],
 })
 export class PostModule {}

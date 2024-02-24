@@ -13,6 +13,8 @@ import {
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
 import { MyJwtService } from '../../services/jwt/jwt.service';
 import { VerifyOwnerService } from '../../services/verify-owner/verify-owner.service';
+import { rolesEnum } from '../../interfaces/roles.interface';
+import { CacheService } from '../../services/cache/cache.service';
 
 @Injectable()
 export class UserService {
@@ -21,6 +23,7 @@ export class UserService {
     private readonly myJwtService: MyJwtService,
     private readonly errorHandlerService: ErrorHandlerService,
     private readonly verifyOwnerService: VerifyOwnerService,
+    private readonly cacheService: CacheService,
   ) {}
 
   // Get
@@ -63,8 +66,10 @@ export class UserService {
     updateUserDTO: UpdateUserDTO,
     auth: string,
   ): Promise<User> {
+    this.cacheService.deleteUserById(id);
+
     const isUserOwnerVerified = await this.errorHandlerService.handleError(
-      this.verifyOwnerService.verifyUserOwner(id, auth),
+      this.verifyOwnerService.verifyUserOwner(id, auth, rolesEnum.admin),
     );
     if (!isUserOwnerVerified) throw new ForbiddenException();
     return await this.errorHandlerService.handleError<User>(
@@ -75,8 +80,10 @@ export class UserService {
   // Delete
 
   public async delete(id: Types.ObjectId, auth: string): Promise<User> {
+    this.cacheService.deleteUserById(id);
+
     const isUserOwnerVerified = await this.errorHandlerService.handleError(
-      this.verifyOwnerService.verifyUserOwner(id, auth),
+      this.verifyOwnerService.verifyUserOwner(id, auth, rolesEnum.admin),
     );
     if (!isUserOwnerVerified) throw new ForbiddenException();
     return await this.errorHandlerService.handleError(

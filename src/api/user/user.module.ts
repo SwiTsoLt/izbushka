@@ -7,6 +7,7 @@ import { ErrorHandlerService } from '../../services/error-handler/error-handler.
 import { MyJwtService } from '../../services/jwt/jwt.service';
 import { VerifyOwnerService } from '../../services/verify-owner/verify-owner.service';
 import { Post, PostSchema } from '../../schemas/post.schema';
+import { CacheService } from '../../services/cache/cache.service';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { Post, PostSchema } from '../../schemas/post.schema';
     ErrorHandlerService,
     MyJwtService,
     VerifyOwnerService,
+    CacheService,
   ],
 })
 export class UserModule {}
