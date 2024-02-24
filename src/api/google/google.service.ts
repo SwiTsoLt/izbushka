@@ -110,7 +110,9 @@ export class GoogleService {
 
   public getAuthTokenExpiryDate(): IGetAuthTokenExpiryDateResponse {
     const token = this.token;
+    console.log(token);
     if (!token) throw new InternalServerErrorException({}, 'Token not found');
+    console.log(token.expiry_date - Date.now());
     const d = token.expiry_date - Date.now();
     if (d < 0) {
       return { error: 'token expire' };
