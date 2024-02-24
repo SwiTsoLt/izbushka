@@ -35,15 +35,14 @@ export class CategoryService {
       new this.categoryModel({
         ...postCategoryDTO,
         children: [],
-        parent:
-          postCategoryDTO.parent && new Types.ObjectId(postCategoryDTO.parent),
+        parent: postCategoryDTO.parent && postCategoryDTO.parent,
       }).save(),
     );
 
     if (postCategoryDTO.parent) {
       await this.errorHandlerService.handleError<Category>(
         this.categoryModel.findByIdAndUpdate(postCategoryDTO.parent, {
-          $push: { children: new Types.ObjectId(newCategory._id) },
+          $push: { children: newCategory._id },
         }),
       );
     }

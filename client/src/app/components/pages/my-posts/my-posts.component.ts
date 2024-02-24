@@ -5,7 +5,7 @@ import { PostRepository } from '@models/post.repository';
 import { User } from '@models/user.model';
 import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-context-menu.component';
 import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
-import { MobileNavbarComponent } from '@MUI/mobile-navbar/mobile-navbar.component';
+import { MobileNavbarSpecialComponent } from '@MUI/mobile-navbar-special/mobile-navbar-special.component';
 import { Store } from '@ngrx/store';
 import { selectUser } from '@store/user/user.selectors';
 import { NavbarComponent } from '@UI/navbar/navbar.component';
@@ -17,7 +17,7 @@ import { map, Observable, of, zip } from 'rxjs';
   standalone: true,
   imports: [
     NavbarComponent,
-    MobileNavbarComponent,
+    MobileNavbarSpecialComponent,
     MobileMenuComponent,
     MobileContextMenuComponent,
     PostsComponent

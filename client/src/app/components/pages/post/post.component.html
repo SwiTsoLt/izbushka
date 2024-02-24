@@ -1,11 +1,12 @@
+@if (post?._id) {
 <div class="post standard-page">
     <app-navbar></app-navbar>
-    <app-mobile-navbar></app-mobile-navbar>
+    <app-mobile-navbar-special [title]="post?.title ?? '404'"></app-mobile-navbar-special>
     <app-mobile-menu (toggleMobileContextMenuShow)="ctx.isShow = !ctx.isShow"></app-mobile-menu>
     <app-mobile-context-menu #ctx></app-mobile-context-menu>
 
     <div class="container">
-        @if (post?._id) {
+
         <div class="page-body">
             <div class="gallery">
                 <div class="gallery__main-image">
@@ -13,7 +14,8 @@
                     <div class="image-counts">{{ currentImageIndex + 1 }} / {{ $any(post).images?.length }}
                     </div>
                     <div class="favorite-button">
-                        <input id="favoriteInput" (change)="toggleFavoritePost()" type="checkbox" [disabled]="!(me$ | async)?._id" [checked]="isPostFavorite$ | async">
+                        <input id="favoriteInput" (change)="toggleFavoritePost()" type="checkbox"
+                            [disabled]="!(me$ | async)?._id" [checked]="isPostFavorite$ | async">
                         <label for="favoriteInput" class="bgimage"></label>
                     </div>
                 </div>
@@ -55,8 +57,20 @@
                 </div>
             </div>
         </div>
-        } @else {
-        <div>Post not found</div>
-        }
     </div>
 </div>
+} @else {
+<div class="post standard-page">
+    <app-navbar></app-navbar>
+    <app-mobile-navbar-special title="404"></app-mobile-navbar-special>
+    <app-mobile-menu (toggleMobileContextMenuShow)="ctx.isShow = !ctx.isShow"></app-mobile-menu>
+    <app-mobile-context-menu #ctx></app-mobile-context-menu>
+
+    <div class="container">
+
+        <div class="page-body">
+            <div>Post not found</div>
+        </div>
+    </div>
+</div>
+}

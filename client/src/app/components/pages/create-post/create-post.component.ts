@@ -16,7 +16,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Router, RouterModule } from '@angular/router';
 import { MyButtonComponent } from '@UI/my-button/my-button.component';
 import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
-import { MobileNavbarComponent } from '@MUI/mobile-navbar/mobile-navbar.component';
 import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-context-menu.component';
 import { Observable } from 'rxjs';
 import { LocationArea, LocationRegion } from 'models/location.model';
@@ -31,6 +30,7 @@ import { PostService } from '@services/post.service';
 import { CreatePostDTO } from '@dtos/post.dto';
 import { User } from '@models/user.model';
 import { selectUser } from '@store/user/user.selectors';
+import { MobileNavbarSpecialComponent } from '@MUI/mobile-navbar-special/mobile-navbar-special.component';
 @Component({
   selector: 'app-create-post',
   standalone: true,
@@ -47,7 +47,7 @@ import { selectUser } from '@store/user/user.selectors';
     RouterModule,
     MyButtonComponent,
     MobileMenuComponent,
-    MobileNavbarComponent,
+    MobileNavbarSpecialComponent,
     MobileContextMenuComponent,
   ],
   templateUrl: './create-post.component.html',

@@ -31,7 +31,7 @@ $client-theme: mat.define-light-theme((color: (primary: $client-primary,
 
 /* You can add global styles to this file, and also import other style files */
 
-@import './app/variables.scss';
+@import '@var/variables.scss';
 
 /* ---------- Reset styles ---------- */
 
@@ -173,6 +173,7 @@ button {
     min-height: 100dvh;
 
     &>app-mobile-navbar,
+    &>app-mobile-navbar-special,
     &>app-mobile-menu,
     &>app-mobile-context-menu {
         display: none;
@@ -207,14 +208,18 @@ button {
         }
 
         &>app-mobile-navbar,
+        &>app-mobile-navbar-special,
         &>app-mobile-menu,
         &>app-mobile-context-menu {
             display: block;
         }
 
-        &>.container>.page-title,
-        &>.container>hr {
-            display: none;
+        &>.container {
+            padding-top: calc($mob-nav-height + $mob-p-m) !important;
+
+            .page-title, hr {
+                display: none;
+            }
         }
     }
 }
@@ -368,7 +373,7 @@ button {
     }
 
     .container {
-        padding: calc($mob-nav-height + $mob-p-s) $mob-p-s !important;
+        padding: calc($mob-nav-height + $mob-p-s) $mob-p-m !important;
     }
 }
 

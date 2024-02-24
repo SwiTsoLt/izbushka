@@ -1,0 +1,79 @@
+@import '@var/variables.scss';
+
+nav {
+    display: flex;
+    gap: $mob-p-m;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: $mob-nav-height;
+    padding: $mob-p-s $mob-p-m;
+    z-index: 3;
+
+    .background {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+
+        div {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 50%;
+            height: 100%;
+        }
+
+        .left {
+            background-color: $main-green-1;
+        }
+
+        .middle {
+            left: 50%;
+            transform: translateX(-50%);
+            width: 25%;
+            background-color: $main-green-2;
+            clip-path: polygon(0 100%, 100% 100%, 80% 50%, 100% 0, 0 0, 20% 50%, 0 100%);
+            z-index: 1;
+        }
+
+        .right {
+            left: auto;
+            right: 0;
+            background-color: $main-green-3;
+        }
+    }    
+
+    * {
+        font-size: $mob-fs-m;
+    }
+
+    button {
+        width: auto;
+        height: 100%;
+        aspect-ratio: 1/1;
+        background-image: url('../../../../assets/MUI/mobile-navbar-special/arrow-back.svg');
+        background-color: transparent;
+        border: none;
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        
+        h2 {
+            width: 100%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-size: $fs-l;
+            font-weight: bold;
+            color: $main-white;
+            overflow: hidden;
+        }
+    }
+}

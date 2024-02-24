@@ -7,7 +7,6 @@ import { UserCardComponent } from '@UI/user-card/user-card.component';
 import { NavbarComponent } from '@UI/navbar/navbar.component';
 import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-context-menu.component';
 import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
-import { MobileNavbarComponent } from '@MUI/mobile-navbar/mobile-navbar.component';
 import { Store } from '@ngrx/store';
 import { selectUser } from '@store/user/user.selectors';
 import { UserRepository } from '@models/user.repository';
@@ -15,6 +14,7 @@ import { CacheRepository } from '@models/cache.repository';
 import { Post } from '@models/post.model';
 import { PostRepository } from '@models/post.repository';
 import { PostsComponent } from '@UI/posts/posts.component';
+import { MobileNavbarSpecialComponent } from '@MUI/mobile-navbar-special/mobile-navbar-special.component';
 
 @Component({
   selector: 'app-user',
@@ -26,7 +26,7 @@ import { PostsComponent } from '@UI/posts/posts.component';
     RouterModule,
     MobileContextMenuComponent,
     MobileMenuComponent,
-    MobileNavbarComponent,
+    MobileNavbarSpecialComponent,
     PostsComponent,
   ],
   providers: [UserRepository, CacheRepository, PostRepository],

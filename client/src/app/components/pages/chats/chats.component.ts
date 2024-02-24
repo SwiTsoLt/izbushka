@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-context-menu.component';
 import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
-import { MobileNavbarComponent } from '@MUI/mobile-navbar/mobile-navbar.component';
+import { MobileNavbarSpecialComponent } from '@MUI/mobile-navbar-special/mobile-navbar-special.component';
 import { NavbarComponent } from '@UI/navbar/navbar.component';
 
 @Component({
@@ -10,7 +10,7 @@ import { NavbarComponent } from '@UI/navbar/navbar.component';
   imports: [
     NavbarComponent,
     MobileMenuComponent,
-    MobileNavbarComponent,
+    MobileNavbarSpecialComponent,
     MobileContextMenuComponent,
   ],
   templateUrl: './chats.component.html',

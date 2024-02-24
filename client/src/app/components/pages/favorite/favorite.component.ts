@@ -3,13 +3,13 @@ import { Post } from 'models/post.model';
 import { PostRepository } from 'models/post.repository';
 import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-context-menu.component';
 import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
-import { MobileNavbarComponent } from '@MUI/mobile-navbar/mobile-navbar.component';
 import { NavbarComponent } from '@UI/navbar/navbar.component';
 import { PostsComponent } from '@UI/posts/posts.component';
 import { Observable, map, of, zip } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectUserFavorites } from '@store/user/user.selectors';
 import { CacheRepository } from '@models/cache.repository';
+import { MobileNavbarSpecialComponent } from '@MUI/mobile-navbar-special/mobile-navbar-special.component';
 
 @Component({
   selector: 'app-favorite',
@@ -17,7 +17,7 @@ import { CacheRepository } from '@models/cache.repository';
   imports: [
     NavbarComponent,
     MobileMenuComponent,
-    MobileNavbarComponent,
+    MobileNavbarSpecialComponent,
     PostsComponent,
     MobileContextMenuComponent,
   ],

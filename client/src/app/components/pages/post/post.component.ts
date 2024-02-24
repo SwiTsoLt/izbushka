@@ -1,6 +1,6 @@
 import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-context-menu.component';
 import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
-import { MobileNavbarComponent } from '@MUI/mobile-navbar/mobile-navbar.component';
+import { MobileNavbarSpecialComponent } from '@MUI/mobile-navbar-special/mobile-navbar-special.component';
 import { NavbarComponent } from '@UI/navbar/navbar.component';
 import { UserCardComponent } from '@UI/user-card/user-card.component';
 import { CommonModule } from '@angular/common';
@@ -26,7 +26,7 @@ import { Observable, map, of, take } from 'rxjs';
   imports: [
     CommonModule,
     NavbarComponent,
-    MobileNavbarComponent,
+    MobileNavbarSpecialComponent,
     MobileMenuComponent,
     MobileContextMenuComponent,
     RouterModule,
@@ -127,6 +127,7 @@ export class PostComponent implements OnInit {
         areaList?.filter((area: LocationArea) => area._id === this.post?.location.area)[0] ?? null
       )
     ).subscribe((area: LocationArea | null) => {
+      console.log(this.post);
       this.area = area;
     })
   }

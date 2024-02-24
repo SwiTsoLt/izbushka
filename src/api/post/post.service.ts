@@ -71,18 +71,18 @@ export class PostService {
         ...createPostDTO,
         images: publicLinkArr,
         location: {
-          area: new Types.ObjectId(createPostDTO.location.area),
-          region: new Types.ObjectId(createPostDTO.location.region),
+          area: createPostDTO.location.area,
+          region: createPostDTO.location.region,
         },
-        category: new Types.ObjectId(createPostDTO.category),
-        owner: new Types.ObjectId(sub),
+        category: createPostDTO.category,
+        owner: sub,
         publishDate: Date.now(),
       }).save(),
     );
 
     await this.errorHandlerService.handleError<User>(
       this.userModel.findByIdAndUpdate(newPost.owner, {
-        $push: { posts: new Types.ObjectId(newPost._id) },
+        $push: { posts: newPost._id },
       }),
     );
 
@@ -105,10 +105,10 @@ export class PostService {
         .findByIdAndUpdate(id, {
           ...updatePostDTO,
           location: {
-            area: new Types.ObjectId(updatePostDTO.location.area),
-            region: new Types.ObjectId(updatePostDTO.location.region),
+            area: updatePostDTO.location.area,
+            region: updatePostDTO.location.region,
           },
-          category: new Types.ObjectId(updatePostDTO.category),
+          category: updatePostDTO.category,
         })
         .exec(),
     );

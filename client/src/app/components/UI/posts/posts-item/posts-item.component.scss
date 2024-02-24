@@ -52,6 +52,9 @@
         z-index: 1;
 
         h6 {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
             font-size: $fs-m;
             font-weight: 600;
             line-height: $fs-l;
