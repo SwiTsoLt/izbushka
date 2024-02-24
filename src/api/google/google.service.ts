@@ -51,6 +51,7 @@ export class GoogleService {
         throw new InternalServerErrorException({}, 'no credentials');
 
       const token = this.token;
+      console.log(token);
       if (checkAccessTokenExpiry && (!token || token.expiry_date < Date.now()))
         throw new InternalServerErrorException({}, 'token expired');
 
@@ -109,6 +110,7 @@ export class GoogleService {
 
   public getAuthTokenExpiryDate(): IGetAuthTokenExpiryDateResponse {
     const token = this.token;
+    if (!token) throw new InternalServerErrorException({}, 'Token not found');
     const d = token.expiry_date - Date.now();
     if (d < 0) {
       return { error: 'token expire' };
@@ -202,6 +204,8 @@ export class GoogleService {
 
   private get token() {
     const filePath = this.tokenPath;
+    console.log('fp', filePath);
+    console.log('exists', fs.existsSync(filePath));
     if (!filePath) return null;
     const content = fs.readFileSync(filePath, 'utf8');
     if (!content && this.credentialsPath === this.CREDENTIALS_PATH_PROD) {
@@ -229,7 +233,7 @@ export class GoogleService {
 
   private get redirectUri() {
     const cred = this.credentials;
-    return this.credentialsPath === this.CREDENTIALS_PATH_PROD
+    return this.credentialsPath !== this.CREDENTIALS_PATH_PROD
       ? cred.redirect_uris[0]
       : cred.redirect_uris[1];
   }
