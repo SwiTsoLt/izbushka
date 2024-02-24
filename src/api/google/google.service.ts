@@ -51,7 +51,7 @@ export class GoogleService {
         throw new InternalServerErrorException({}, 'no credentials');
 
       const token = this.token;
-      console.log(token);
+
       if (checkAccessTokenExpiry && (!token || token.expiry_date < Date.now()))
         throw new InternalServerErrorException({}, 'token expired');
 
@@ -110,9 +110,7 @@ export class GoogleService {
 
   public getAuthTokenExpiryDate(): IGetAuthTokenExpiryDateResponse {
     const token = this.token;
-    console.log(token);
     if (!token) throw new InternalServerErrorException({}, 'Token not found');
-    console.log(token.expiry_date - Date.now());
     const d = token.expiry_date - Date.now();
     if (d < 0) {
       return { error: 'token expire' };
@@ -206,8 +204,6 @@ export class GoogleService {
 
   private get token() {
     const filePath = this.tokenPath;
-    console.log('fp', filePath);
-    console.log('exists', fs.existsSync(filePath));
     if (!filePath) return null;
     const content = fs.readFileSync(filePath, 'utf8');
     if (!content && this.credentialsPath === this.CREDENTIALS_PATH_PROD) {
@@ -228,7 +224,12 @@ export class GoogleService {
   }
 
   private get tokenPath() {
-    console.log(fs.existsSync(this.TOKEN_PATH), this.TOKEN_PATH);
+    const assetsPath = path.resolve(__dirname, '../../../assets');
+
+    if (!fs.existsSync(assetsPath)) {
+      fs.mkdirSync(assetsPath);
+    }
+
     if (fs.existsSync(this.TOKEN_PATH)) return this.TOKEN_PATH;
     if (fs.existsSync(this.TOKEN_PATH_SECRET)) return this.TOKEN_PATH_SECRET;
     return null;
