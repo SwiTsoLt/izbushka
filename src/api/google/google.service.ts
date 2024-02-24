@@ -228,6 +228,7 @@ export class GoogleService {
   }
 
   private get tokenPath() {
+    console.log(fs.existsSync(this.TOKEN_PATH), this.TOKEN_PATH);
     if (fs.existsSync(this.TOKEN_PATH)) return this.TOKEN_PATH;
     if (fs.existsSync(this.TOKEN_PATH_SECRET)) return this.TOKEN_PATH_SECRET;
     return null;
