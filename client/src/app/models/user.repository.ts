@@ -10,7 +10,7 @@ import { selectUser } from '@store/user/user.selectors';
   providedIn: 'root',
 })
 export class UserRepository {
-  private user$: Observable<User | null> = this.store.select(selectUser as never);
+  private user$: Observable<User> = this.store.select(selectUser as never);
 
   constructor(
     private readonly cacheRepository: CacheRepository,
@@ -18,12 +18,12 @@ export class UserRepository {
     private readonly store: Store,
   ) { }
 
-  public getUserById(id: string): Observable<User | null> {
-    return new Observable<User | null>((subscriber) => {
-      this.cacheRepository.getUserById(id).subscribe((cacheUser: User | null) => {
+  public getUserById(id: string): Observable<User> {
+    return new Observable<User>((subscriber) => {
+      this.cacheRepository.getUserById(id).subscribe((cacheUser: User) => {
         if (cacheUser?._id) return subscriber.next(cacheUser);
 
-        this.userService.getUserById(id).subscribe((user: User | null) => {
+        this.userService.getUserById(id).subscribe((user: User) => {
           if (user?._id) {
             this.cacheRepository.setUser(user);
             subscriber.next(user);
@@ -33,9 +33,9 @@ export class UserRepository {
     })
   }
 
-  public toggleFavoritePost(postId: string): Observable<User | null> {
-    return new Observable<User | null>((subscriber) => {
-      this.user$.pipe(take(1)).subscribe((user: User | null) => {
+  public toggleFavoritePost(postId: string): Observable<User> {
+    return new Observable<User>((subscriber) => {
+      this.user$.pipe(take(1)).subscribe((user: User) => {
         if (user?._id) {
           let favorites = user.favorites;
 
@@ -45,14 +45,12 @@ export class UserRepository {
             favorites = [...favorites, postId];
           }
 
-          this.userService.updateUser(user._id, { favorites }).subscribe((newUser: User | null) => {
+          this.userService.updateUser(user._id, { favorites }).subscribe((newUser: User) => {
             if (newUser?._id) {
               subscriber.next(newUser);
               subscriber.complete();
             }
           })
-        } else {
-          subscriber.next(null);
         }
       })
     })

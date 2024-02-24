@@ -51,27 +51,28 @@
                 position: absolute;
                 left: $p-s;
                 top: $p-s;
-                width: $icon-l;
-                height: $icon-l;
+                width: fit-content;
+                height: fit-content;
+                background-color: $main-white;
+                border-radius: $b-r-round;
+                padding: calc($p-s / 2);
+
+                input, label {
+                    width: $icon-l;
+                    height: $icon-l;
+                    cursor: pointer;
+                }
 
                 input {
                     position: absolute;
-                    width: 100%;
-                    height: 100%;
                     visibility: hidden;
-                    cursor: pointer;
-
                     &:checked~label {
                         background-image: url('../../../../assets/pages/post/post-heart-full.svg');
                     }
                 }
 
                 label {
-                    position: absolute;
-                    width: 100%;
-                    height: 100%;
-                    background-image: url('../../../../assets/pages/post/post-heart.svg');
-                    cursor: pointer;
+                    background-image: url('../../../../assets/pages/post/post-heart.svg');                    
                     transition: background-image $anim-tr $anim-mode;
                 }
             }

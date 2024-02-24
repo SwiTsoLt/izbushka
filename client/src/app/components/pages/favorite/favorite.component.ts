@@ -38,16 +38,13 @@ export class FavoriteComponent implements OnInit {
   ngOnInit(): void {
     this.favorites$.subscribe(favorites => {
       if (favorites?.length) {
-        const postList$: Observable<Post | null>[] = [];
+        const postList$: Observable<Post>[] = [];
         favorites.forEach((postId) => {
           postList$.push(this.postRepository.getPostById(postId));
         })
         
         this.posts$ = zip(postList$).pipe(
-          map((posts: (Post | null)[]) => {
-            const filteredPosts: Post[] = posts.filter((post: Post | null) => !!post) as unknown as Post[];
-            return filteredPosts;
-          })
+          map((posts: Post[]) => posts.filter((post: Post | null) => !!post))
         )
       }
     })

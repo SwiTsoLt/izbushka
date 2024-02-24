@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Observable, map, of, take, zip } from 'rxjs';
+import { Observable, map, of, zip } from 'rxjs';
 import { User } from '@models/user.model';
 import { CommonModule } from '@angular/common';
 import { UserCardComponent } from '@UI/user-card/user-card.component';
@@ -34,9 +34,7 @@ import { MobileNavbarSpecialComponent } from '@MUI/mobile-navbar-special/mobile-
   styleUrl: './user.component.scss',
 })
 export class UserComponent implements OnInit {
-  public user$: Observable<User | null> = this.store.select(
-    selectUser as never,
-  );
+  public user$: Observable<User> = this.store.select(selectUser as never);
   public posts$: Observable<Post[]> = of([]);
   public isMe$: Observable<boolean> = of(false);
 
@@ -46,40 +44,28 @@ export class UserComponent implements OnInit {
     private readonly userRepository: UserRepository,
     private readonly postRepository: PostRepository,
     private readonly store: Store,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // User
 
     zip(
-      this.route.paramMap.pipe(
-        take(1),
-        map((params) => {
-          return params.get('id');
-        }),
-      ),
-      this.user$.pipe(
-        take(2),
-        map((user) => user?._id),
-      ),
+      this.route.paramMap.pipe(map((params) => params.get('id'))),
+      this.user$.pipe(map((user) => user?._id)),
     ).subscribe(([find_user_id, current_user_id]) => {
-      if (!find_user_id) {
-        this.router.navigate(['/']);
-        return;
-      }
-      if (find_user_id === current_user_id) {
-        this.isMe$ = of(true);
-        return;
-      }
-
+      if (!find_user_id) return this.router.navigate(['/']);
+      if (find_user_id === current_user_id) return (this.isMe$ = of(true));
+      
       this.user$ = this.userRepository.getUserById(find_user_id);
+      return;
     });
 
     // User Posts
 
     this.user$.subscribe(user => {
-      if (user?.posts?.length) {
-        const postList$: Observable<Post | null>[] = [];
+      if (!user?.posts?.length) return;
+      
+      const postList$: Observable<Post>[] = [];
         user.posts.forEach((postId) => {
           postList$.push(this.postRepository.getPostById(postId));
         })
@@ -89,7 +75,6 @@ export class UserComponent implements OnInit {
             return filteredPosts;
           })
         )
-      }
     })
   }
 }

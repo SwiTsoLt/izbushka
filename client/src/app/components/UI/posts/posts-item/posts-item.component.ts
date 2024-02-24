@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { UserRepository } from '../../../../models/user.repository';
 import { Post } from '../../../../models/post.model';
 import { User } from '../../../../models/user.model';
-import { Observable, of, take } from 'rxjs';
+import { Observable, ObservableInput, map, of, switchMap, take } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { LocationArea, LocationRegion } from '@models/location.model';
 import {
@@ -24,11 +24,12 @@ import { selectUser } from '@store/user/user.selectors';
   styleUrl: './posts-item.component.scss',
 })
 export class PostsItemComponent implements OnInit {
-  @Input() post: Post | undefined;
+  @Input() post!: Post;
 
-  public me$: Observable<User | null> = this.store.select(selectUser as never);
-  public user$: Observable<User | null> = of(null);
-  public area$: Observable<LocationArea | null> = of(null);
+  public me$: Observable<User> = this.store.select(selectUser as never);
+  public user$!: Observable<User>;
+  public region$!: Observable<LocationRegion | undefined>;
+  public area$!: Observable<LocationArea | undefined>;
   public isPostFavorite$: Observable<boolean> = of(false);
 
   private readonly locationArea$: Observable<LocationArea[]> =
@@ -39,55 +40,43 @@ export class PostsItemComponent implements OnInit {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly store: Store,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
+    this.initPostIsFavorite();
     this.initUser();
-    this.initUserArea();
+    this.initLocation();
   }
 
   public toggleFavoritePost(): void {
-    this.me$.pipe(take(1)).subscribe((me: User | null) => {
-      if (!me?._id?.length) {
-        this.isPostFavorite$ = of(false);
-        return;
-      }
-
-      if (!this.post?._id) return;
+    this.me$.pipe(take(1)).subscribe((me: User) => {
+      if (!me || !this.post) return;
       this.store.dispatch(toggleFavoritePost({ postId: this.post._id }))
     })
   }
 
-  public get region$(): Observable<LocationRegion | null> {
-    return new Observable((subscriber) => {
-      this.user$.subscribe((user: User | null) => {
-        this.locationRegion$.subscribe((regionArr: LocationRegion[]) => {
-          subscriber.next(
-            regionArr.find((r) => r._id === user?.location.region) ?? null,
-          );
-        });
-      });
-    });
+  private initUser(): void {
+    this.user$ = this.userRepository.getUserById(this.post?.owner).pipe(take(1));
   }
 
-  private initUser(): void {
-    if (!this.post?.owner) return;
-    this.user$ = this.userRepository.getUserById(this.post.owner).pipe(take(1))
+  private initLocation(): void {
+    this.area$ = this.locationArea$.pipe(
+      switchMap((areaList: LocationArea[]): ObservableInput<LocationArea | undefined> => this.user$.pipe(
+        map((user: User): LocationArea | undefined => areaList.find((area) => area._id === user.location.area))
+      ))
+    )
 
-    this.me$.subscribe((me: User | null) => {
-      if (!me?._id) return;
-      if (!this.post?._id) return;
+    this.region$ = this.locationRegion$.pipe(
+      switchMap((areaList: LocationRegion[]): ObservableInput<LocationRegion | undefined> => this.user$.pipe(
+        map((user: User): LocationRegion | undefined => areaList.find((area) => area._id === user.location.region))
+      ))
+    )
+  }
+
+  private initPostIsFavorite(): void {
+    this.me$.subscribe((me: User) => {
+      if (!me || !this.post) return;
       this.isPostFavorite$ = of(me.favorites.includes(this.post._id));
     })
-  }
-
-  private initUserArea(): void {
-    this.user$.pipe(take(1)).subscribe((user: User | null) => {
-      if (!user) return;
-      this.locationArea$.subscribe((areaArr: LocationArea[]) => {
-        const area = areaArr.find((area) => area._id === user.location.area) ?? null;
-        this.area$ = of(area);
-      });
-    });
   }
 }

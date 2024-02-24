@@ -27,7 +27,7 @@ interface Menu {
 })
 export class NavbarMenuComponent {
   @Input() isShow: boolean = false;
-  @Input() toggleNavbarMenuShow: () => void = () => {};
+  @Input() toggleNavbarMenuShow: () => void = () => { };
 
   public readonly user$: Observable<User> = this.store.select(
     selectUser as never,
@@ -45,35 +45,35 @@ export class NavbarMenuComponent {
   });
 
   constructor(private readonly store: Store) {
-    this.user$.subscribe((user: User | null) => {
-      if (user?._id?.length) {
-        this.menu$ = of({
-          linkIconStaticPath: '../../../../../assets/UI/navbar/menu/',
-          links: [
-            {
-              iconName: 'profile.svg',
-              name: 'Мой профиль',
-              href: `/user/${user._id}`,
-            },
-            {
-              iconName: 'my-posts.svg',
-              name: 'Мои объявления',
-              href: '/my-posts',
-            },
-            { iconName: 'favorites.svg', name: 'Избранные', href: '/favorite' },
-            { iconName: 'chats.svg', name: 'Сообщения', href: '/chats' },
-            { iconName: 'settings.svg', name: 'Настройки', href: '/settings' },
-          ],
-        });
-      }
+    this.user$.subscribe((user: User) => {
+      if (!user?._id) return;
+
+      this.menu$ = of({
+        linkIconStaticPath: '../../../../../assets/UI/navbar/menu/',
+        links: [
+          {
+            iconName: 'profile.svg',
+            name: 'Мой профиль',
+            href: `/user/${user._id}`,
+          },
+          {
+            iconName: 'my-posts.svg',
+            name: 'Мои объявления',
+            href: '/my-posts',
+          },
+          { iconName: 'favorites.svg', name: 'Избранные', href: '/favorite' },
+          { iconName: 'chats.svg', name: 'Сообщения', href: '/chats' },
+          { iconName: 'settings.svg', name: 'Настройки', href: '/settings' },
+        ],
+      });
     });
   }
 
   public signout(): void {
     const answer = confirm('Вы действительно хотите покинуть учетную запись?');
-    if (answer) {
-      window.localStorage.removeItem('access_token');
-      this.store.dispatch(resetUser());
-    }
+    if (!answer) return;
+
+    window.localStorage.removeItem('access_token');
+    this.store.dispatch(resetUser());
   }
 }

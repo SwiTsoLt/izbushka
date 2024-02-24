@@ -38,19 +38,19 @@ import { Observable, map, of, take } from 'rxjs';
 })
 export class PostComponent implements OnInit {
 
-  public me$: Observable<User | null> = this.store.select(selectUser as never);
+  public me$: Observable<User> = this.store.select(selectUser as never);
   public isPostFavorite$: Observable<boolean> = of(false);
-  
+
   public post: Post | null = null;
   public user: User | null = null;
   public area: LocationArea | null = null;
   public region: LocationRegion | null = null;
   public categoryRoot: Category | null = null;
   public categoryChild: Category | null = null;
-  
-  private areaList$: Observable<LocationArea[] | null> = this.store.select(selectLocationArea as never)
-  private regionList$: Observable<LocationRegion[] | null> = this.store.select(selectLocationRegion as never);
-  private categoryList$: Observable<Category[] | null> = this.store.select(selectCategories as never);
+
+  private areaList$: Observable<LocationArea[]> = this.store.select(selectLocationArea as never)
+  private regionList$: Observable<LocationRegion[]> = this.store.select(selectLocationRegion as never);
+  private categoryList$: Observable<Category[]> = this.store.select(selectCategories as never);
 
   public currentImageIndex: number = 0;
 
@@ -67,13 +67,10 @@ export class PostComponent implements OnInit {
   }
 
   public toggleFavoritePost(): void {
-    this.me$.pipe(take(1)).subscribe((me: User | null) => {
-      if (!me?._id?.length) {
-        this.isPostFavorite$ = of(false);
-        return;
-      }
+    this.me$.pipe(take(1)).subscribe((me: User) => {
+      if (!me?._id) return (this.isPostFavorite$ = of(false));
       if (!this.post?._id) return;
-      this.store.dispatch(toggleFavoritePost({ postId: this.post._id }))
+      return this.store.dispatch(toggleFavoritePost({ postId: this.post._id }))
     })
   }
 
@@ -86,9 +83,9 @@ export class PostComponent implements OnInit {
 
   private initPost(postId: string): void {
     this.postRepository.getPostById(postId).subscribe(post => {
-      this.post = post
+      this.post = post;
 
-      this.me$.subscribe((me: User | null) => {
+      this.me$.subscribe((me: User) => {
         if (!me?._id) return;
         if (!this.post?._id) return;
         this.isPostFavorite$ = of(me.favorites.includes(this.post._id));
@@ -105,14 +102,13 @@ export class PostComponent implements OnInit {
   }
 
   private initUser(): void {
-    if (this.post) {
-      this.userRepository.getUserById(this.post?.owner).subscribe((user: User | null) => {
-        this.user = user;
+    if (!this.post?._id) return;
 
-        if (!user?._id) return;
-        if (!this.post?._id) return;
-      })
-    }
+    this.userRepository.getUserById(this.post?.owner).subscribe((user: User) => {
+      if (!user?._id) return;
+      if (!this.post?._id) return;
+      this.user = user;
+    })
   }
 
   private listenQueryParams(): void {
@@ -122,42 +118,41 @@ export class PostComponent implements OnInit {
   }
 
   private initPostLocationArea(): void {
-    this.areaList$.pipe<LocationArea | null>(
-      map<LocationArea[] | null, LocationArea | null>((areaList: LocationArea[] | null): LocationArea | null =>
-        areaList?.filter((area: LocationArea) => area._id === this.post?.location.area)[0] ?? null
+    this.areaList$.pipe<LocationArea>(
+      map<LocationArea[], LocationArea>((areaList: LocationArea[]): LocationArea =>
+        areaList?.filter((area: LocationArea) => area._id === this.post?.location.area)[0]
       )
-    ).subscribe((area: LocationArea | null) => {
-      console.log(this.post);
+    ).subscribe((area: LocationArea) => {
       this.area = area;
     })
   }
 
   private initPostLocationRegion(): void {
-    this.regionList$.pipe<LocationRegion | null>(
-      map<LocationRegion[] | null, LocationRegion | null>((regionList: LocationRegion[] | null): LocationRegion | null =>
-        regionList?.filter((region: LocationRegion) => region._id === this.post?.location.region)[0] ?? null
+    this.regionList$.pipe<LocationRegion>(
+      map<LocationRegion[], LocationRegion>((regionList: LocationRegion[]): LocationRegion =>
+        regionList?.filter((region: LocationRegion) => region._id === this.post?.location.region)[0]
       )
-    ).subscribe((region: LocationRegion | null) => {
+    ).subscribe((region: LocationRegion) => {
       this.region = region;
     })
   }
 
   private initPostCategoryRoot(): void {
-    this.categoryList$.pipe<Category | null>(
-      map<Category[] | null, Category | null>((categoryList: Category[] | null): Category | null =>
-        categoryList?.filter((category: Category) => category.children.includes(this.post?.category ?? ''))[0] ?? null
+    this.categoryList$.pipe<Category>(
+      map<Category[], Category>((categoryList: Category[]): Category =>
+        categoryList?.filter((category: Category) => category.children.includes(this.post?.category ?? ''))[0]
       )
-    ).subscribe((category: Category | null) => {
+    ).subscribe((category: Category) => {
       this.categoryRoot = category;
     })
   }
 
   private initPostCategoryChild(): void {
-    this.categoryList$.pipe<Category | null>(
-      map<Category[] | null, Category | null>((categoryList: Category[] | null): Category | null =>
-        categoryList?.filter((category: Category) => category._id === this.post?.category)[0] ?? null
+    this.categoryList$.pipe<Category>(
+      map<Category[], Category>((categoryList: Category[]): Category =>
+        categoryList?.filter((category: Category) => category._id === this.post?.category)[0]
       )
-    ).subscribe((category: Category | null) => {
+    ).subscribe((category: Category) => {
       this.categoryChild = category;
     })
   }

@@ -1,4 +1,4 @@
-@if(post && (user$ | async)) {
+@if(post && (user$ | async) && (area$ | async) && (region$ | async)) {
 <div class="post">
     <a routerLink="/post/{{post._id}}" class="post-image">
         <img [src]="post.images.length && post.images[0]"

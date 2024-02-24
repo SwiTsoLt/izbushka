@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { type OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
 import * as open from 'open';
@@ -44,13 +44,14 @@ export class GoogleService {
 
   public loadOAuth2Client(
     checkAccessTokenExpiry: boolean = true,
-  ): OAuth2Client | null {
+  ): OAuth2Client {
     const credentials = this.credentials;
-    if (!credentials) return null;
+    if (!credentials)
+      throw new InternalServerErrorException({}, 'no credentials');
 
     const token = this.token;
     if (checkAccessTokenExpiry && (!token || token.expiry_date < Date.now()))
-      return null;
+      throw new InternalServerErrorException({}, 'token expired');
 
     const client: OAuth2Client = new google.auth.OAuth2({
       clientId: credentials.client_id,

@@ -17,7 +17,7 @@ export class InfoEffects {
       ofType(InfoActionsEnum.getInfo),
       exhaustMap(() =>
         this.infoService.getInfo().pipe(
-          map((info: Info | null) => {
+          map((info: Info) => {
             if (!info) {
               return { type: InfoActionsEnum.getInfoError };
             }

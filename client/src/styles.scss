@@ -217,7 +217,7 @@ button {
         &>.container {
             padding-top: calc($mob-nav-height + $mob-p-m) !important;
 
-            .page-title, hr {
+            .page-title {
                 display: none;
             }
         }

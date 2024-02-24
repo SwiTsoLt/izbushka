@@ -3,7 +3,7 @@
 .user-card {
     display: flex;
     gap: $p-m;
-    width: fit-content;
+    width: 100%;
     height: fit-content;
 
     .avatar {
@@ -12,8 +12,8 @@
         border-radius: 50%;
 
         img {
-            width: 140px;
-            height: 140px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
         }
     }
@@ -22,7 +22,9 @@
         display: flex;
         flex-direction: column;
         gap: calc($p-s / 2);
-        width: $tab-button-width;
+        width: 100%;
+        min-width: $tab-button-width;
+        max-width: $tab-button-width;
         height: 100%;
 
         .name {
@@ -69,7 +71,8 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                width: $tab-button-width;
+                width: 100%;
+                max-width: $tab-button-width;
                 height: $button-height;
                 background-color: $main-green-3;
                 border-radius: $b-r-inner;
@@ -81,11 +84,30 @@
 
 @media screen and (max-width: $mobile-w) {
     .user-card>.avatar>img {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
     }
 
-    div.user-card>div.info {
-        width: fit-content;
+    .user-card>.info {
+        min-width: auto;
+    }
+
+    .user-card>.info>.chat-link {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: $mob-nav-height;
+        margin: 0;
+        z-index: 3;
+
+        a {
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+            max-width: none;
+            font-size: $mob-fs-m;
+            font-weight: bold;
+        }
     }
 }

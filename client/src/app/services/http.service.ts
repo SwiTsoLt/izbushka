@@ -18,17 +18,18 @@ import {
   providedIn: 'root',
 })
 export class HttpService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   public get<T>(
     url: string,
     options: Record<string, unknown> = {},
-  ): Observable<HttpResponse<T | null>> {
+  ): Observable<T> {
     return this.httpClient
       .get<T>(url, this.normalizeOptions(options))
       .pipe(
         takeLast(1),
         map(this.handleUpdateAccessToken),
+        map(this.handleResponse),
         catchError(this.handleError),
         shareReplay(1),
       );
@@ -38,12 +39,13 @@ export class HttpService {
     url: string,
     data: unknown,
     options: Record<string, unknown> = {},
-  ): Observable<HttpResponse<T | null>> {
+  ): Observable<T> {
     return this.httpClient
-      .post<T | null>(url, data ?? {}, this.normalizeOptions(options))
+      .post<T>(url, data ?? {}, this.normalizeOptions(options))
       .pipe(
         takeLast(1),
         map(this.handleUpdateAccessToken),
+        map(this.handleResponse),
         catchError(this.handleError),
         shareReplay(1),
       );
@@ -53,15 +55,38 @@ export class HttpService {
     url: string,
     data: unknown,
     options: Record<string, unknown> = {},
-  ): Observable<HttpResponse<T | null>> {
+  ): Observable<T> {
     return this.httpClient
-    .patch<T | null>(url, data ?? {}, this.normalizeOptions(options))
-    .pipe(
-      takeLast(1),
-      map(this.handleUpdateAccessToken),
-      catchError(this.handleError),
-      shareReplay(1),
-    );
+      .patch<T>(url, data, this.normalizeOptions(options))
+      .pipe(
+        takeLast(1),
+        map(this.handleUpdateAccessToken),
+        map(this.handleResponse),
+        catchError(this.handleError),
+        shareReplay(1),
+      );
+  }
+
+  public handleResponse<T>(response: HttpResponse<T>): T {
+    if (!response.body) throw new Error('Body is empty');
+    return response.body;
+  }
+
+  public handleError(error: HttpErrorResponse): Observable<never> {
+    if (error.status === 0) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      console.error(
+        `Backend returned code ${error.status}, body was: `,
+        error.error,
+      );
+    }
+    // Return an observable with a user-facing error message.
+    console.error('Something bad happened; please try again later.');
+    return EMPTY;
   }
 
   // Private
@@ -80,23 +105,6 @@ export class HttpService {
 
     window.localStorage.setItem('access_token', token);
     return response;
-  }
-
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    if (error.status === 0) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong.
-      console.error(
-        `Backend returned code ${error.status}, body was: `,
-        error.error,
-      );
-    }
-    // Return an observable with a user-facing error message.
-    console.error('Something bad happened; please try again later.');
-    return EMPTY;
   }
 
   private normalizeOptions(options: Record<string, unknown>): {

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { GoogleService } from '../../api/google/google.service';
 import { type drive_v3, google } from 'googleapis';
 import { Readable } from 'stream';
@@ -40,14 +40,14 @@ export class GoogleDriveService {
       .catch((error) => {
         console.error(error);
       });
-    if (!response) return null;
-    console.log(response.data);
-    const link = this.generatePublicLink(response.data.id);
-    if (!link) return null;
-    return await link;
+
+    if (!response)
+      throw new InternalServerErrorException({}, 'no drive files response');
+
+    return this.generatePublicLink(response.data.id);
   }
 
-  private async generatePublicLink(id: string): Promise<string> {
+  private generatePublicLink(id: string): string {
     return `https://drive.google.com/thumbnail?id=${id}`;
   }
 }

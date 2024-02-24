@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { Post } from '@models/post.model';
-import { Observable, map, takeLast } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,33 +12,14 @@ export class PostService {
   ) { }
 
   public getPage(page: number = 0): Observable<Post[]> {
-    return this.httpService.get<Post[]>(`/api/post?page=${page}`).pipe(
-      takeLast(1),
-      map((response: HttpResponse<Post[] | null>) => {
-        if (!response.body) return [];
-        return response.body;
-      }),
-    )
+    return this.httpService.get(`/api/post?page=${page}`)
   }
 
-  public getPostById(id: string): Observable<Post | null> {
-    return this.httpService.get<Post | null>(`/api/post/${id}`).pipe(
-      takeLast(1),
-      map((response: HttpResponse<Post | null>) => {
-        if (!response.body) return null;
-        return response.body;
-      }),
-    )
+  public getPostById(id: string): Observable<Post> {
+    return this.httpService.get(`/api/post/${id}`)
   }
 
-  public createPost(createPostDTO: FormData): Observable<Post | null> {
-    return this.httpService
-      .post<Post | null>('/api/post', createPostDTO, {
-        reportProgress: true,
-      })
-      .pipe(
-        takeLast(1),
-        map((response: HttpResponse<Post | null>) => response.body),
-      );
+  public createPost(createPostDTO: FormData): Observable<Post> {
+    return this.httpService.post('/api/post', createPostDTO, { reportProgress: true })
   }
 }

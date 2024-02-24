@@ -30,26 +30,23 @@ export class MyPostsComponent implements OnInit {
 
   public user$: Observable<User> = this.store.select(selectUser as never);
   public posts$: Observable<Post[]> = of([]);
-  
+
   constructor(
     private readonly postRepository: PostRepository,
     private readonly store: Store
-    ) {}
+  ) { }
 
   ngOnInit(): void {
     this.user$.subscribe(user => {
-      if (user?.posts?.length) {
-        const postList$: Observable<Post | null>[] = [];
-        user.posts.forEach((postId) => {
-          postList$.push(this.postRepository.getPostById(postId));
-        })
-        this.posts$ = zip(postList$).pipe(
-          map((posts: (Post | null)[]) => {
-            const filteredPosts: Post[] = posts.filter((post: Post | null) => !!post) as unknown as Post[];
-            return filteredPosts;
-          })
-        )
-      }
+      if (!user?.posts?.length) return;
+
+      const postList$: Observable<Post>[] = [];
+      user.posts.forEach((postId) => {
+        postList$.push(this.postRepository.getPostById(postId));
+      })
+      this.posts$ = zip(postList$).pipe(
+        map((posts: Post[]) => posts.filter((post: Post) => !!post))
+      )
     })
   }
 }

@@ -5,35 +5,20 @@ import {
   SignUpDTO,
   SignUpResponseDTO,
 } from '../dtos/auth.dto';
-import { Observable, map, takeLast } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpService } from './http.service';
-import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private httpService: HttpService) {}
+  constructor(private httpService: HttpService) { }
 
-  public signIn(signInDTO: SignInDTO): Observable<SignInResponseDTO | null> {
-    return this.httpService
-      .post<SignInResponseDTO | null>('/api/auth/signin/', signInDTO)
-      .pipe(
-        takeLast(1),
-        map(
-          (response: HttpResponse<SignInResponseDTO | null>) => response.body,
-        ),
-      );
+  public signIn(signInDTO: SignInDTO): Observable<SignInResponseDTO> {
+    return this.httpService.post('/api/auth/signin/', signInDTO);
   }
 
-  public signUp(signUpDTO: SignUpDTO): Observable<SignUpResponseDTO | null> {
-    return this.httpService
-      .post<SignUpResponseDTO | null>('/api/auth/signup', signUpDTO)
-      .pipe(
-        takeLast(1),
-        map(
-          (response: HttpResponse<SignUpResponseDTO | null>) => response.body,
-        ),
-      );
+  public signUp(signUpDTO: SignUpDTO): Observable<SignUpResponseDTO> {
+    return this.httpService.post('/api/auth/signup', signUpDTO);
   }
 }

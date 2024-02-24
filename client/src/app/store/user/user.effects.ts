@@ -24,7 +24,7 @@ export class UserEffects {
           return of({ type: UserActionsEnum.getUserByAccessTokenError });
 
         return this.userService.getUserByJWT().pipe(
-          switchMap((user: User | null) => {
+          switchMap((user: User) => {
             if (!user) return of ({ type: UserActionsEnum.getUserByAccessTokenError })
             this.cacheRepository.setUser(user);
             return of({ type: UserActionsEnum.getUserByAccessTokenSuccess, user })
@@ -39,7 +39,7 @@ export class UserEffects {
       ofType(UserActionsEnum.toggleFavoritePost),
       switchMap(({ postId }) => {
         return this.userRepository.toggleFavoritePost(postId).pipe(
-          switchMap((user: User | null) => {
+          switchMap((user: User) => {
             if (!user) return of(({ type: UserActionsEnum.toggleFavoritePostError }));
             this.cacheRepository.setUser(user);
             return of(

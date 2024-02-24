@@ -49,18 +49,18 @@ export class CacheRepository {
         )
     }
 
-    public getPostById(id: string): Observable<Post | null> {
-        return this.store.select<Post | null>(selectCache({ prefix: CachePrefixEnum.post, key: id }) as never);
+    public getPostById(id: string): Observable<Post> {
+        return this.store.select<Post>(selectCache({ prefix: CachePrefixEnum.post, key: id }) as never);
     }
 
-    public setPost(post: Post) {
+    public setPost(post: Post): void {
         this.store.dispatch(setCacheKey({ prefix: CachePrefixEnum.post, key: post._id, value: post }))
     }
 
     // User
 
-    public getUserById(id: string): Observable<User | null> {
-        return this.store.select<User | null>(selectCache({ prefix: CachePrefixEnum.user, key: id }) as never);
+    public getUserById(id: string): Observable<User> {
+        return this.store.select<User>(selectCache({ prefix: CachePrefixEnum.user, key: id }) as never);
     }
 
     public setUser(user: User) {
