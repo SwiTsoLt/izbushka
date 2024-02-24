@@ -47,34 +47,36 @@ export class UserComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // User
+    this.listenQueryParamsAndInitUser();
+    this.initPosts();
+  }
 
-    zip(
-      this.route.paramMap.pipe(map((params) => params.get('id'))),
-      this.user$.pipe(map((user) => user?._id)),
-    ).subscribe(([find_user_id, current_user_id]) => {
-      if (!find_user_id) return this.router.navigate(['/']);
-      if (find_user_id === current_user_id) return (this.isMe$ = of(true));
-      
-      this.user$ = this.userRepository.getUserById(find_user_id);
-      return;
+  private listenQueryParamsAndInitUser(): void {
+    this.route.paramMap.pipe(map((params) => params.get('id'))).subscribe(find_user_id => {
+      this.user$.pipe(map((user) => user?._id)).subscribe(userId => {
+        if (!find_user_id) return this.router.navigate(['/']);
+        if (find_user_id === userId) {
+          this.isMe$ = of(true)
+          return this.initPosts();
+        }
+        this.user$ = this.userRepository.getUserById(find_user_id);
+        return this.initPosts();
+      })
     });
+  }
 
-    // User Posts
-
+  private initPosts(): void {
     this.user$.subscribe(user => {
       if (!user?.posts?.length) return;
-      
+
       const postList$: Observable<Post>[] = [];
-        user.posts.forEach((postId) => {
-          postList$.push(this.postRepository.getPostById(postId));
-        })
-        this.posts$ = zip(postList$).pipe(
-          map((posts: (Post | null)[]) => {
-            const filteredPosts: Post[] = posts.filter((post: Post | null) => !!post) as unknown as Post[];
-            return filteredPosts;
-          })
-        )
+      user.posts.forEach((postId) => {
+        postList$.push(this.postRepository.getPostById(postId));
+      })
+
+      this.posts$ = zip(postList$).pipe(
+        map((posts: Post[]) => posts.filter((post: Post) => !!post))
+      )
     })
   }
 }

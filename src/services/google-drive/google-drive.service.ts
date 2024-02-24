@@ -14,8 +14,12 @@ export class GoogleDriveService {
   private drive: drive_v3.Drive | null = null;
 
   constructor(private readonly googleService: GoogleService) {
-    const auth = this.googleService.loadOAuth2Client();
-    this.drive = google.drive({ version: 'v3', auth });
+    try {
+      const auth = this.googleService.loadOAuth2Client();
+      this.drive = google.drive({ version: 'v3', auth });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   public async uploadFile(params: IUploadFileParams) {
