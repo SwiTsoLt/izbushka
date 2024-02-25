@@ -51,12 +51,13 @@ const rootPath = join(__dirname, '..', 'client', 'dist', 'client', 'browser');
 export class AppModule {
   constructor(private readonly googleService: GoogleService) {
     const delay = 1000 * 60 * 45;
-    this.updateOAuthToken();
-    setInterval(this.updateOAuthToken, delay);
-  }
 
-  private updateOAuthToken(): void {
     console.log('update token');
     this.googleService.updateAuthTokens();
+
+    setInterval(() => {
+      console.log('update token');
+      this.googleService.updateAuthTokens();
+    }, delay);
   }
 }
