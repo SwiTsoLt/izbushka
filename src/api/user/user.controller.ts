@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Res,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { type User } from '../../schemas/user.schema';
@@ -34,7 +35,8 @@ export class UserController {
   public async getByJWT(
     @Headers('Authorization') auth: string,
     @Res() res: Response,
-  ): Promise<Response<User>> {
+  ) {
+    if (!auth) return new UnauthorizedException();
     const { user, access_token } = await this.userService.getByJWT(auth);
     return res.setHeader('Authorization', 'Bearer ' + access_token).send(user);
   }
@@ -52,7 +54,8 @@ export class UserController {
     @Param('id') id: Types.ObjectId,
     @Body() updateUserDTO: UpdateUserDTO,
     @Headers('Authorization') auth: string,
-  ): Promise<User> {
+  ) {
+    if (!auth) return new UnauthorizedException();
     return await this.userService.update(id, updateUserDTO, auth);
   }
 
@@ -63,7 +66,8 @@ export class UserController {
   public async delete(
     @Param('id') id: Types.ObjectId,
     @Headers('Authorization') auth: string,
-  ): Promise<User> {
+  ) {
+    if (!auth) return new UnauthorizedException();
     return await this.userService.delete(id, auth);
   }
 }
