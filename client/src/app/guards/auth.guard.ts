@@ -5,7 +5,9 @@ import { Store } from "@ngrx/store";
 import { selectUser } from "@store/user/user.selectors";
 import { Observable } from "rxjs";
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class AuthGuard implements CanActivate {
     private user$: Observable<User> =  this.store.select(selectUser as never);
 
