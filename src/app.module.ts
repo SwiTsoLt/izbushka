@@ -53,11 +53,11 @@ export class AppModule {
     const delay = 1000 * 60 * 45;
 
     console.log('update token');
-    this.googleService.updateAuthTokens();
+    this.googleService.updateToken();
 
     setInterval(() => {
       console.log('update token');
-      this.googleService.updateAuthTokens();
+      this.googleService.updateToken();
     }, delay);
   }
 }

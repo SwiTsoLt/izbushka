@@ -10,7 +10,7 @@
         <div class="page-body">
             <div class="gallery">
                 <div class="gallery__main-image">
-                    <img [src]="$any(post).images[currentImageIndex]" alt="">
+                    <img [src]="$any(post).images[currentImageIndex].link" alt="">
                     <div class="image-counts">{{ currentImageIndex + 1 }} / {{ $any(post).images?.length }}
                     </div>
                     <div class="favorite-button">
@@ -21,9 +21,9 @@
                 </div>
                 <div class="gallery__image-list scrollbar-h">
                     <div class="gallery__image-list-inner">
-                        @for(imageUrl of post?.images; track $index) {
+                        @for(image of post?.images; track $index) {
                         <a routerLink="./" [queryParams]="{image: $index}" class="gallery__image-list-inner__item">
-                            <img [src]="imageUrl" alt="">
+                            <img [src]="image.link" alt="">
                         </a>
                         }
                     </div>

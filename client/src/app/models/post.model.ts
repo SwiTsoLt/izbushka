@@ -1,12 +1,19 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { ShortLocation } from './location.model';
 
+export class PostImage {
+  constructor(
+    public id: string,
+    public link: string,
+  ) {}
+}
+
 export class Post {
   constructor(
     public _id: string,
     public title: string,
     public body: string,
-    public images: string[],
+    public images: PostImage[],
     public category: string,
     public owner: string,
     public location: ShortLocation,

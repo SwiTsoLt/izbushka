@@ -13,7 +13,7 @@ export class CacheService {
   // User
 
   public deleteUsers(): Promise<void> {
-    return this.deleteByPattern(/^(\/api\/user)$/);
+    return this.deleteByPattern(/^(\/api\/user)/);
   }
 
   public deleteUserById(id: Types.ObjectId): Promise<void> {
@@ -23,7 +23,7 @@ export class CacheService {
   // Post
 
   public deletePosts(): Promise<void> {
-    return this.deleteByPattern(/^(\/api\/post)$/);
+    return this.deleteByPattern(/^(\/api\/post)/);
   }
 
   public deletePostById(id: Types.ObjectId): Promise<void> {
@@ -37,11 +37,11 @@ export class CacheService {
   }
 
   public deleteLocationAreas(): Promise<void> {
-    return this.deleteByPattern(/^(\/api\/location\/area)$/);
+    return this.deleteByPattern(/^(\/api\/location\/area)/);
   }
 
   public deleteLocationRegions(): Promise<void> {
-    return this.deleteByPattern(/^(\/api\/location\/region)$/);
+    return this.deleteByPattern(/^(\/api\/location\/region)/);
   }
 
   public deleteLocationAreaById(id: Types.ObjectId): Promise<void> {
@@ -55,7 +55,7 @@ export class CacheService {
   // Category
 
   public deleteCategories(): Promise<void> {
-    return this.deleteByPattern(/^(\/api\/category)$/);
+    return this.deleteByPattern(/^(\/api\/category)/);
   }
 
   public deleteCategoryById(id: Types.ObjectId): Promise<void> {
@@ -74,7 +74,5 @@ export class CacheService {
     const keys = await this.getAll();
     const filteredKeys = keys.filter((key) => new RegExp(pattern).test(key));
     filteredKeys.forEach((key: string) => this.cacheManager.del(key));
-
-    return this.deleteInfo();
   }
 }

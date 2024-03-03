@@ -41,6 +41,7 @@ export class LocationService {
 
   public async postArea(postAreaDTO: PostAreaDTO): Promise<Area> {
     await this.cacheService.deleteLocationAreas();
+
     return await this.errorHandlerService.handleError<Area>(
       new this.areaModel({ ...postAreaDTO, children: [] }).save(),
     );

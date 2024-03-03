@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { type HydratedDocument, Types } from 'mongoose';
+import { IPostImage } from '../interfaces/post.interface';
 
 export type PostDocument = HydratedDocument<Post>;
 
@@ -12,7 +13,7 @@ export class Post {
   body: string;
 
   @Prop()
-  images: string[];
+  images: IPostImage[];
 
   @Prop({ required: true })
   category: Types.ObjectId;

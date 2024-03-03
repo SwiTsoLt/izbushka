@@ -1,16 +1,19 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { type OAuth2Client } from 'google-auth-library';
+import { Injectable } from '@nestjs/common';
+import { Credentials, type OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
 import * as open from 'open';
 import * as path from 'path';
 import * as fs from 'fs';
 import {
-  IGetAuthTokenExpiryDateResponse,
-  IUpdateAccessTokenResponse,
+  IGetTokenExpiryResponse,
+  IUpdateTokenResponse,
+  IClient,
 } from '../../interfaces/google.interface';
 
 @Injectable()
 export class GoogleService {
+  private oAuth2Client: OAuth2Client;
+
   private readonly CREDENTIALS_PATH_DEV = path.resolve(
     __dirname,
     '../../../',
@@ -21,10 +24,20 @@ export class GoogleService {
 
   private readonly CREDENTIALS_PATH_PROD = '/etc/secrets/credentials.json';
 
+  private readonly ASSETS_PATH = path.resolve(__dirname, '../../../', 'assets');
+
   private readonly TOKEN_PATH = path.resolve(
     __dirname,
     '../../../',
     'assets',
+    'token.json',
+  );
+
+  private readonly TOKEN_PATH_SECRET_DEV = path.resolve(
+    __dirname,
+    '../../../',
+    'assets',
+    'secret',
     'token.json',
   );
 
@@ -36,209 +49,172 @@ export class GoogleService {
 
   private readonly SCOPES: string[] = ['https://www.googleapis.com/auth/drive'];
 
-  private readonly authUrlConfig = {
+  private readonly AUTH_URL_CONFIG = {
     access_type: 'offline',
     scope: this.SCOPES,
     include_granted_scopes: true,
   };
 
-  public loadOAuth2Client(
-    checkAccessTokenExpiry: boolean = true,
-  ): OAuth2Client {
+  constructor() {
+    this.oAuth2Client = this.getClient();
+    if (!this.oAuth2Client) {
+      this.oAuth2Client = this.getClient(false);
+    }
+  }
+
+  public getOAuth2Client(): OAuth2Client {
+    return this.oAuth2Client;
+  }
+
+  public googleAuth() {
+    let client = this.getClient();
+    if (client) return;
+    client = this.getClient(false);
+    const authUrl = client.generateAuthUrl(this.AUTH_URL_CONFIG);
+    open(authUrl);
+  }
+
+  public async handleCallback(code: string): Promise<void> {
     try {
-      const credentials = this.credentials;
-      if (!credentials)
-        throw new InternalServerErrorException({}, 'no credentials');
-
-      const token = this.token;
-
-      if (checkAccessTokenExpiry && (!token || token.expiry_date < Date.now()))
-        throw new InternalServerErrorException({}, 'token expired');
-
-      const client: OAuth2Client = new google.auth.OAuth2({
-        clientId: credentials.client_id,
-        clientSecret: credentials.client_secret,
-        redirectUri: this.redirectUri,
-        credentials: token,
-      });
-
-      return client;
+      const { tokens } = await this.oAuth2Client
+        .getToken(code)
+        .catch((error) => {
+          console.error(error);
+          return error;
+        });
+      if (!tokens) return;
+      this.saveToken(tokens);
     } catch (error) {
       console.error(error);
     }
   }
 
-  public generateOAuth2Client(): OAuth2Client {
-    const oAuth2Client = this.emptyOAuth2Client;
-    const authUrl = oAuth2Client.generateAuthUrl(this.authUrlConfig);
-    open(authUrl);
-    return oAuth2Client;
-  }
+  public getTokenExpiry(): IGetTokenExpiryResponse {
+    const token = this.getToken(false);
+    const delta = token.expiry_date - Date.now();
 
-  public async handleCallback(code: string): Promise<OAuth2Client> {
-    return await new Promise<OAuth2Client>(async (resolve, reject) => {
-      try {
-        const oauth2client = this.emptyOAuth2Client;
-        const { tokens } = await oauth2client.getToken(code).catch(() => null);
-
-        if (!this.tokenPath) {
-          oauth2client.setCredentials(tokens);
-          console.log('Authentication successful!');
-          return resolve(oauth2client);
-        }
-
-        if (!tokens.refresh_token) {
-          const content = fs.readFileSync(this.tokenPath, 'utf-8');
-          const token = JSON.parse(content);
-          const credentials = {
-            ...tokens,
-            refresh_token: token.refresh_token,
-          };
-          oauth2client.setCredentials(credentials);
-          console.log('Authentication successful!');
-          return resolve(oauth2client);
-        }
-
-        oauth2client.setCredentials(tokens);
-        console.log('Authentication successful!');
-        return resolve(oauth2client);
-      } catch (error) {
-        return reject(error);
-      }
-    });
-  }
-
-  public getAuthTokenExpiryDate(): IGetAuthTokenExpiryDateResponse {
-    const token = this.token;
-    if (!token) throw new InternalServerErrorException({}, 'Token not found');
-    const d = token.expiry_date - Date.now();
-    if (d < 0) {
-      return { error: 'token expire' };
+    if (delta < 0) {
+      return { error: 'Token expire' };
     }
 
-    const hours = Math.floor(d / 1000 / 60 / 60);
-    const minutes = Math.floor(d / 1000 / 60);
-    const seconds = Math.floor(d / 1000 - minutes * 60);
+    const hours = Math.floor(delta / 1000 / 60 / 60);
+    const minutes = Math.floor((delta - hours * 60 * 60 * 1000) / 1000 / 60);
+    const seconds = Math.floor((delta - minutes * 60 * 1000) / 1000);
+
     return {
       date: token.expiry_date,
       pretty: new Date(token.expiry_date),
-      time: `${hours}h ${minutes}m ${seconds}s`,
+      time: `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`,
     };
   }
 
-  public updateAuthTokens(): Promise<IUpdateAccessTokenResponse> {
-    return new Promise((resolve, reject) => {
-      try {
-        const client = this.loadOAuth2Client(false);
-        if (!client) return reject({ error: 'oauth2 client not found' });
-        if (!this.tokenPath) return reject({ error: 'token not found' });
+  public updateToken(): Promise<IUpdateTokenResponse> {
+    return new Promise((res) => {
+      if (!this.oAuth2Client) return res({ message: 'OAuth2Client not found' });
 
-        client.refreshAccessToken((error, tokens) => {
-          if (error) return reject(error);
+      this.oAuth2Client.refreshAccessToken((err, tokens) => {
+        if (err) {
+          console.error(err);
+          return res({ message: err.message });
+        }
 
-          const payload = {
-            ...this.token,
-            ...tokens,
-          };
-
-          fs.writeFile(this.TOKEN_PATH, JSON.stringify(payload), () => {
-            console.log('Credential has been successful saved!');
-          });
-
-          if (fs.existsSync(this.TOKEN_PATH_SECRET)) {
-            fs.writeFile(
-              this.TOKEN_PATH_SECRET,
-              JSON.stringify(payload),
-              () => {
-                console.log('Credential has been successful saved to secret!');
-              },
-            );
-          }
-
-          client.setCredentials(tokens);
-          return resolve({ client, message: 'Success update auth tokens' });
+        this.saveToken(tokens);
+        return res({
+          message: 'Token has been updated successfully!',
         });
-      } catch (error) {
-        console.error(error);
-        reject(error);
-      }
-    });
-  }
-
-  public saveAccessTokens(client: OAuth2Client): void {
-    const payload = JSON.stringify(client.credentials);
-    fs.writeFile(this.TOKEN_PATH, payload, () => {
-      console.log('Credential has been successful saved!');
-    });
-    if (this.credentialsPath === this.CREDENTIALS_PATH_PROD) {
-      fs.writeFile(this.TOKEN_PATH_SECRET, payload, () => {
-        console.log('Credential has been successful saved secret!');
       });
-    }
-  }
-
-  // Drive
-
-  public getDrive(auth: OAuth2Client) {
-    return google.drive({ version: 'v3', auth });
+    });
   }
 
   // Private
 
-  private get emptyOAuth2Client(): OAuth2Client {
-    const credentials = this.credentials;
-    return new google.auth.OAuth2({
-      clientId: credentials.client_id,
-      clientSecret: credentials.client_secret,
-      redirectUri: this.redirectUri,
-    });
-  }
+  private getClient(checkToken: boolean = true): OAuth2Client {
+    const cred = this.getCredentials();
+    const token = checkToken ? this.getToken() : this.getToken(false);
 
-  private get credentials() {
-    const filePath = this.credentialsPath;
-    if (!filePath) return null;
-    const content = fs.readFileSync(filePath, 'utf8');
-    const keys = JSON.parse(content);
-    return keys.installed || keys.web;
-  }
+    if (!cred) return undefined;
+    if (checkToken && !token) return undefined;
 
-  private get token() {
-    const filePath = this.tokenPath;
-    if (!filePath) return null;
-    const content = fs.readFileSync(filePath, 'utf8');
-    if (!content && this.credentialsPath === this.CREDENTIALS_PATH_PROD) {
-      if (!fs.existsSync(this.TOKEN_PATH_SECRET)) return null;
-      const content = fs.readFileSync(this.TOKEN_PATH_SECRET, 'utf8');
-      if (!content) return null;
-      return JSON.parse(content);
-    }
-    return JSON.parse(content);
-  }
-
-  private get credentialsPath() {
-    if (fs.existsSync(this.CREDENTIALS_PATH_PROD))
-      return this.CREDENTIALS_PATH_PROD;
-    if (fs.existsSync(this.CREDENTIALS_PATH_DEV))
-      return this.CREDENTIALS_PATH_DEV;
-    return null;
-  }
-
-  private get tokenPath() {
-    const assetsPath = path.resolve(__dirname, '../../../assets');
-
-    if (!fs.existsSync(assetsPath)) {
-      fs.mkdirSync(assetsPath);
-    }
-
-    if (fs.existsSync(this.TOKEN_PATH)) return this.TOKEN_PATH;
-    if (fs.existsSync(this.TOKEN_PATH_SECRET)) return this.TOKEN_PATH_SECRET;
-    return null;
-  }
-
-  private get redirectUri() {
-    const cred = this.credentials;
-    return this.credentialsPath !== this.CREDENTIALS_PATH_PROD
+    const redirectUri = this.isProd()
       ? cred.redirect_uris[0]
       : cred.redirect_uris[1];
+
+    const client = new google.auth.OAuth2({
+      clientId: cred.client_id,
+      clientSecret: cred.client_secret,
+      redirectUri,
+
+      credentials: token,
+    });
+
+    return client;
+  }
+
+  private saveToken(token: Credentials): void {
+    this.oAuth2Client.setCredentials(token);
+
+    const oldToken = this.getToken(false);
+
+    if (!fs.existsSync(this.ASSETS_PATH)) {
+      fs.mkdirSync(this.ASSETS_PATH);
+    }
+
+    const newToken = token.refresh_token.length
+      ? token
+      : { ...token, refresh_token: oldToken.refresh_token };
+
+    if (this.isProd()) {
+      fs.writeFileSync(this.TOKEN_PATH_SECRET, JSON.stringify(newToken));
+    }
+    fs.writeFileSync(this.TOKEN_PATH, JSON.stringify(newToken));
+  }
+
+  private getToken(hasValidation: boolean = true): Credentials | undefined {
+    const tokenPath = this.getTokenPath();
+    if (!tokenPath) return undefined;
+    const content = fs.readFileSync(tokenPath);
+
+    try {
+      const token = JSON.parse(content.toString());
+      if (!hasValidation) return token;
+      return this.isTokenValid(token) ? token : undefined;
+    } catch (_) {
+      return undefined;
+    }
+  }
+
+  private getCredentials(): IClient | undefined {
+    try {
+      const credentialsPath = this.getCredentialsPath();
+      const content = fs.readFileSync(credentialsPath);
+      const keys = JSON.parse(content.toString());
+      const cred = keys.web;
+      return cred;
+    } catch (_) {
+      return undefined;
+    }
+  }
+
+  private getCredentialsPath(): string {
+    return this.isProd()
+      ? this.CREDENTIALS_PATH_PROD
+      : this.CREDENTIALS_PATH_DEV;
+  }
+
+  private getTokenPath(): string | undefined {
+    if (fs.existsSync(this.TOKEN_PATH)) return this.TOKEN_PATH;
+    if (fs.existsSync(this.TOKEN_PATH_SECRET)) return this.TOKEN_PATH_SECRET;
+    if (fs.existsSync(this.TOKEN_PATH_SECRET_DEV))
+      return this.TOKEN_PATH_SECRET_DEV;
+    return undefined;
+  }
+
+  private isTokenValid(token: Credentials): boolean {
+    const delta = token.expiry_date - Date.now();
+    return delta > 0 && !!token?.refresh_token?.length;
+  }
+
+  private isProd(): boolean {
+    return fs.existsSync(this.CREDENTIALS_PATH_PROD);
   }
 }

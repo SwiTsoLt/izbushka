@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Post } from '../../schemas/post.schema';
@@ -11,6 +15,7 @@ import { GoogleDriveService } from '../../services/google-drive/google-drive.ser
 import { VerifyOwnerService } from '../../services/verify-owner/verify-owner.service';
 import { rolesEnum } from '../../interfaces/roles.interface';
 import { CacheService } from '../../services/cache/cache.service';
+import { IPostImage } from '../../interfaces/post.interface';
 
 @Injectable()
 export class PostService {
@@ -54,13 +59,13 @@ export class PostService {
     results: IMultiSharpResult[],
   ): Promise<Post> {
     await this.cacheService.deletePosts();
-
+    await this.cacheService.deleteInfo();
     const { sub } = await this.myJwtService.decodeAuth(access_token);
 
-    const promiseArr: Array<Promise<string>> = [];
+    const promiseArr: Array<Promise<IPostImage>> = [];
     results.forEach(async (result) => {
       promiseArr.push(
-        this.errorHandlerService.handleError<string>(
+        this.errorHandlerService.handleError<IPostImage>(
           this.googleDriveService.uploadFile({
             ...result,
             parents: this.POST_PARENTS,
@@ -69,15 +74,19 @@ export class PostService {
       );
     });
 
-    const publicLinkArr: string[] = await Promise.all(promiseArr);
+    const publicLinkArr: IPostImage[] = await Promise.all(promiseArr);
+
+    const postLocation = JSON.parse(
+      createPostDTO.location as unknown as string,
+    );
 
     const newPost = await this.errorHandlerService.handleError(
       new this.postModel({
         ...createPostDTO,
         images: publicLinkArr,
         location: {
-          area: createPostDTO.location.area,
-          region: createPostDTO.location.region,
+          area: postLocation.area,
+          region: postLocation.region,
         },
         category: createPostDTO.category,
         owner: sub,
@@ -124,12 +133,29 @@ export class PostService {
   // Delete
 
   public async delete(id: Types.ObjectId, auth: string): Promise<Post> {
-    await this.cacheService.deletePostById(id);
+    await this.cacheService.deletePosts();
+    await this.cacheService.deleteInfo();
 
     const isPostOwnerVerified = await this.errorHandlerService.handleError(
       this.verifyOwnerService.verifyPostOwner(id, auth, rolesEnum.admin),
     );
     if (!isPostOwnerVerified) throw new ForbiddenException();
+
+    const post = await this.postModel.findById(id);
+    if (!post) throw new NotFoundException();
+
+    await this.cacheService.deletePostById(post.owner);
+
+    post.images.forEach(async (image: IPostImage) => {
+      await this.googleDriveService.removeFileById(image.id);
+    });
+
+    await this.userModel.findByIdAndUpdate(post.owner, {
+      $pull: {
+        posts: post._id,
+      },
+    });
+
     return await this.errorHandlerService.handleError<Post>(
       this.postModel.findByIdAndDelete(id).exec(),
     );

@@ -1,7 +1,7 @@
 @if(post && (user$ | async) && (area$ | async) && (region$ | async)) {
 <div class="post">
     <a routerLink="/post/{{post._id}}" class="post-image">
-        <img [src]="post.images.length && post.images[0]"
+        <img [src]="post.images.length && post.images[0].link"
         onerror="this.src='../../../assets/pages/home/post-image-error.webp'" alt="post image">
     </a>
     <a routerLink="/post/{{post._id}}" class="info">

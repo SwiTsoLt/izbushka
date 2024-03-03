@@ -15,7 +15,7 @@ export class GoogleDriveService {
 
   constructor(private readonly googleService: GoogleService) {
     try {
-      const auth = this.googleService.loadOAuth2Client();
+      const auth = this.googleService.getOAuth2Client();
       this.drive = google.drive({ version: 'v3', auth });
     } catch (error) {
       console.error(error);
@@ -48,7 +48,18 @@ export class GoogleDriveService {
     if (!response)
       throw new InternalServerErrorException({}, 'no drive files response');
 
-    return this.generatePublicLink(response.data.id);
+    return {
+      id: response.data.id,
+      link: this.generatePublicLink(response.data.id),
+    };
+  }
+
+  public async removeFileById(id: string): Promise<void> {
+    try {
+      await this.drive.files.delete({ fileId: id });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   private generatePublicLink(id: string): string {

@@ -120,7 +120,7 @@ export class PostComponent implements OnInit {
   private initPostLocationArea(): void {
     this.areaList$.pipe<LocationArea>(
       map<LocationArea[], LocationArea>((areaList: LocationArea[]): LocationArea =>
-        areaList?.filter((area: LocationArea) => area._id === this.post?.location.area)[0]
+        areaList?.filter((area: LocationArea) => area._id === this.post?.location?.area)[0]
       )
     ).subscribe((area: LocationArea) => {
       this.area = area;
@@ -130,7 +130,7 @@ export class PostComponent implements OnInit {
   private initPostLocationRegion(): void {
     this.regionList$.pipe<LocationRegion>(
       map<LocationRegion[], LocationRegion>((regionList: LocationRegion[]): LocationRegion =>
-        regionList?.filter((region: LocationRegion) => region._id === this.post?.location.region)[0]
+        regionList?.filter((region: LocationRegion) => region._id === this.post?.location?.region)[0]
       )
     ).subscribe((region: LocationRegion) => {
       this.region = region;

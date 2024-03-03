@@ -12,7 +12,7 @@ export class ErrorHandlerService {
     try {
       const result: T = await promise;
 
-      if (!result) {
+      if (result === null || result === undefined) {
         throw new NotFoundException();
       }
 
