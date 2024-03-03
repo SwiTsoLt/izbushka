@@ -20,10 +20,7 @@ export class AuthGuard implements CanActivate {
     const auth: string = request.headers.authorization;
     if (!auth) throw new UnauthorizedException();
 
-    await this.myJwtService.decodeAuth(auth).catch((err) => {
-      console.error(err);
-      throw new UnauthorizedException();
-    });
+    await this.myJwtService.decodeAuth(auth);
 
     return true;
   }

@@ -18,8 +18,6 @@ export class ErrorHandlerService {
 
       return result;
     } catch (error) {
-      console.error(error);
-
       if (error.status === 401) {
         throw new UnauthorizedException();
       }

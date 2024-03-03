@@ -1,9 +1,4 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { type JWTPayload } from '../../models/jwt.model';
 import { ConfigService } from '@nestjs/config';
@@ -30,7 +25,7 @@ export class MyJwtService extends JwtService {
     }
 
     const { sub, roles } = await this.verifyAsync(token).catch((err) => {
-      throw new HttpException(err, HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException(err);
     });
 
     if (!sub?.length || !roles.length) {

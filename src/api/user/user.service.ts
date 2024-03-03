@@ -47,9 +47,8 @@ export class UserService {
       throw new UnauthorizedException();
     }
 
-    const user = await this.errorHandlerService.handleError(
-      this.userModel.findById(sub).select('-password').exec(),
-    );
+    const user = await this.userModel.findById(sub).select('-password').exec();
+
     const payload = { sub: user._id, roles: user.roles };
     const new_access_token = await this.myJwtService.signAsync(payload);
 
