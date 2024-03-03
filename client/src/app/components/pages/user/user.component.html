@@ -1,6 +1,6 @@
 <div class="user standard-page">
     <app-navbar></app-navbar>
-    <app-mobile-navbar-special title="Профиль"></app-mobile-navbar-special>
+    <app-mobile-navbar-special [title]="(user$ | async)?.first_name" type="USER"></app-mobile-navbar-special>
     <app-mobile-menu (toggleMobileContextMenuShow)="ctx.isShow = !ctx.isShow"></app-mobile-menu>
     <app-mobile-context-menu #ctx></app-mobile-context-menu>
 

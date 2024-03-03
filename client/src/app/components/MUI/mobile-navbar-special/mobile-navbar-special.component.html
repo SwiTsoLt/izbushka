@@ -4,8 +4,33 @@
         <div class="middle"></div>
         <div class="right"></div>
     </div>
-    <button class="bgimage" (click)="back()"> </button>
+    <div class="back">
+        <button (click)="back()">
+            <img src="../../../../assets/MUI/mobile-navbar-special/arrow-back.svg" alt="share">
+        </button>
+    </div>
     <div class="title">
-        <h2>{{ title }}</h2>
+        <h2>{{ title ?? '404' }}</h2>
+    </div>
+
+    <div class="buttons">
+        @if(post?._id) {
+        <div class="favorite">
+            <button (click)="toggleFavorite()">
+                @if(isPostFavorite$ | async) {
+                <img src="../../../../assets/MUI/mobile-navbar-special/favorite-full.svg" alt="favorite">
+                } @else {
+                <img src="../../../../assets/MUI/mobile-navbar-special/favorite.svg" alt="favorite">
+                }
+            </button>
+        </div>
+        }
+        @if(type === 'POST' || type === 'USER') {
+            <div class="share">
+                <button (click)="share()">
+                    <img src="../../../../assets/MUI/mobile-navbar-special/share.svg" alt="share">
+                </button>
+            </div>
+        }
     </div>
 </nav>

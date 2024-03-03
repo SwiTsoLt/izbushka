@@ -3,7 +3,7 @@ import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
 import { MobileNavbarSpecialComponent } from '@MUI/mobile-navbar-special/mobile-navbar-special.component';
 import { NavbarComponent } from '@UI/navbar/navbar.component';
 import { UserCardComponent } from '@UI/user-card/user-card.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CacheRepository } from '@models/cache.repository';
@@ -59,6 +59,7 @@ export class PostComponent implements OnInit {
     private readonly postRepository: PostRepository,
     private readonly userRepository: UserRepository,
     private readonly store: Store,
+    private readonly location: Location,
   ) { }
 
   ngOnInit(): void {
@@ -66,11 +67,24 @@ export class PostComponent implements OnInit {
     this.listenQueryParams();
   }
 
+  public share() {
+    navigator.share({
+      title: this.post?.title,
+      text: this.post && (this.post.body.length > 50)
+        ? this.post?.body?.slice(0, 50) + '...'
+        : this.post?.body,
+      url: this.location.path(),
+    })
+  }
+
   public toggleFavoritePost(): void {
     this.me$.pipe(take(1)).subscribe((me: User) => {
-      if (!me?._id) return (this.isPostFavorite$ = of(false));
+      if (!me?._id) {
+        this.isPostFavorite$ = of(false);
+        return;
+      }
       if (!this.post?._id) return;
-      return this.store.dispatch(toggleFavoritePost({ postId: this.post._id }))
+      this.store.dispatch(toggleFavoritePost({ postId: this.post._id }))
     })
   }
 
