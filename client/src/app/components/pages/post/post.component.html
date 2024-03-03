@@ -12,7 +12,7 @@
         <div class="page-body">
             <div class="gallery">
                 <div class="gallery__main-image">
-                    <img [src]="$any(post).images[currentImageIndex].link" alt="">
+                    <img [src]="$any(post).images[currentImageIndex].link" alt="main">
                     <div class="image-counts">{{ currentImageIndex + 1 }} / {{ $any(post).images?.length }}
                     </div>
                     <div class="buttons__left">
@@ -32,7 +32,7 @@
                     <div class="gallery__image-list-inner">
                         @for(image of post?.images; track $index) {
                         <a routerLink="./" [queryParams]="{image: $index}" class="gallery__image-list-inner__item">
-                            <img [src]="image.link" alt="">
+                            <img [src]="image.link" loading="lazy" alt="gallery-image">
                         </a>
                         }
                     </div>

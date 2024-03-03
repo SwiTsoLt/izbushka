@@ -1,5 +1,6 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Post } from '@models/post.model';
 import { User } from '@models/user.model';
 import { Store } from '@ngrx/store';
@@ -27,6 +28,7 @@ export class MobileNavbarSpecialComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private readonly location: Location,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -45,7 +47,7 @@ export class MobileNavbarSpecialComponent implements OnInit {
   }
 
   public back(): void {
-    this.location.back();
+    this.router.navigate(['/home']);
   }
 
   public toggleFavorite(): void {
