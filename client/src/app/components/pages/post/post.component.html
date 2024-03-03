@@ -1,7 +1,9 @@
 @if (post?._id) {
 <div class="post standard-page">
     <app-navbar></app-navbar>
-    <app-mobile-navbar-special [title]="post?.title" [description]="post?.body" type="POST" [post]="post"></app-mobile-navbar-special>
+    <app-mobile-navbar-special [title]="post?.title"
+        [description]="(post?.body?.length ?? 0 > 50) ? post?.body?.slice(0, 50) + '...' : post?.body" type="POST"
+        [post]="post"></app-mobile-navbar-special>
     <app-mobile-menu (toggleMobileContextMenuShow)="ctx.isShow = !ctx.isShow"></app-mobile-menu>
     <app-mobile-context-menu #ctx></app-mobile-context-menu>
 

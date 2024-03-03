@@ -216,7 +216,9 @@
 }
 
 @media screen and (max-width: $tablet-w) {
-
+    .page-body {
+        grid-template-columns: repeat(auto-fit, minmax(calc($mobile-w / 2), 1fr));
+    }
 }
 
 @media screen and (max-width: $mobile-w) {
