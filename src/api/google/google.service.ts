@@ -163,9 +163,6 @@ export class GoogleService {
       ? token
       : { ...token, refresh_token: oldToken.refresh_token };
 
-    if (this.isProd()) {
-      fs.writeFileSync(this.TOKEN_PATH_SECRET, JSON.stringify(newToken));
-    }
     fs.writeFileSync(this.TOKEN_PATH, JSON.stringify(newToken));
   }
 
