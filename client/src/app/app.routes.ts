@@ -13,6 +13,7 @@ import { SecurityComponent } from '@pages/settings/security/security.component';
 import { UserComponent } from '@pages/user/user.component';
 import { CreatePostComponent } from '@pages/create-post/create-post.component';
 import { PostComponent } from '@pages/post/post.component';
+import { AuthGuard } from '@guards/auth.guard';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -21,10 +22,10 @@ export const routes: Routes = [
   { path: 'signup', component: SignUpComponent },
   { path: 'user/:id', component: UserComponent },
   { path: 'post/:id', component: PostComponent },
-  { path: 'create-post', component: CreatePostComponent },
-  { path: 'my-posts', component: MyPostsComponent },
-  { path: 'favorite', component: FavoriteComponent },
-  { path: 'chats', component: ChatsComponent },
+  { path: 'create-post', component: CreatePostComponent, canActivate: [AuthGuard] },
+  { path: 'my-posts', component: MyPostsComponent, canActivate: [AuthGuard] },
+  { path: 'favorite', component: FavoriteComponent, canActivate: [AuthGuard] },
+  { path: 'chats', component: ChatsComponent, canActivate: [AuthGuard] },
   {
     path: 'settings',
     component: SettingsComponent,
@@ -33,6 +34,7 @@ export const routes: Routes = [
       { path: 'security', component: SecurityComponent },
       { path: '**', redirectTo: '/settings/profile', pathMatch: 'full' },
     ],
+    canActivate: [AuthGuard]
   },
   { path: 'policy', component: PolicyComponent },
   { path: 'password-recovery', component: PasswordRecoveryComponent },

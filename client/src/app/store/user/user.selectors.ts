@@ -7,7 +7,7 @@ export interface AppState {
 
 export const selectUser = createSelector(
   (state: AppState) => state,
-  (state) => state.user,
+  (state): User => state.user,
 );
 
 export const selectUserFavorites = createSelector(
