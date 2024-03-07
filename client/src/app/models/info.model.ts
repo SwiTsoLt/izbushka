@@ -1,5 +1,6 @@
 export class Info {
     constructor(
-        public postsCount: number
+        public isReady: boolean,
+        public postsCount: number,
     ) {}
 }
