@@ -9,9 +9,9 @@
     [ngClass]="{
         'hasBackground': hasBackground,
     }"
-    (click)="callback()"
+    (click)="press.emit()"
     [disabled]="disabled"
     >
-        {{ text }}
+        <ng-content></ng-content>
     </button>
 </div>

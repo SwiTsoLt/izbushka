@@ -1,0 +1,24 @@
+<div [ngClass]="{'active': isShow}" class="mobile-selector">
+    <div class="menu">
+        <div class="background">
+            <div class="left"></div>
+            <div class="middle"></div>
+            <div class="right"></div>
+        </div>
+        <div class="back">
+            <button (click)="back()">
+                <img src="../../../../assets/MUI/mobile-navbar-special/arrow-back.svg" alt="share">
+            </button>
+        </div>
+        <div class="title">
+            <h2>{{ title.length ? title : 'Меню' }}</h2>
+        </div>
+    </div>
+    <div ngModel #optionListElem class="option-list">
+        @for(option of currentOptionList; track option) {
+            <app-mobile-selector-item (selectOption)="onSelectOption($event)" [id]="option.id" [value]="option">
+                {{ option.name }}
+            </app-mobile-selector-item>
+        }
+    </div>
+</div>

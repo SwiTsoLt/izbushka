@@ -3,6 +3,7 @@
     <app-mobile-navbar-special title="Подача объявления"></app-mobile-navbar-special>
     <app-mobile-menu (toggleMobileContextMenuShow)="ctx.isShow = !ctx.isShow"></app-mobile-menu>
     <app-mobile-context-menu #ctx></app-mobile-context-menu>
+    <app-mobile-selector #mobileSelector [isShow]="false" [optionList]="(mobileCategoryList$ | async) ?? []" (selectOption)="onSelectOption($event)"></app-mobile-selector>
 
     <div class="container">
         <div class="page-title">
@@ -54,8 +55,9 @@
                     <h2>Название товара / услуги*</h2>
                 </div>
                 <div class="section-body">
-                    <input #title [formControl]="createPostForm.controls.title" class="my-input-green" minlength="1" maxlength="50" type="text"
-                        placeholder="Например, краска Caparol" (blur)="checkFieldValid(title)" >
+                    <input #title [formControl]="createPostForm.controls.title" class="my-input-green" minlength="1"
+                        maxlength="50" type="text" placeholder="Например, краска Caparol"
+                        (blur)="checkFieldValid(title)">
                     <i>{{ title.value.length }} из 50 знаков</i>
                 </div>
             </section>
@@ -64,40 +66,19 @@
                     <h2>Выбор категории</h2>
                 </div>
                 <div class="section-body">
-                    <div class="section-body-inner">
-                        <div class="category-list-container">
-                            <div class="category-list-inner scrollbar-v">
-                                <ul>
-                                    @for(category of categoryList$ | async; track category._id) {
-                                    @if(!category.parent) {
-                                    <li>
-                                        <input type="radio" (change)="setRootCategory(category._id)" name="category"
-                                            id="subcategory-item-{{category._id}}"
-                                            [checked]="rootCategory === category._id">
-                                        <label (mouseenter)="setRootCategory(category._id)"
-                                            for="subcategory-item-{{category._id}}">{{category.name}}</label>
-                                    </li>
-                                    }
-                                    }
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="subcategory-list-container">
-                            <div class="subcategory-list-inner scrollbar-v">
-                                <ul>
-                                    @for(category of categoryList$ | async; track category._id) {
-                                    @if(category.parent === rootCategory) {
-                                    <li>
-                                        <input [formControl]="createPostForm.controls.category" type="radio" name="subcategory"
-                                            id="subcategory-item-{{category._id}}" [value]="category._id" [checked]="createPostForm.value.category === category._id">
-                                        <label for="subcategory-item-{{category._id}}">{{category.name}}</label>
-                                    </li>
-                                    }
-                                    }
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    <app-selector (selectOption)="onSelectRootCategory($event)">
+                        @for(rootCategory of (rootCategoryList$ | async) ?? []; track rootCategory._id; let index = $index) {
+                            <app-selector-item [id]="rootCategory._id" [value]="rootCategory" name="root_category" [checked]="index === 0">{{rootCategory.name}}</app-selector-item>
+                        }
+                    </app-selector>
+                    <app-selector (selectOption)="onSelectSubCategory($event)">
+                        @for(subCategory of (subCategoryList$ | async) ?? []; track subCategory._id; let index = $index) {
+                            <app-selector-item [id]="subCategory._id" [value]="subCategory" name="sub_category" [checked]="index === 0">{{subCategory.name}}</app-selector-item>
+                        }
+                    </app-selector>
+                    <app-my-button [hasBackground]="!!currentCategoryName?.length" (press)="mobileSelector.isShow = true" class="btn-mobile-category">
+                        {{ currentCategoryName ?? 'Выбрать категорию' }}
+                    </app-my-button>
                 </div>
             </section>
             <section class="section-post-description">
@@ -106,7 +87,8 @@
                 </div>
                 <div class="section-body">
                     <div class="textarea-container">
-                        <textarea #body [formControl]="createPostForm.controls.body" minlength="20" maxlength="4000" class="my-input-green scrollbar-v" name="post-description"
+                        <textarea #body [formControl]="createPostForm.controls.body" minlength="20" maxlength="4000"
+                            class="my-input-green scrollbar-v" name="post-description"
                             (blur)="checkFieldValid(body)"></textarea>
                     </div>
                     <i>
@@ -134,7 +116,9 @@
                     </div>
                     @if(!isPriceFree) {
                     <div class="price-input">
-                        <input #price [formControl]="createPostForm.controls.price" (blur)="checkFieldValid(price)" class="my-input-green" min="0" maxlength="6" type="number" step="1.0" placeholder="Например: 4.20">
+                        <input #price [formControl]="createPostForm.controls.price" (blur)="checkFieldValid(price)"
+                            class="my-input-green" min="0" maxlength="6" type="number" step="1.0"
+                            placeholder="Например: 4.20">
                         <span>руб</span>
                         <i>Чтобы поставить договорную цену, оставьте поле пустым</i>
                     </div>
@@ -183,8 +167,8 @@
             <section class="section-final">
                 <div class="section-body">
                     <i>Публикуя объявления, вы соглашаетесь с <a routerLink="/policy">правилами</a>.</i>
-                    <app-my-button text="Подать объявление" color="green"
-                        [hasBackground]="true" type="submit" [disabled]="!createPostForm.valid || isLoading"></app-my-button>
+                    <app-my-button color="green" [hasBackground]="true" type="submit"
+                        [disabled]="!createPostForm.valid || isLoading">Подать объявление</app-my-button>
                 </div>
             </section>
         </form>

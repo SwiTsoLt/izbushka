@@ -17,7 +17,7 @@ import { Router, RouterModule } from '@angular/router';
 import { MyButtonComponent } from '@UI/my-button/my-button.component';
 import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
 import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-context-menu.component';
-import { Observable } from 'rxjs';
+import { Observable, of, take, zip } from 'rxjs';
 import { LocationArea, LocationRegion } from 'models/location.model';
 import { Store } from '@ngrx/store';
 import {
@@ -31,6 +31,11 @@ import { CreatePostDTO } from '@dtos/post.dto';
 import { User } from '@models/user.model';
 import { selectUser } from '@store/user/user.selectors';
 import { MobileNavbarSpecialComponent } from '@MUI/mobile-navbar-special/mobile-navbar-special.component';
+import { SelectorComponent } from '@UI/selector/selector.component';
+import { ISelectOptionEvent } from '@UI/selector/selector.interface';
+import { SelectorItemComponent } from '@UI/selector/selector-item/selector-item.component';
+import { MobileSelectorComponent } from '@MUI/mobile-selector/mobile-selector.component';
+import { IMobileOptionItem, IMobileSelectOptionEvent } from '@MUI/mobile-selector/mobile-selector.interface';
 @Component({
   selector: 'app-create-post',
   standalone: true,
@@ -49,37 +54,20 @@ import { MobileNavbarSpecialComponent } from '@MUI/mobile-navbar-special/mobile-
     MobileMenuComponent,
     MobileNavbarSpecialComponent,
     MobileContextMenuComponent,
+    SelectorComponent,
+    SelectorItemComponent,
+    MobileSelectorComponent,
   ],
   templateUrl: './create-post.component.html',
   styleUrl: './create-post.component.scss',
 })
 export class CreatePostComponent implements OnInit {
-  constructor(
-    private readonly store: Store,
-    private readonly postService: PostService,
-    private readonly router: Router,
-  ) {}
-
-  ngOnInit(): void {
-    this.user$.subscribe((user: User) => {
-      if (user?._id?.length) {
-        this.createPostForm.controls.location.controls.area.setValue(
-          user.location.area ?? '',
-        );
-        this.createPostForm.controls.location.controls.region.setValue(
-          user.location.region ?? '',
-        );
-      }
-    });
-
-    this.categoryList$.subscribe((categoryList: Category[]) => {
-      if (!categoryList.length) return;
-      const rootCategoryList = categoryList.filter((c) => !c.parent);
-      this.setRootCategory(rootCategoryList[0]._id);
-    });
-  }
+  // User
 
   public user$: Observable<User> = this.store.select(selectUser as never);
+  
+  // Location
+
   public areaList$: Observable<LocationArea[]> = this.store.select(
     selectLocationArea as never,
   );
@@ -87,14 +75,26 @@ export class CreatePostComponent implements OnInit {
     selectLocationRegion as never,
   );
 
-  public categoryList$: Observable<Category[]> = this.store.select(
+  // Category
+
+  private categoryList$: Observable<Category[]> = this.store.select(
     selectCategories as never,
   );
+  public rootCategoryId$: Observable<string> = of('');
+  public rootCategoryList$: Observable<Category[]> = of([]);
+  public subCategoryList$: Observable<Category[]> = of([]);
+
+  public mobileCategoryList$: Observable<IMobileOptionItem[]> = of([]);
+  public currentCategoryName: string | undefined;
+
+  // Images
 
   public imagesPreview: string[] = [];
   public isDragStart: boolean = false;
   public isPriceFree: boolean = false;
   public isLoading: boolean = false;
+
+  // Form
 
   public createPostForm: FormGroup<PostForm> = new FormGroup<PostForm>({
     title: new FormControl<string>('', {
@@ -129,12 +129,89 @@ export class CreatePostComponent implements OnInit {
     }),
   });
 
+  // Init
+
+  constructor(
+    private readonly store: Store,
+    private readonly postService: PostService,
+    private readonly router: Router,
+  ) {}
+
+  ngOnInit(): void {
+    this.initLocation();
+    this.initRootCategoryList();
+    this.initSubCategoryList();
+    this.initMobileCategoryList();
+  }
+
+  // Init Location
+
+  private initLocation(): void {
+    this.user$.subscribe((user: User) => {
+      if (user?._id?.length) {
+        this.createPostForm.controls.location.controls.area.setValue(
+          user.location.area ?? '',
+        );
+        this.createPostForm.controls.location.controls.region.setValue(
+          user.location.region ?? '',
+        );
+      }
+    });
+  }
+
+  // Init Category
+
+  private initRootCategoryList(): void {
+    this.categoryList$.pipe(take(1)).subscribe((categoryList: Category[]) => {
+      const rootCategoryList = categoryList.filter(c => !c.parent);
+      this.rootCategoryList$ = of(rootCategoryList);
+      this.rootCategoryId$ = of(rootCategoryList[0]._id);
+    })
+  }
+
+  private initSubCategoryList(): void {
+    zip([this.categoryList$, this.rootCategoryId$])
+    .pipe(take(1)).subscribe(([categoryList, rootCategoryId]) => {
+      const subCategoryList = categoryList.filter(c => c.parent === rootCategoryId);
+      this.subCategoryList$ = of(subCategoryList);
+    })
+  }
+
+  private initMobileCategoryList(): void {
+    this.categoryList$.pipe(take(1)).subscribe((categoryList: Category[]) => {
+      const rootCategoryList = categoryList.filter(c => !c.parent);
+      
+      const mobileRootCategoryList: IMobileOptionItem[] = rootCategoryList.reduce((list: IMobileOptionItem[], category: Category) => {
+        return [...list, { id: category._id, name: category.name, children: [] }]
+      }, []);
+
+      const mobileCategoryList: IMobileOptionItem[] = mobileRootCategoryList.reduce((list: IMobileOptionItem[], category: IMobileOptionItem) => {
+        const currentRootCategory = categoryList.find(c => c._id === category.id);
+        const children = categoryList.filter(c => currentRootCategory?.children.includes(c._id));
+        const mobileSubCategoryList: IMobileOptionItem[] = children.map(c => ({ id: c._id, name: c.name, children: [] }));
+        return [...list, { ...category, children: mobileSubCategoryList }];
+      }, [])
+
+      this.mobileCategoryList$ = of(mobileCategoryList);
+    })
+  }
+
   // Category
 
-  public rootCategory: string = '';
+  public onSelectRootCategory(event: ISelectOptionEvent<Category>): void {
+    this.categoryList$.subscribe((categoryList: Category[]) => {
+      const id = categoryList.filter(c => c._id === event.value._id)[0]._id;
+      this.rootCategoryId$ = of(id);
+    })
+  }
 
-  public setRootCategory(id: string): void {
-    this.rootCategory = id;
+  public onSelectSubCategory(event: ISelectOptionEvent<Category>): void {
+    this.createPostForm.controls.category.setValue(event.id);
+  }
+
+  public onSelectOption(event: IMobileSelectOptionEvent<IMobileOptionItem>): void {
+    this.createPostForm.controls.category.setValue(event.id);
+    this.currentCategoryName = event.value.name;
   }
 
   // Images
@@ -175,9 +252,13 @@ export class CreatePostComponent implements OnInit {
     this.createPostForm.controls.images.setValue(dt.files);
   }
 
+  // Price
+
   public setIsPriceFree(state: boolean): void {
     this.isPriceFree = state;
   }
+
+  // Submit
 
   public onSubmit(): void {
     this.isLoading = true;

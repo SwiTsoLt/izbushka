@@ -1,38 +1,38 @@
 <div class="mobile-context-menu" [ngClass]="{'show': isShow}">
     <div class="links">
         @if(!(user$ | async)?._id) {
-        <a routerLink="/signin" class="links-item links-item-special">
+        <a routerLink="/signin" (click)="isShow=false" class="links-item links-item-special">
             <div class="links-item-icon">
                 <img src="../../../../assets/MUI/mobile-context-menu/signin.svg" alt="Links Item Icon">
             </div>
             <div class="links-item-name">Войти</div>
         </a>
         }
-        <a [routerLink]="(user$ | async)?._id ? '/user/' + (user$ | async)?._id  : '/signin'" class="links-item">
+        <a [routerLink]="(user$ | async)?._id ? '/user/' + (user$ | async)?._id  : '/signin'" (click)="isShow=false" class="links-item">
             <div class="links-item-icon">
                 <img src="../../../../assets/UI/navbar/menu/profile-active.svg" alt="Links Item Icon">
             </div>
             <div class="links-item-name">Мой профиль</div>
         </a>
-        <a routerLink="/my-posts" class="links-item">
+        <a routerLink="/my-posts" (click)="isShow=false" class="links-item">
             <div class="links-item-icon">
                 <img src="../../../../assets/UI/navbar/menu/my-posts-active.svg" alt="Links Item Icon">
             </div>
             <div class="links-item-name">Мои объявления</div>
         </a>
-        <a routerLink="/favorite" class="links-item">
+        <a routerLink="/favorite" (click)="isShow=false" class="links-item">
             <div class="links-item-icon">
                 <img src="../../../../assets/UI/navbar/menu/favorites-active.svg" alt="Links Item Icon">
             </div>
             <div class="links-item-name">Избранные</div>
         </a>
-        <a routerLink="/chats" class="links-item">
+        <a routerLink="/chats" (click)="isShow=false" class="links-item">
             <div class="links-item-icon">
                 <img src="../../../../assets/UI/navbar/menu/chats-active.svg" alt="Links Item Icon">
             </div>
             <div class="links-item-name">Сообщения</div>
         </a>
-        <a routerLink="/settings" class="links-item">
+        <a routerLink="/settings" (click)="isShow=false" class="links-item">
             <div class="links-item-icon">
                 <img src="../../../../assets/UI/navbar/menu/settings-active.svg" alt="Links Item Icon">
             </div>

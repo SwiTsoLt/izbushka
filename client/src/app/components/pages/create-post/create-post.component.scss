@@ -267,101 +267,14 @@
                 }
 
                 &.section-post-category>.section-body {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                    gap: $p-s;
                     width: 100%;
-                    height: fit-content;
+                    height: 100%;
 
-                    .section-body-inner {
-                        display: grid;
-                        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                        gap: $p-m;
-                        width: 100%;
-                        height: fit-content;
-
-                        .category-list-container,
-                        .subcategory-list-container {
-                            width: 100%;
-                            height: 100%;
-                            max-height: 500px;
-                            border: 2px solid $main-green-3-10;
-                            border-radius: $b-r-outer;
-                            overflow-x: hidden;
-                            overflow-y: auto;
-                            padding: $p-m;
-
-                            &:last-child ul>li>label::after {
-                                display: none;
-                            }
-
-                            .category-list-inner,
-                            .subcategory-list-inner {
-                                width: 100%;
-                                height: 100%;
-                                overflow-x: hidden;
-                                overflow-y: auto;
-                                padding-right: $p-s;
-
-                                ul {
-                                    display: flex;
-                                    flex-direction: column;
-                                    gap: calc($p-s / 2);
-                                    width: 100%;
-                                    height: fit-content;
-
-                                    li {
-                                        position: relative;
-                                        width: 100%;
-                                        height: fit-content;
-
-                                        label {
-                                            display: block;
-                                            position: relative;
-                                            width: 100%;
-                                            height: fit-content;
-                                            background-color: transparent;
-                                            color: $main-black;
-                                            border-radius: $b-r-round;
-                                            transition: all $anim-tr $anim-mode;
-                                            padding: calc($p-s / 2) $p-l;
-                                            cursor: pointer;
-
-                                            &::after {
-                                                content: "";
-                                                position: absolute;
-                                                right: $p-m;
-                                                top: 0;
-                                                width: auto;
-                                                height: 100%;
-                                                aspect-ratio: 1/1;
-                                                background-image: url('../../../../assets/pages/create-post/triangle.svg');
-                                                background-repeat: no-repeat;
-                                                background-size: 50%;
-                                                background-position: center;
-                                                transform: rotateZ(90deg);
-                                            }
-                                        }
-
-                                        input {
-                                            position: absolute;
-                                            left: 0;
-                                            top: 0;
-                                            width: 100%;
-                                            height: 100%;
-                                            visibility: hidden;
-
-                                            &:checked~label {
-                                                background-color: $main-green-3;
-                                                color: $main-white;
-                                                font-weight: bold;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                &.subcategory-list-inner>ul>li>label:hover {
-                                    background-color: $main-green-3-10;
-                                }
-                            }
-                        }
+                    .btn-mobile-category {
+                        display: none;
                     }
                 }
 
@@ -554,6 +467,18 @@
                     }
                 }
             }
+        }
+    }
+}
+
+@media screen and (max-width: $mobile-w) {
+    section.section-post-category>.section-body {
+        app-selector {
+            display: none;
+        }
+
+        app-my-button.btn-mobile-category {
+            display: block !important;
         }
     }
 }

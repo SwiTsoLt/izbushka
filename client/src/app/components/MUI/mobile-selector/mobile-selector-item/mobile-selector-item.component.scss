@@ -1,0 +1,19 @@
+@import '@var/variables.scss';
+
+.mobile-selector-item {
+    width: 100%;
+    height: $button-height;
+
+    button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background-color: $main-beige-1-10;
+        border: 2px solid $main-beige-1;
+        border-radius: $b-r-inner;
+        font-size: $mob-fs-m;
+        color: $main-black;
+    }
+}

@@ -1,0 +1,4 @@
+<div class="selector-item">
+    <input id="selector-option-{{id}}" type="radio" (change)="selectOption.emit({ id, value })" [name]="name" [checked]="checked">
+    <label for="selector-option-{{id}}"><ng-content></ng-content></label>
+</div>

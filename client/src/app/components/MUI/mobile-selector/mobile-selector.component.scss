@@ -1,0 +1,110 @@
+@import '@var/variables.scss';
+
+.mobile-selector {
+    position: fixed;
+    right: -100%;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $main-white;
+    transition: right $anim-tr $anim-mode;
+    z-index: 3;
+
+    &.active {        
+        right: 0;
+    }
+
+    .menu {
+        display: flex;
+        gap: $mob-p-m;
+        position: relative;
+        width: 100%;
+        height: $mob-nav-height;
+        padding: $mob-p-s $mob-p-m;
+
+        .background {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+    
+            div {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 50%;
+                height: 100%;
+            }
+    
+            .left {
+                background-color: $main-green-1;
+            }
+    
+            .middle {
+                left: 50%;
+                transform: translateX(-50%);
+                width: 25%;
+                background-color: $main-green-2;
+                clip-path: polygon(0 100%, 100% 100%, 80% 50%, 100% 0, 0 0, 20% 50%, 0 100%);
+                z-index: 1;
+            }
+    
+            .right {
+                left: auto;
+                right: 0;
+                background-color: $main-green-3;
+            }
+        }    
+    
+        * {
+            font-size: $mob-fs-m;
+        }
+
+        .back {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: auto;
+            height: 100%;
+            padding: $mob-p-s $mob-p-m;
+
+            button {
+                width: auto;
+                height: 100%;
+                aspect-ratio: 1/1;
+                background-color: transparent;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+            }
+        }
+
+        .title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+
+            h2 {
+                font-size: $mob-fs-l;
+                font-weight: bold;
+                color: $main-white;
+            }
+        }
+    }
+
+    .option-list {
+        display: flex;
+        flex-direction: column;
+        gap: $mob-p-s;
+        width: 100%;
+        height: fit-content;
+        padding: $mob-p-m;
+    }
+}

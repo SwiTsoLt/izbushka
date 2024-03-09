@@ -1,5 +1,5 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Post } from '@models/post.model';
 import { User } from '@models/user.model';
@@ -21,6 +21,9 @@ export class MobileNavbarSpecialComponent implements OnInit {
   @Input() description?: string;
   @Input() type?: 'DEFAULT' | 'POST' | 'USER';
   @Input() post?: Post | null;
+  @Input() backPath?: string;
+
+  @Output() goBack = new EventEmitter();
 
   public me$: Observable<User> = this.store.select(selectUser as never);
   public isPostFavorite$: Observable<boolean> = of(false)
@@ -47,6 +50,11 @@ export class MobileNavbarSpecialComponent implements OnInit {
   }
 
   public back(): void {
+    this.goBack.emit();
+    if (this.backPath) {
+      this.router.navigate([this.backPath]);
+      return;
+    }
     this.router.navigate(['/home']);
   }
 

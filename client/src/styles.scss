@@ -140,7 +140,6 @@ body {
     width: 100%;
     height: 100%;
     max-width: calc($container-width + 2 * $p-l);
-    min-height: calc(100dvh - $nav-height);
     margin: 0 auto;
     padding: calc($nav-height + $p-l) $p-l;
 }
@@ -202,7 +201,7 @@ button {
         }
     }
 
-    @media screen and (max-width: 1000px) {
+    @media screen and (max-width: $tablet-w) {
         &>app-navbar {
             display: none;
         }
@@ -222,6 +221,13 @@ button {
             }
         }
     }
+
+    @media screen and (max-width: $mobile-w) {
+        &>.container {
+            padding-left: $mob-p-m !important;
+            padding-right: $mob-p-m !important;
+        }
+    }
 }
 
 /* My Input */
@@ -231,6 +237,13 @@ button {
 .my-input-beige,
 .my-input-green,
 .my-input-none {
+
+    &:disabled {
+        border-color: $main-gray-lighter;
+        color: $main-gray;
+        cursor: not-allowed;
+    }
+
     position: relative;
     width: 100%;
     height: 100%;
@@ -372,13 +385,13 @@ button {
         line-height: normal;
     }
 
-    .container {
-        padding: calc($mob-nav-height + $mob-p-s) $mob-p-m !important;
+    .default-page>.container {
+        padding: calc($mob-nav-height + $mob-p-s) $mob-p-m;
     }
 }
 
 @media screen and (max-width: 365px) {
-    .container {
-        padding: calc($mob-nav-height) 0 !important;
+    .default-page>.container {
+        padding: calc($mob-nav-height) 0;
     }
 }

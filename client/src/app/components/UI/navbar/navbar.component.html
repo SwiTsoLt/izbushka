@@ -23,9 +23,13 @@
         </div>
         <div class="create-post">
             @if((user$ | async)?._id?.length) {
-                <app-my-button text="Подать объявление" [callback]="redirectToCreatePost.bind(this)" color="white" [hasBackground]="true"></app-my-button>
+                <app-my-button (press)="redirectToCreatePost()" color="white" [hasBackground]="true">
+                    Подать объявление
+                </app-my-button>
             } @else {
-                <app-my-button text="Войти" [callback]="redirectToSignIn.bind(this)" color="white" [hasBackground]="true"></app-my-button>
+                <app-my-button (press)="redirectToSignIn()" color="white" [hasBackground]="true">
+                    Войти
+                </app-my-button>
             }            
         </div>
         <div class="menu">

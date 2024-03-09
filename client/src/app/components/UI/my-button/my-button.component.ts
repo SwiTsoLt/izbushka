@@ -1,11 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 type MyButtonColor = 'none' | 'white' | 'beige' | 'green';
-
-function foo() {
-  return;
-}
 
 @Component({
   selector: 'app-my-button',
@@ -15,10 +11,10 @@ function foo() {
   styleUrl: './my-button.component.scss',
 })
 export class MyButtonComponent {
-  @Input() text = '';
   @Input() type = '';
   @Input() color: MyButtonColor = 'green';
   @Input() hasBackground: boolean = false;
   @Input() disabled: boolean = false;
-  @Input() callback: () => void = foo;
+  
+  @Output() press = new EventEmitter();
 }
