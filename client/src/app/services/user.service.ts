@@ -17,7 +17,11 @@ export class UserService {
     return this.httpService.get(`/api/user/jwt`);
   }
 
+  public updateUserByJWT(newUser: Record<string, unknown>): Observable<User> {
+    return this.httpService.patch('/api/user/jwt', newUser);
+  }
+
   public updateUser(id: string, newUser: Record<string, unknown>): Observable<User> {
-    return this.httpService.patch(`/api/user/${id}`, newUser)
+    return this.httpService.patch(`/api/user/${id}`, newUser);
   }
 }

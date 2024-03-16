@@ -1,0 +1,26 @@
+@import '@var/variables.scss';
+
+.selector-location {
+  display: flex;
+  flex-direction: column;
+  gap: $p-s;
+  width: 100%;
+
+  .region {
+    margin-top: -$p-m;
+  }
+
+  app-my-button {
+    display: none;
+  }
+}
+
+@media screen and (max-width: $mobile-w) {
+  .selector-location > app-my-button {
+    display: block;
+  }
+
+  mat-form-field {
+    display: none;
+  }
+}

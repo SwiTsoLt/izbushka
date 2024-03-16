@@ -1,21 +1,25 @@
-<div class="settings">
+<div class="settings standard-page">
     <app-navbar></app-navbar>
+    <app-mobile-navbar-special [title]="pageTitle" backPath="/settings"></app-mobile-navbar-special>
+    <app-mobile-menu (toggleMobileContextMenuShow)="ctx.isShow = !ctx.isShow"></app-mobile-menu>
+    <app-mobile-context-menu #ctx></app-mobile-context-menu>
+
     <div class="container">
         <aside>
-            <a routerLink="/settings/profile" class="aside-link">
+            <a (click)="toggleShowChildren(); setPageTitle('Настройки – Профиль')" routerLink="/settings/profile" class="aside-link">
                 <div class="aside-link-icon">
                     <img src="../../../../assets/pages/settings/profile.svg" alt="Aside Link Icon Profile">
                 </div>
                 <div class="aside-link-name">Профиль</div>
             </a>
-            <a routerLink="/settings/security" class="aside-link">
+            <a (click)="toggleShowChildren(); setPageTitle('Настройки – Безопасность')" routerLink="/settings/security" class="aside-link">
                 <div class="aside-link-icon">
                     <img src="../../../../assets/pages/settings/security.svg" alt="Aside Link Icon Security">
                 </div>
                 <div class="aside-link-name">Безопасность</div>
             </a>
         </aside>
-        <div class="content">
+        <div [ngClass]="{'active': showChildren}" class="content">
             <router-outlet></router-outlet>
         </div>
     </div>

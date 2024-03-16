@@ -1,10 +1,16 @@
-<div class="profile">
-    @if($any(user$ | async)._id) {
+<div class="profile default-page">
+    <div class="container">
         <app-user-card [user]="user$ | async"></app-user-card>
-    } @else {
-        <div class="unauth">
-            <h2>Войдете в учетную запись</h2>
-            <a class="signin-link" routerLink="/signin">Войти</a>
-        </div>
-    }
+        <hr>
+        <form (submit)="onSubmit($event)">
+            <input type="text" class="my-input-green" placeholder="Gmail"
+                name="gmail" [value]="(user$ | async)?.email" disabled>
+            <input [formControl]="updateUserForm.controls.first_name" type="text" class="my-input-green"
+                placeholder="Имя" name="first_name" [value]="(user$ | async)?.first_name">
+            <app-selector-location [areaList$]="areaList$" [regionList$]="regionList$"
+                [formControlArea]="updateUserForm.controls.location.controls.area"
+                [formControlRegion]="updateUserForm.controls.location.controls.region"></app-selector-location>
+            <app-my-button (click)="updateProfile()" type="submit" [hasBackground]="true">Сохранить</app-my-button>
+        </form>
+    </div>
 </div>

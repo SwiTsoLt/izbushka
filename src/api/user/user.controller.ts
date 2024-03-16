@@ -46,6 +46,15 @@ export class UserController {
 
   // Patch
 
+  @Patch('/jwt')
+  @Auth()
+  public async patchByJWT(
+    @Headers('Authorization') auth: string,
+    @Body() updateUserDTO: UpdateUserDTO,
+  ) {
+    return await this.userService.patchByJWT(auth, updateUserDTO);
+  }
+
   @Patch('/:id')
   @Auth()
   public async update(

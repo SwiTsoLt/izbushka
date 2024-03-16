@@ -24,6 +24,7 @@ export const initialState: User = {
 
 export const userReducer = createReducer(
   initialState,
+  on(userActions.setUser, (_state, { user }): User => user),
   on(userActions.toggleFavoritePost, (state): User => state),
   on(userActions.toggleFavoritePostSuccess, (_state, { user }): User => user),
   on(userActions.toggleFavoritePostError, (state): User => state),

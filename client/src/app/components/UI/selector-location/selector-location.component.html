@@ -1,0 +1,35 @@
+<div class="selector-location">
+    <app-mobile-selector #mobileSelector [isShow]="isMobileSelectorShow"
+        [optionList]="(mobileOptionList$ | async) ?? []" (selectOption)="onSelect($event)"></app-mobile-selector>
+    <mat-form-field>
+        <mat-label>Выберете город</mat-label>
+        <mat-select [formControl]="formControlArea">
+            @for(area of areaList$ | async; track area._id) {
+            <mat-option [value]="area._id">{{ area.name }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="region">
+        <mat-label>Выберете район</mat-label>
+        <mat-select [formControl]="formControlRegion">
+            @for(region of regionList$ | async; track region._id) {
+            @if(region.parent === formControlArea.value) {
+            <mat-option [value]="region._id">{{ region.name }}</mat-option>
+            }
+            }
+        </mat-select>
+    </mat-form-field>
+    <app-my-button [hasBackground]="!!formControlRegion" (press)="openSelectLocation()" class="btn-mobile-category">
+        @for(area of areaList$ | async; track area._id) {
+        @if(area._id === formControlArea.value) {
+        @for(region of regionList$ | async; track region._id) {
+        @if(region._id === formControlRegion.value) {
+        <p>{{ area.name }} - {{ region.name }}</p>
+        }
+        }
+        }
+        } @empty {
+        Выбрать местоположение товара / услуги*
+        }
+    </app-my-button>
+</div>

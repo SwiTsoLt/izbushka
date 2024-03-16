@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { Observable, map, zip } from "rxjs";
 import { Post } from "./post.model";
-import { setCacheKey } from "@store/cache/cache.actions";
+import { deleteCacheKey, setCacheKey } from "@store/cache/cache.actions";
 import { CachePrefixEnum } from "@store/cache/cache.interface";
 import { selectCache } from "@store/cache/cache.selectors";
 import { User } from "./user.model";
@@ -57,6 +57,10 @@ export class CacheRepository {
         this.store.dispatch(setCacheKey({ prefix: CachePrefixEnum.post, key: post._id, value: post }))
     }
 
+    public deletePostById(id: string): void {
+        this.store.dispatch(deleteCacheKey({ prefix: CachePrefixEnum.post, key: id }))
+    }
+
     // User
 
     public getUserById(id: string): Observable<User> {
@@ -65,5 +69,9 @@ export class CacheRepository {
 
     public setUser(user: User) {
         this.store.dispatch(setCacheKey({ prefix: CachePrefixEnum.user, key: user._id, value: user }))
+    }
+
+    public deleteUserById(id: string) {
+        this.store.dispatch(deleteCacheKey({ prefix: CachePrefixEnum.user, key: id }))
     }
 }

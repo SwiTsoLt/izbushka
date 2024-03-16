@@ -3,7 +3,9 @@
     <app-mobile-navbar-special title="Подача объявления"></app-mobile-navbar-special>
     <app-mobile-menu (toggleMobileContextMenuShow)="ctx.isShow = !ctx.isShow"></app-mobile-menu>
     <app-mobile-context-menu #ctx></app-mobile-context-menu>
-    <app-mobile-selector #mobileSelector [isShow]="false" [optionList]="(mobileCategoryList$ | async) ?? []" (selectOption)="onSelectOption($event)"></app-mobile-selector>
+    <app-mobile-selector #mobileSelector [isShow]="isMobileSelectorShow"
+        [optionList]="(mobileOptionList$ | async) ?? []"
+        (selectOption)="selectOptionCallback($event)"></app-mobile-selector>
 
     <div class="container">
         <div class="page-title">
@@ -67,16 +69,21 @@
                 </div>
                 <div class="section-body">
                     <app-selector (selectOption)="onSelectRootCategory($event)">
-                        @for(rootCategory of (rootCategoryList$ | async) ?? []; track rootCategory._id; let index = $index) {
-                            <app-selector-item [id]="rootCategory._id" [value]="rootCategory" name="root_category" [checked]="index === 0">{{rootCategory.name}}</app-selector-item>
+                        @for(rootCategory of (rootCategoryList$ | async) ?? []; track rootCategory._id; let index =
+                        $index) {
+                        <app-selector-item [id]="rootCategory._id" [value]="rootCategory" name="root_category"
+                            [checked]="index === 0">{{rootCategory.name}}</app-selector-item>
                         }
                     </app-selector>
                     <app-selector (selectOption)="onSelectSubCategory($event)">
-                        @for(subCategory of (subCategoryList$ | async) ?? []; track subCategory._id; let index = $index) {
-                            <app-selector-item [id]="subCategory._id" [value]="subCategory" name="sub_category" [checked]="index === 0">{{subCategory.name}}</app-selector-item>
+                        @for(subCategory of (subCategoryList$ | async) ?? []; track subCategory._id; let index = $index)
+                        {
+                        <app-selector-item [id]="subCategory._id" [value]="subCategory" name="sub_category"
+                            [checked]="index === 0">{{subCategory.name}}</app-selector-item>
                         }
                     </app-selector>
-                    <app-my-button [hasBackground]="!!currentCategoryName?.length" (press)="mobileSelector.isShow = true" class="btn-mobile-category">
+                    <app-my-button [hasBackground]="!!currentCategoryName?.length" (press)="openSelectCategory()"
+                        class="btn-mobile-category">
                         {{ currentCategoryName ?? 'Выбрать категорию' }}
                     </app-my-button>
                 </div>
@@ -125,42 +132,15 @@
                     }
                 </div>
             </section>
-            <!-- <section class="section-post-phone">
-                <div class="section-title">
-                    <h2>Телефон</h2>
-                </div>
-                <div class="section-body">
-                    <p>Скрыть телефон в объявлении</p>
-                    <input id="phone-checkbox" type="checkbox" name="phone-checkbox" checked>
-                    <label for="phone-checkbox" class="my-input-green">
-                        <img src="../../../../assets/pages/create-post/checkmark.svg" alt="Phone Checkmark">
-                    </label>
-                </div>
-            </section> -->
             <hr>
             <section class="section-post-location">
                 <div class="section-title">
                     <h2>Местоположение товара / услуги*</h2>
                 </div>
                 <div class="section-body">
-                    <mat-form-field>
-                        <mat-label>Выберете город</mat-label>
-                        <mat-select [formControl]="createPostForm.controls.location.controls.area">
-                            @for(area of areaList$ | async; track area._id) {
-                            <mat-option [value]="area._id">{{ area.name }}</mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="region">
-                        <mat-label>Выберете район</mat-label>
-                        <mat-select [formControl]="createPostForm.controls.location.controls.region">
-                            @for(region of regionList$ | async; track region._id) {
-                            @if(region.parent === createPostForm.value.location?.area) {
-                            <mat-option [value]="region._id">{{ region.name }}</mat-option>
-                            }
-                            }
-                        </mat-select>
-                    </mat-form-field>
+                    <app-selector-location [areaList$]="areaList$" [regionList$]="regionList$"
+                        [formControlArea]="createPostForm.controls.location.controls.area"
+                        [formControlRegion]="createPostForm.controls.location.controls.region"></app-selector-location>
                 </div>
             </section>
             <hr>

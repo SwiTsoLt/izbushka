@@ -16,7 +16,7 @@
             <input formControlName="email" type="email" name="email" class="my-input-green" placeholder="Email" autocomplete="email">
             <input formControlName="password" type="password" name="password" class="my-input-green" placeholder="Пароль" autocomplete="current-password">
             <a routerLink="/password-recovery">Забыли пароль?</a>
-            <app-my-button text="Вход" type="submit" color="green" [hasBackground]="true" [disabled]="!signInForm.valid"></app-my-button>
+            <app-my-button type="submit" color="green" [hasBackground]="true" [disabled]="!signInForm.valid">Вход</app-my-button>
             <span>
                 <hr>
                 <span>ИЛИ</span>

@@ -32,7 +32,6 @@ export const routes: Routes = [
     children: [
       { path: 'profile', component: ProfileComponent },
       { path: 'security', component: SecurityComponent },
-      { path: '**', redirectTo: '/settings/profile', pathMatch: 'full' },
     ],
     canActivate: [AuthGuard]
   },

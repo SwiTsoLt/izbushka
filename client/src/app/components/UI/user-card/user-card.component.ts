@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { User } from 'models/user.model';
 import { RouterModule } from '@angular/router';
 import { Location, LocationArea, LocationRegion } from '@models/location.model';
@@ -18,7 +18,7 @@ import { selectUser } from '@store/user/user.selectors';
   templateUrl: './user-card.component.html',
   styleUrl: './user-card.component.scss',
 })
-export class UserCardComponent implements OnInit {
+export class UserCardComponent implements OnInit, OnChanges {
   @Input() user: User | null = null;
 
   public location$: Observable<Location | undefined> = of();
@@ -32,9 +32,19 @@ export class UserCardComponent implements OnInit {
   private readonly regionList$: Observable<LocationRegion[]> =
     this.store.select(selectLocationRegion as never);
 
-  constructor(private readonly store: Store) {}
+  constructor(private readonly store: Store) { }
 
   ngOnInit(): void {
+    this.updateLocation();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['user']) {
+      this.updateLocation();
+    }
+  }
+
+  private updateLocation(): void {
     zip([this.areaList$, this.regionList$])
       .pipe(
         map(([areaList, regionList]) => {

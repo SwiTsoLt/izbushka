@@ -5,6 +5,7 @@ import { CacheRepository } from './cache.repository';
 import { UserService } from '@services/user.service';
 import { Store } from '@ngrx/store';
 import { selectUser } from '@store/user/user.selectors';
+import { setUser } from '@store/user/user.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,23 @@ export class UserRepository {
             subscriber.next(user);
           }
         })
+      });
+    })
+  }
+
+  public updateUserByJWT(data: Record<string, unknown>): Observable<User> {
+    return new Observable<User>((subscriber) => {
+      this.userService.updateUserByJWT(data).subscribe((user: User) => {
+        if (user._id) {
+          this.store.dispatch(setUser({ user }));
+          this.cacheRepository.setUser(user);
+
+          user.posts.forEach(post => {
+            this.cacheRepository.deletePostById(post);
+          });
+
+          subscriber.next(user);
+        }
       });
     })
   }

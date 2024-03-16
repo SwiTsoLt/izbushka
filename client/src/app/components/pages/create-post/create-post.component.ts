@@ -36,13 +36,13 @@ import { ISelectOptionEvent } from '@UI/selector/selector.interface';
 import { SelectorItemComponent } from '@UI/selector/selector-item/selector-item.component';
 import { MobileSelectorComponent } from '@MUI/mobile-selector/mobile-selector.component';
 import { IMobileOptionItem, IMobileSelectOptionEvent } from '@MUI/mobile-selector/mobile-selector.interface';
+import { SelectorLocationComponent } from '@UI/selector-location/selector-location.component';
 @Component({
   selector: 'app-create-post',
   standalone: true,
   imports: [
     CommonModule,
     NavbarComponent,
-    MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -57,6 +57,7 @@ import { IMobileOptionItem, IMobileSelectOptionEvent } from '@MUI/mobile-selecto
     SelectorComponent,
     SelectorItemComponent,
     MobileSelectorComponent,
+    SelectorLocationComponent,
   ],
   templateUrl: './create-post.component.html',
   styleUrl: './create-post.component.scss',
@@ -65,7 +66,7 @@ export class CreatePostComponent implements OnInit {
   // User
 
   public user$: Observable<User> = this.store.select(selectUser as never);
-  
+
   // Location
 
   public areaList$: Observable<LocationArea[]> = this.store.select(
@@ -83,9 +84,13 @@ export class CreatePostComponent implements OnInit {
   public rootCategoryId$: Observable<string> = of('');
   public rootCategoryList$: Observable<Category[]> = of([]);
   public subCategoryList$: Observable<Category[]> = of([]);
-
-  public mobileCategoryList$: Observable<IMobileOptionItem[]> = of([]);
   public currentCategoryName: string | undefined;
+
+  // Mobile Selector
+
+  public isMobileSelectorShow: boolean = false;
+  public mobileOptionList$: Observable<IMobileOptionItem[]> = of([]);
+  public selectOptionCallback: (event: IMobileSelectOptionEvent<IMobileOptionItem>) => void = () => {};
 
   // Images
 
@@ -135,13 +140,12 @@ export class CreatePostComponent implements OnInit {
     private readonly store: Store,
     private readonly postService: PostService,
     private readonly router: Router,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initLocation();
     this.initRootCategoryList();
     this.initSubCategoryList();
-    this.initMobileCategoryList();
   }
 
   // Init Location
@@ -171,28 +175,31 @@ export class CreatePostComponent implements OnInit {
 
   private initSubCategoryList(): void {
     zip([this.categoryList$, this.rootCategoryId$])
-    .pipe(take(1)).subscribe(([categoryList, rootCategoryId]) => {
-      const subCategoryList = categoryList.filter(c => c.parent === rootCategoryId);
-      this.subCategoryList$ = of(subCategoryList);
-    })
+      .pipe(take(1)).subscribe(([categoryList, rootCategoryId]) => {
+        const subCategoryList = categoryList.filter(c => c.parent === rootCategoryId);
+        this.subCategoryList$ = of(subCategoryList);
+      })
   }
 
-  private initMobileCategoryList(): void {
-    this.categoryList$.pipe(take(1)).subscribe((categoryList: Category[]) => {
-      const rootCategoryList = categoryList.filter(c => !c.parent);
-      
-      const mobileRootCategoryList: IMobileOptionItem[] = rootCategoryList.reduce((list: IMobileOptionItem[], category: Category) => {
-        return [...list, { id: category._id, name: category.name, children: [] }]
-      }, []);
+  private getMobileCategoryList(): Observable<IMobileOptionItem[]> {
+    return new Observable((subscriber) => {
+      this.categoryList$.pipe(take(1)).subscribe((categoryList: Category[]) => {
+        const rootCategoryList = categoryList.filter(c => !c.parent);
 
-      const mobileCategoryList: IMobileOptionItem[] = mobileRootCategoryList.reduce((list: IMobileOptionItem[], category: IMobileOptionItem) => {
-        const currentRootCategory = categoryList.find(c => c._id === category.id);
-        const children = categoryList.filter(c => currentRootCategory?.children.includes(c._id));
-        const mobileSubCategoryList: IMobileOptionItem[] = children.map(c => ({ id: c._id, name: c.name, children: [] }));
-        return [...list, { ...category, children: mobileSubCategoryList }];
-      }, [])
+        const mobileRootCategoryList: IMobileOptionItem[] = rootCategoryList.reduce((list: IMobileOptionItem[], category: Category) => {
+          return [...list, { id: category._id, name: category.name, children: [] }]
+        }, []);
 
-      this.mobileCategoryList$ = of(mobileCategoryList);
+        const mobileCategoryList: IMobileOptionItem[] = mobileRootCategoryList.reduce((list: IMobileOptionItem[], category: IMobileOptionItem) => {
+          const currentRootCategory = categoryList.find(c => c._id === category.id);
+          const children = categoryList.filter(c => currentRootCategory?.children.includes(c._id));
+          const mobileSubCategoryList: IMobileOptionItem[] = children.map(c => ({ id: c._id, name: c.name, children: [] }));
+          return [...list, { ...category, children: mobileSubCategoryList }];
+        }, [])
+
+        subscriber.next(mobileCategoryList);
+        subscriber.complete();
+      })
     })
   }
 
@@ -209,10 +216,24 @@ export class CreatePostComponent implements OnInit {
     this.createPostForm.controls.category.setValue(event.id);
   }
 
-  public onSelectOption(event: IMobileSelectOptionEvent<IMobileOptionItem>): void {
+  public openSelectCategory() {
+    this.getMobileCategoryList().pipe(take(1)).subscribe((mobileCategoryList) => {
+      this.mobileOptionList$ = of(mobileCategoryList);
+      this.isMobileSelectorShow = true;
+      this.selectOptionCallback = this.onSelectCategoryOption
+    })
+  }
+
+  private onSelectCategoryOption(event: IMobileSelectOptionEvent<IMobileOptionItem>): void {
+    if (!event) {
+      this.isMobileSelectorShow = false;
+      return;
+    }
     this.createPostForm.controls.category.setValue(event.id);
     this.currentCategoryName = event.value.name;
   }
+
+  
 
   // Images
 

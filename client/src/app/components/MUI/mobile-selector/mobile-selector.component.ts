@@ -1,5 +1,5 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { IMobileOptionItem, IMobileSelectOptionEvent } from './mobile-selector.interface';
 import { MobileSelectorItemComponent } from './mobile-selector-item/mobile-selector-item.component';
 import { MobileNavbarSpecialComponent } from '@MUI/mobile-navbar-special/mobile-navbar-special.component';
@@ -15,7 +15,7 @@ import { MobileNavbarSpecialComponent } from '@MUI/mobile-navbar-special/mobile-
   templateUrl: './mobile-selector.component.html',
   styleUrl: './mobile-selector.component.scss'
 })
-export class MobileSelectorComponent implements OnInit {
+export class MobileSelectorComponent implements OnInit, OnChanges {
   @Input() title: string = '';
   @Input() isShow: boolean = false;
   @Input() optionList: IMobileOptionItem[] = [];
@@ -23,7 +23,7 @@ export class MobileSelectorComponent implements OnInit {
   @Output() selectOption = new EventEmitter();
 
   private history: number[] = [];
-  
+
   public currentOptionList: IMobileOptionItem[] = [];
 
   // Init
@@ -36,21 +36,26 @@ export class MobileSelectorComponent implements OnInit {
     this.currentOptionList = this.optionList;
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['optionList']) {
+      this.currentOptionList = changes['optionList'].currentValue;
+    }
+  }
+
   // Handle select
 
   public onSelectOption(event: IMobileSelectOptionEvent<IMobileOptionItem>): void {
     const nextItemIndex = this.currentOptionList.findIndex(option => option.id === event.id);
     this.history.push(nextItemIndex);
     const nextOptionChildren = this.currentOptionList[nextItemIndex].children;
-    
+
     if (nextOptionChildren.length) {
       this.currentOptionList = nextOptionChildren;
       return;
     }
 
-    this.isShow = false;
     this.selectOption.emit(event);
-    this.currentOptionList = this.optionList;
+    this.selectOption.emit();
     this.history = [];
   }
 
@@ -60,7 +65,7 @@ export class MobileSelectorComponent implements OnInit {
 
   public back(): void {
     if (!this.history.length) {
-      this.isShow = false;
+      this.selectOption.emit();
       return;
     }
 
@@ -70,4 +75,5 @@ export class MobileSelectorComponent implements OnInit {
       this.currentOptionList = this.currentOptionList[val].children;
     })
   }
+
 }

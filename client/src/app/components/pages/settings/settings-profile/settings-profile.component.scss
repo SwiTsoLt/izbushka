@@ -1,45 +1,63 @@
 @import '@var/variables.scss';
 
-.profile {
+div.profile.default-page {
+    display: flex;
     width: 100%;
     height: 100%;
+    max-width: $mobile-w;
 
-    .name {
-        font-size: $fs-m;
-        font-weight: bold;
-    }
+    >div.container {
+        padding-top: 0;
+        padding-bottom: 0;
 
-    .unauth {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: $p-m;
-        position: absolute;
-        left: 50%;
-        top: $p-m;
-
-        h2 {
-            font-size: $fs-m;
+        hr {
+            margin: $mob-fs-m 0;
         }
-
-        a.signin-link {
+    
+        .unauth {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: $tab-button-width;
-            height: $button-height;
-            background-color: transparent;
-            border: 2px solid $main-green-3;
-            border-radius: $b-r-inner;
-            color: $main-black;
-            cursor: pointer;
-            transition: all $anim-tr $anim-mode;
-
-            &:hover {
-                background-color: $main-green-3;
-                color: $main-white;
+            gap: $p-m;
+            position: absolute;
+            left: 50%;
+            top: $p-m;
+    
+            h2 {
+                font-size: $fs-m;
             }
-        }   
+    
+            a.signin-link {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: $tab-button-width;
+                height: $button-height;
+                background-color: transparent;
+                border: 2px solid $main-green-3;
+                border-radius: $b-r-inner;
+                color: $main-black;
+                cursor: pointer;
+                transition: all $anim-tr $anim-mode;
+    
+                &:hover {
+                    background-color: $main-green-3;
+                    color: $main-white;
+                }
+            }   
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            grid-gap: $p-s;
+        }
+    }
+}
+
+@media screen and (max-width: $mobile-w) {
+    .profile>.div.container>form {
+        gap: $mob-p-s;
     }
 }
