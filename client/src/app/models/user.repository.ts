@@ -17,7 +17,7 @@ export class UserRepository {
     private readonly cacheRepository: CacheRepository,
     private readonly userService: UserService,
     private readonly store: Store,
-  ) { }
+  ) {}
 
   public getUserById(id: string): Observable<User> {
     return new Observable<User>((subscriber) => {
@@ -29,26 +29,43 @@ export class UserRepository {
             this.cacheRepository.setUser(user);
             subscriber.next(user);
           }
-        })
+        });
       });
-    })
+    });
   }
 
-  public updateUserByJWT(data: Record<string, unknown>): Observable<User> {
+  public updateUserById(id: string, data: FormData): Observable<User> {
     return new Observable<User>((subscriber) => {
-      this.userService.updateUserByJWT(data).subscribe((user: User) => {
+      this.userService.updateUserById(id, data).subscribe((user: User) => {
         if (user._id) {
           this.store.dispatch(setUser({ user }));
           this.cacheRepository.setUser(user);
 
-          user.posts.forEach(post => {
+          user.posts.forEach((post) => {
             this.cacheRepository.deletePostById(post);
           });
 
           subscriber.next(user);
         }
       });
-    })
+    });
+  }
+
+  public updateUserByJWT(data: FormData): Observable<User> {
+    return new Observable<User>((subscriber) => {
+      this.userService.updateUserByJWT(data).subscribe((user: User) => {
+        if (user._id) {
+          this.store.dispatch(setUser({ user }));
+          this.cacheRepository.setUser(user);
+
+          user.posts.forEach((post) => {
+            this.cacheRepository.deletePostById(post);
+          });
+
+          subscriber.next(user);
+        }
+      });
+    });
   }
 
   public toggleFavoritePost(postId: string): Observable<User> {
@@ -58,19 +75,24 @@ export class UserRepository {
           let favorites = user.favorites;
 
           if (favorites.includes(postId)) {
-            favorites = favorites.filter(favorite => favorite !== postId);
+            favorites = favorites.filter((favorite) => favorite !== postId);
           } else {
             favorites = [...favorites, postId];
           }
 
-          this.userService.updateUser(user._id, { favorites }).subscribe((newUser: User) => {
-            if (newUser?._id) {
-              subscriber.next(newUser);
-              subscriber.complete();
-            }
-          })
+          const fd = new FormData();
+          fd.append('favorites', JSON.stringify(favorites))
+
+          this.userService
+            .updateUserById(user._id, fd)
+            .subscribe((newUser: User) => {
+              if (newUser?._id) {
+                subscriber.next(newUser);
+                subscriber.complete();
+              }
+            });
         }
-      })
-    })
+      });
+    });
   }
 }

@@ -7,6 +7,8 @@ import {
   Param,
   Patch,
   Res,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { type User } from '../../schemas/user.schema';
@@ -16,6 +18,9 @@ import { UpdateUserDTO } from '../../dtos/user.dto';
 import { rolesEnum } from '../../interfaces/roles.interface';
 import { Roles } from '../../decorators/roles.decorator';
 import { Auth } from '../../decorators/auth.decorator';
+import { SharpPipe } from 'src/pipes/sharp.pipe';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
+import { ISharpResult } from '../../interfaces/sharp.interface';
 
 @Controller('api/user')
 export class UserController {
@@ -48,21 +53,25 @@ export class UserController {
 
   @Patch('/jwt')
   @Auth()
+  @UseInterceptors(AnyFilesInterceptor())
   public async patchByJWT(
     @Headers('Authorization') auth: string,
     @Body() updateUserDTO: UpdateUserDTO,
+    @UploadedFiles(SharpPipe) results: ISharpResult,
   ) {
-    return await this.userService.patchByJWT(auth, updateUserDTO);
+    return await this.userService.patchByJWT(auth, updateUserDTO, results);
   }
 
   @Patch('/:id')
   @Auth()
-  public async update(
+  @UseInterceptors(AnyFilesInterceptor())
+  public async patch(
     @Param('id') id: Types.ObjectId,
     @Body() updateUserDTO: UpdateUserDTO,
     @Headers('Authorization') auth: string,
+    @UploadedFiles(SharpPipe) results: ISharpResult,
   ) {
-    return await this.userService.update(id, updateUserDTO, auth);
+    return await this.userService.patch(id, updateUserDTO, auth, results);
   }
 
   // Delete

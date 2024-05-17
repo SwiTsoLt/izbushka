@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   UnauthorizedException,
@@ -15,6 +16,9 @@ import { MyJwtService } from '../../services/jwt/jwt.service';
 import { VerifyOwnerService } from '../../services/verify-owner/verify-owner.service';
 import { rolesEnum } from '../../interfaces/roles.interface';
 import { CacheService } from '../../services/cache/cache.service';
+import { ISharpResult } from '../../interfaces/sharp.interface';
+import { GoogleDriveService } from '../../services/google-drive/google-drive.service';
+import { IUserImage } from '../../interfaces/user.interface';
 
 @Injectable()
 export class UserService {
@@ -24,7 +28,10 @@ export class UserService {
     private readonly errorHandlerService: ErrorHandlerService,
     private readonly verifyOwnerService: VerifyOwnerService,
     private readonly cacheService: CacheService,
+    private readonly googleDriveService: GoogleDriveService,
   ) {}
+
+  private readonly AVATARS_PARENTS = ['1Y8u93OSNydgx2kMFQjk8zoS8BXaYfWel'];
 
   // Get
 
@@ -64,28 +71,61 @@ export class UserService {
   // Patch
 
   public async patchByJWT(
-    auth: string,
+    access_token: string,
     updateUserDTO: UpdateUserDTO,
+    avatarFile: ISharpResult,
   ): Promise<User> {
     delete updateUserDTO['password'];
-    const { sub } = await this.myJwtService.decodeAuth(auth);
+    const { sub } = await this.myJwtService.decodeAuth(access_token);
 
     if (!sub) {
       throw new UnauthorizedException();
     }
 
+    const user: User = await this.errorHandlerService
+      .handleError(this.userModel.findById(sub))
+      .catch((err) => {
+        console.error(err);
+        throw new BadRequestException();
+      });
+
+    const uploadAvatarResponse: IUserImage =
+      await this.errorHandlerService.handleError<IUserImage>(
+        this.googleDriveService.uploadFile({
+          ...avatarFile,
+          parents: this.AVATARS_PARENTS,
+        }),
+      );
+
+    if (user.avatar?.id?.length) {
+      this.errorHandlerService
+        .handleError(this.googleDriveService.removeFileById(user.avatar.id))
+        .catch(console.error);
+    }
+
+    this.cacheService.deleteUserById(sub);
+
     return this.errorHandlerService.handleError(
       this.userModel
-        .findByIdAndUpdate(sub, updateUserDTO, { new: true })
+        .findByIdAndUpdate(
+          sub,
+          {
+            ...updateUserDTO,
+            avatar: uploadAvatarResponse,
+            location: JSON.parse(updateUserDTO.location),
+          },
+          { new: true },
+        )
         .select('-password')
         .exec(),
     );
   }
 
-  public async update(
+  public async patch(
     id: Types.ObjectId,
     updateUserDTO: UpdateUserDTO,
     auth: string,
+    avatarFile: ISharpResult,
   ): Promise<User> {
     delete updateUserDTO['password'];
     this.cacheService.deleteUserById(id);
@@ -93,17 +133,49 @@ export class UserService {
     const isUserOwnerVerified = await this.errorHandlerService.handleError(
       this.verifyOwnerService.verifyUserOwner(id, auth, rolesEnum.admin),
     );
-    if (!isUserOwnerVerified) throw new ForbiddenException();
-    const user = await this.errorHandlerService.handleError<User>(
-      this.userModel
-        .findByIdAndUpdate(id, updateUserDTO, { new: true })
-        .select('-password')
-        .exec(),
-    );
 
+    if (!isUserOwnerVerified) throw new ForbiddenException();
+
+    const user: User = await this.errorHandlerService
+      .handleError(this.userModel.findById(id))
+      .catch((err) => {
+        console.error(err);
+        throw new BadRequestException();
+      });
+
+    const uploadAvatarResponse: IUserImage =
+      await this.errorHandlerService.handleError<IUserImage>(
+        this.googleDriveService.uploadFile({
+          ...avatarFile,
+          parents: this.AVATARS_PARENTS,
+        }),
+      );
+
+    if (user.avatar?.id?.length) {
+      this.errorHandlerService
+        .handleError(this.googleDriveService.removeFileById(user.avatar.id))
+        .catch(console.error);
+    }
+
+    this.cacheService.deleteUserById(id);
     user.posts.forEach((post) => {
       this.cacheService.deletePostById(post);
     });
+
+    return this.errorHandlerService.handleError<User>(
+      this.userModel
+        .findByIdAndUpdate(
+          id,
+          {
+            ...updateUserDTO,
+            avatar: uploadAvatarResponse,
+            location: JSON.parse(updateUserDTO.last_name),
+          },
+          { new: true },
+        )
+        .select('-password')
+        .exec(),
+    );
 
     return user;
   }

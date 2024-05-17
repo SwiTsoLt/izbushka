@@ -8,6 +8,8 @@ import { MyJwtService } from '../../services/jwt/jwt.service';
 import { VerifyOwnerService } from '../../services/verify-owner/verify-owner.service';
 import { Post, PostSchema } from '../../schemas/post.schema';
 import { CacheService } from '../../services/cache/cache.service';
+import { GoogleService } from '../google/google.service';
+import { GoogleDriveService } from '../../services/google-drive/google-drive.service';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { CacheService } from '../../services/cache/cache.service';
     MyJwtService,
     VerifyOwnerService,
     CacheService,
+    GoogleDriveService,
+    GoogleService,
   ],
 })
 export class UserModule {}

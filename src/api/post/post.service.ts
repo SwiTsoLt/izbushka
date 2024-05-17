@@ -2,6 +2,7 @@ import {
   ForbiddenException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -10,12 +11,12 @@ import { User } from '../../schemas/user.schema';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
 import { type CreatePostDTO, type UpdatePostDTO } from '../../dtos/post.dto';
 import { MyJwtService } from '../../services/jwt/jwt.service';
-import { type IMultiSharpResult } from '../../pipes/multisharp.pipe';
 import { GoogleDriveService } from '../../services/google-drive/google-drive.service';
 import { VerifyOwnerService } from '../../services/verify-owner/verify-owner.service';
 import { rolesEnum } from '../../interfaces/roles.interface';
 import { CacheService } from '../../services/cache/cache.service';
 import { IPostImage } from '../../interfaces/post.interface';
+import { IMultiSharpResult } from '../../interfaces/sharp.interface';
 
 @Injectable()
 export class PostService {
@@ -58,9 +59,14 @@ export class PostService {
     createPostDTO: CreatePostDTO,
     results: IMultiSharpResult[],
   ): Promise<Post> {
+    const { sub } = await this.myJwtService.decodeAuth(access_token);
+
+    if (!sub) {
+      throw new UnauthorizedException();
+    }
+
     await this.cacheService.deletePosts();
     await this.cacheService.deleteInfo();
-    const { sub } = await this.myJwtService.decodeAuth(access_token);
 
     const promiseArr: Array<Promise<IPostImage>> = [];
     results.forEach(async (result) => {
@@ -105,7 +111,7 @@ export class PostService {
 
   // Patch
 
-  public async update(
+  public async patch(
     id: Types.ObjectId,
     updatePostDTO: UpdatePostDTO,
     auth: string,

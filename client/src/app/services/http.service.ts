@@ -57,7 +57,7 @@ export class HttpService {
     options: Record<string, unknown> = {},
   ): Observable<T> {
     return this.httpClient
-      .patch<T>(url, data, this.normalizeOptions(options))
+      .patch<T>(url, data ?? {}, this.normalizeOptions(options))
       .pipe(
         takeLast(1),
         map(this.handleUpdateAccessToken),

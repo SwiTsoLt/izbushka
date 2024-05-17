@@ -17,7 +17,7 @@ import { Router, RouterModule } from '@angular/router';
 import { MyButtonComponent } from '@UI/my-button/my-button.component';
 import { MobileMenuComponent } from '@MUI/mobile-menu/mobile-menu.component';
 import { MobileContextMenuComponent } from '@MUI/mobile-context-menu/mobile-context-menu.component';
-import { Observable, of, take, zip } from 'rxjs';
+import { EMPTY, Observable, catchError, of, take, zip } from 'rxjs';
 import { LocationArea, LocationRegion } from 'models/location.model';
 import { Store } from '@ngrx/store';
 import {
@@ -308,7 +308,13 @@ export class CreatePostComponent implements OnInit {
         createPostFormData.append('files', file);
       }
     }
-    this.postService.createPost(createPostFormData).subscribe((data) => {
+    this.postService.createPost(createPostFormData)
+    .pipe(catchError(err => {
+      console.log(err);
+      this.isLoading = false;
+      return EMPTY;
+    }))
+    .subscribe((data) => {
       if (data?._id) {
         this.router.navigate(['/home']);
         return;

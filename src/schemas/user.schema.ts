@@ -11,8 +11,11 @@ export class User {
   @Prop()
   phone: string;
 
-  @Prop()
-  avatar: string;
+  @Prop({ type: Object })
+  avatar: {
+    id: string;
+    link: string;
+  };
 
   @Prop({ required: true })
   first_name: string;

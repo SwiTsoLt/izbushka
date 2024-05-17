@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-type MyButtonColor = 'none' | 'white' | 'beige' | 'green';
+type MyButtonColor = 'none' | 'white' | 'beige' | 'green' | 'red';
 
 @Component({
   selector: 'app-my-button',
@@ -11,7 +11,7 @@ type MyButtonColor = 'none' | 'white' | 'beige' | 'green';
   styleUrl: './my-button.component.scss',
 })
 export class MyButtonComponent {
-  @Input() type = '';
+  @Input() type = 'button';
   @Input() color: MyButtonColor = 'green';
   @Input() hasBackground: boolean = false;
   @Input() disabled: boolean = false;

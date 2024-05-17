@@ -66,4 +66,13 @@
             color: $main-white;
         }
     }
+
+    &.red > button {
+        border-color: $main-red;
+
+        &.hasBackground {
+            background-color: $main-red;
+            color: $main-white;
+        }
+    }
 }

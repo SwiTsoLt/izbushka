@@ -44,6 +44,7 @@ $client-theme: mat.define-light-theme((color: (primary: $client-primary,
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+    // outline: 2px solid rgba(0, 0, 255, 0.188);
 }
 
 :focus,

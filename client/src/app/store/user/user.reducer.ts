@@ -13,7 +13,10 @@ export const initialState: User = {
   roles: [],
   posts: [],
   favorites: [],
-  avatar: '',
+  avatar: {
+    id: '',
+    link: '',
+  },
   rating: 0,
   location: {
     area: '',

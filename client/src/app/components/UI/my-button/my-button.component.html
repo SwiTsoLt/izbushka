@@ -1,9 +1,4 @@
-<div class="myButton" [ngClass]="{
-    'none': color === 'none',
-    'white': color === 'white',
-    'beige': color === 'beige',
-    'green': color === 'green',
-}">
+<div class="myButton" [class]="color">
     <button
     [type]="type"
     [ngClass]="{

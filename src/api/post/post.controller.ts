@@ -16,11 +16,9 @@ import { type Post as MyPost } from '../../schemas/post.schema';
 import { Types } from 'mongoose';
 import { CreatePostDTO, UpdatePostDTO } from '../../dtos/post.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
-import {
-  MultiSharpPipe,
-  type IMultiSharpResult,
-} from '../../pipes/multisharp.pipe';
+import { MultiSharpPipe } from '../../pipes/multisharp.pipe';
 import { Auth } from '../../decorators/auth.decorator';
+import { IMultiSharpResult } from '../../interfaces/sharp.interface';
 
 @Controller('/api/post')
 export class PostController {
@@ -54,17 +52,19 @@ export class PostController {
   // Patch
 
   @Patch('/:id')
-  public async update(
+  @Auth()
+  public async patch(
     @Param('id') id: Types.ObjectId,
     @Body() updatePostDTO: UpdatePostDTO,
     @Headers('Authorization') auth: string,
   ) {
-    return await this.postService.update(id, updatePostDTO, auth);
+    return await this.postService.patch(id, updatePostDTO, auth);
   }
 
   // Delete
 
   @Delete('/:id')
+  @Auth()
   public async delete(
     @Param('id') id: Types.ObjectId,
     @Headers('Authorization') auth: string,

@@ -1,14 +1,14 @@
 @if(user) {
     <div class="user-card">
         <div class="avatar">
-            <img [src]="user.avatar" onerror="this.src='../../../../../assets/UI/user-card/default-avatar.webp';"  alt="User Avatar">
+            <img [src]="user.avatar.link" onerror="this.src='../../../../../assets/UI/user-card/default-avatar.webp';"  alt="User Avatar">
         </div>
         <div class="info">
             <div class="name">{{ user.first_name }}</div>
             <div class="location">{{ (location$ | async)?.area?.name }}, {{ (location$ | async)?.region?.name }}</div>
             <div class="rating">
                 <div class="rating-count">Рейтинг: <span>{{ user.rating || '?' }}</span></div>
-                <div class="rating-stars">
+                <div class="rating-stars">src
                     @if (user.rating) {
                         @for(_ of [].constructor(user.rating); track $index) {
                             <img src="../../../../../assets/UI/user-card/star.svg" alt="Star Icon">

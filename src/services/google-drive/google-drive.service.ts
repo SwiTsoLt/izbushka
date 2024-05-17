@@ -55,11 +55,7 @@ export class GoogleDriveService {
   }
 
   public async removeFileById(id: string): Promise<void> {
-    try {
-      await this.drive.files.delete({ fileId: id });
-    } catch (error) {
-      console.error(error);
-    }
+    return this.drive.files.delete({ fileId: id }).then();
   }
 
   private generatePublicLink(id: string): string {

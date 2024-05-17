@@ -1,8 +1,15 @@
 <div class="profile default-page">
     <div class="container">
-        <app-user-card [user]="user$ | async"></app-user-card>
-        <hr>
+        <!-- <app-user-card [user]="user$ | async"></app-user-card> -->
         <form (submit)="onSubmit($event)">
+            <div class="avatar">
+                <input (change)="onChangeAvatar($event)" id="avatarInput" name="avatar" type="file" accept="image/png, image/jpg, image/jpeg">
+                <label for="avatarInput">
+                    <img src="../../../../../assets/pages/settings/profile/edit-avatar.svg" alt="Обновить аватар">
+                </label>
+                <img [src]="updateUserForm.value.avatar?.link" [alt]="updateUserForm.value.first_name">
+            </div>
+            <hr>
             <input type="text" class="my-input-green" placeholder="Gmail"
                 name="gmail" [value]="(user$ | async)?.email" disabled>
             <input [formControl]="updateUserForm.controls.first_name" type="text" class="my-input-green"
@@ -10,7 +17,10 @@
             <app-selector-location [areaList$]="areaList$" [regionList$]="regionList$"
                 [formControlArea]="updateUserForm.controls.location.controls.area"
                 [formControlRegion]="updateUserForm.controls.location.controls.region"></app-selector-location>
-            <app-my-button (click)="updateProfile()" type="submit" [hasBackground]="true">Сохранить</app-my-button>
+            <div class="buttons">
+                <app-my-button type="button" (click)="onCancel()" [hasBackground]="true" color="red">Отменить</app-my-button>
+                <app-my-button type="submit" [hasBackground]="true">Сохранить</app-my-button>
+            </div>
         </form>
     </div>
 </div>
