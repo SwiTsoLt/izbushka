@@ -8,7 +8,7 @@
             <div class="location">{{ (location$ | async)?.area?.name }}, {{ (location$ | async)?.region?.name }}</div>
             <div class="rating">
                 <div class="rating-count">Рейтинг: <span>{{ user.rating || '?' }}</span></div>
-                <div class="rating-stars">src
+                <div class="rating-stars">
                     @if (user.rating) {
                         @for(_ of [].constructor(user.rating); track $index) {
                             <img src="../../../../../assets/UI/user-card/star.svg" alt="Star Icon">

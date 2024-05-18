@@ -25,7 +25,7 @@ export const RedisOptions = {
       };
     }
 
-    const store = await redisStore(redisStoreOptions);
+    const store = await redisStore(redisStoreOptions).catch(console.error);
     return {
       store: () => store as unknown as CacheStore,
     };

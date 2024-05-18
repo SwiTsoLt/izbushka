@@ -109,13 +109,13 @@ export class GoogleService {
   }
 
   public updateToken(): Promise<IUpdateTokenResponse> {
-    return new Promise((res) => {
-      if (!this.oAuth2Client) return res({ message: 'OAuth2Client not found' });
+    return new Promise((res, rej) => {
+      if (!this.oAuth2Client) return rej({ message: 'OAuth2Client not found' });
 
       this.oAuth2Client.refreshAccessToken((err, tokens) => {
         if (err) {
           console.error(err);
-          return res({ message: err.message });
+          return rej({ message: err.message });
         }
 
         this.saveToken(tokens);

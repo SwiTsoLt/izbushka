@@ -37,11 +37,11 @@ export class VerifyOwnerService {
   // Private
 
   private async verify(refId: Types.ObjectId, auth: string, role?: rolesEnum) {
-    if (!refId) return false;
+    if (!refId || !role) return false;
     const { sub, roles } = await this.errorHandlerService.handleError(
       this.myJwtService.decodeAuth(auth),
     );
-    if (role && roles.includes(role)) return true;
+    if (roles.includes(role)) return true;
     return refId === sub;
   }
 }

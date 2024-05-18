@@ -77,7 +77,7 @@ export class UserController {
   // Delete
 
   @Delete('/:id')
-  @Auth()
+  @Roles(rolesEnum.admin)
   public async delete(
     @Param('id') id: Types.ObjectId,
     @Headers('Authorization') auth: string,

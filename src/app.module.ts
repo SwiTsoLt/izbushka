@@ -24,7 +24,19 @@ const rootPath = join(__dirname, '..', 'client', 'dist', 'client', 'browser');
       isGlobal: true,
       envFilePath: ['assets/.env.development', 'assets/.env', '.env'],
     }),
-    MongooseModule.forRoot(new ConfigService().get<string>('MONGO_URI')),
+    new Promise((res, rej) => {
+      try {
+        const module = MongooseModule.forRoot(
+          new ConfigService().get<string>('MONGO_URI'),
+          {
+            retryDelay: 1000,
+          },
+        );
+        res(module);
+      } catch (error) {
+        rej(error);
+      }
+    }),
     ServeStaticModule.forRoot({ rootPath }),
     JwtModule.register({
       global: true,
@@ -53,11 +65,11 @@ export class AppModule {
     const delay = 1000 * 60 * 45;
 
     console.log('update token');
-    this.googleService.updateToken();
+    this.googleService.updateToken().catch(console.error);
 
     setInterval(() => {
       console.log('update token');
-      this.googleService.updateToken();
+      this.googleService.updateToken().catch(console.error);
     }, delay);
   }
 }

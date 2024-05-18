@@ -75,20 +75,35 @@ export class UserService {
     updateUserDTO: UpdateUserDTO,
     avatarFile: ISharpResult,
   ): Promise<User> {
-    delete updateUserDTO['password'];
+    // Check Auth and get user data
     const { sub } = await this.myJwtService.decodeAuth(access_token);
+    if (!sub) throw new UnauthorizedException();
 
-    if (!sub) {
-      throw new UnauthorizedException();
+    // Check Owner
+    const isUserOwnerVerified = await this.errorHandlerService.handleError(
+      this.verifyOwnerService.verifyUserOwner(
+        sub,
+        access_token,
+        rolesEnum.admin,
+      ),
+    );
+    if (!isUserOwnerVerified) throw new ForbiddenException();
+
+    // Find User in Redis or in MongoDB
+    let user: User | undefined = await this.errorHandlerService.handleError(
+      this.cacheService.getUserById(sub.toString()),
+    );
+
+    if (!user) {
+      user = await this.errorHandlerService
+        .handleError(this.userModel.findById(sub))
+        .catch((err) => {
+          console.error(err);
+          throw new BadRequestException();
+        });
     }
 
-    const user: User = await this.errorHandlerService
-      .handleError(this.userModel.findById(sub))
-      .catch((err) => {
-        console.error(err);
-        throw new BadRequestException();
-      });
-
+    // Upload User Avatar and remove last
     const uploadAvatarResponse: IUserImage =
       await this.errorHandlerService.handleError<IUserImage>(
         this.googleDriveService.uploadFile({
@@ -103,14 +118,17 @@ export class UserService {
         .catch(console.error);
     }
 
+    // Clear User in Redis
     this.cacheService.deleteUserById(sub);
 
+    // Update User in MongoDB and return
     return this.errorHandlerService.handleError(
       this.userModel
         .findByIdAndUpdate(
           sub,
           {
-            ...updateUserDTO,
+            first_name: updateUserDTO.first_name,
+            last_name: updateUserDTO.last_name,
             avatar: uploadAvatarResponse,
             location: JSON.parse(updateUserDTO.location),
           },
@@ -124,25 +142,37 @@ export class UserService {
   public async patch(
     id: Types.ObjectId,
     updateUserDTO: UpdateUserDTO,
-    auth: string,
+    access_token: string,
     avatarFile: ISharpResult,
   ): Promise<User> {
-    delete updateUserDTO['password'];
-    this.cacheService.deleteUserById(id);
-
+    // Check Owner
     const isUserOwnerVerified = await this.errorHandlerService.handleError(
-      this.verifyOwnerService.verifyUserOwner(id, auth, rolesEnum.admin),
+      this.verifyOwnerService.verifyUserOwner(
+        id,
+        access_token,
+        rolesEnum.admin,
+      ),
     );
-
     if (!isUserOwnerVerified) throw new ForbiddenException();
 
-    const user: User = await this.errorHandlerService
-      .handleError(this.userModel.findById(id))
-      .catch((err) => {
-        console.error(err);
-        throw new BadRequestException();
-      });
+    // Find User in Redis or in MongoDB
+    let user: User | undefined = await this.errorHandlerService.handleError(
+      this.cacheService.getUserById(id.toString()),
+    );
 
+    if (!user) {
+      user = await this.errorHandlerService
+        .handleError(this.userModel.findById(id))
+        .catch((err) => {
+          console.error(err);
+          throw new BadRequestException();
+        });
+    }
+
+    // Clear in cache
+    this.cacheService.deleteUserById(id);
+
+    // Upload User Avatar and remove last
     const uploadAvatarResponse: IUserImage =
       await this.errorHandlerService.handleError<IUserImage>(
         this.googleDriveService.uploadFile({
@@ -157,17 +187,14 @@ export class UserService {
         .catch(console.error);
     }
 
-    this.cacheService.deleteUserById(id);
-    user.posts.forEach((post) => {
-      this.cacheService.deletePostById(post);
-    });
-
+    // Update user in MongoDB and return
     return this.errorHandlerService.handleError<User>(
       this.userModel
         .findByIdAndUpdate(
           id,
           {
-            ...updateUserDTO,
+            first_name: updateUserDTO.first_name,
+            last_name: updateUserDTO.last_name,
             avatar: uploadAvatarResponse,
             location: JSON.parse(updateUserDTO.last_name),
           },
@@ -176,8 +203,6 @@ export class UserService {
         .select('-password')
         .exec(),
     );
-
-    return user;
   }
 
   // Delete
