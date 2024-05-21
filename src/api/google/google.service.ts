@@ -68,6 +68,7 @@ export class GoogleService {
 
   public googleAuth() {
     let client = this.getClient();
+    console.log(client);
     if (client) return;
     client = this.getClient(false);
     const authUrl = client.generateAuthUrl(this.AUTH_URL_CONFIG);
@@ -79,7 +80,6 @@ export class GoogleService {
       const { tokens } = await this.oAuth2Client
         .getToken(code)
         .catch((error) => {
-          console.error(error);
           return error;
         });
       if (!tokens) return;

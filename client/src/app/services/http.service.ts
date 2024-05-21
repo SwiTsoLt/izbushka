@@ -56,6 +56,7 @@ export class HttpService {
     data: unknown,
     options: Record<string, unknown> = {},
   ): Observable<T> {
+    console.log(url, data, options);
     return this.httpClient
       .patch<T>(url, data ?? {}, this.normalizeOptions(options))
       .pipe(

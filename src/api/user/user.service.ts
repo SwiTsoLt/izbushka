@@ -79,6 +79,7 @@ export class UserService {
     const { sub } = await this.myJwtService.decodeAuth(access_token);
     if (!sub) throw new UnauthorizedException();
 
+
     // Check Owner
     const isUserOwnerVerified = await this.errorHandlerService.handleError(
       this.verifyOwnerService.verifyUserOwner(
@@ -87,12 +88,13 @@ export class UserService {
         rolesEnum.admin,
       ),
     );
+
     if (!isUserOwnerVerified) throw new ForbiddenException();
 
     // Find User in Redis or in MongoDB
     let user: User | undefined = await this.errorHandlerService.handleError(
       this.cacheService.getUserById(sub.toString()),
-    );
+    ).catch(() => undefined);
 
     if (!user) {
       user = await this.errorHandlerService
