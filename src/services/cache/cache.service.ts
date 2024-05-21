@@ -88,8 +88,8 @@ export class CacheService {
     const filteredKeys = keys.filter((key) => new RegExp(pattern).test(key));
     const results: T[] = [];
     filteredKeys.forEach(async (key: string) => {
-      const value: string = await this.cacheManager.get<string>(key);
-      results.push(JSON.parse(value));
+      const value: T = await this.cacheManager.get<T>(key);
+      results.push(value);
     });
     return results;
   }
