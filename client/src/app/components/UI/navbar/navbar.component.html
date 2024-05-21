@@ -18,8 +18,8 @@
             </div>
         </a>
         <div class="search">
-            <input type="text" class="my-input-white" placeholder="Поиск">
-            <app-search-button color="white"></app-search-button>
+            <input #text type="text" (keydown.enter)="search.bind(this)(text.value)" class="my-input-white" placeholder="Поиск">
+            <app-search-button color="white" (press)="search.bind(this)(text.value)"></app-search-button>
         </div>
         <div class="create-post">
             @if((user$ | async)?._id?.length) {

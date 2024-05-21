@@ -1,6 +1,6 @@
 import { type Types } from 'mongoose';
 
-export class Location {
+export interface ILocation {
   area: Types.ObjectId;
   region: Types.ObjectId;
 }

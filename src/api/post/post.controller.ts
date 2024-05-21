@@ -19,6 +19,7 @@ import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { MultiSharpPipe } from '../../pipes/multisharp.pipe';
 import { Auth } from '../../decorators/auth.decorator';
 import { IMultiSharpResult } from '../../interfaces/sharp.interface';
+import { ISearchParams } from '../../interfaces/post.interface';
 
 @Controller('/api/post')
 export class PostController {
@@ -27,8 +28,8 @@ export class PostController {
   // Get
 
   @Get()
-  public async getPage(@Query('page') page: number): Promise<MyPost[]> {
-    return await this.postService.getPage(page);
+  public async getPage(@Query() searchParams: any): Promise<MyPost[]> {
+    return await this.postService.getPage(searchParams);
   }
 
   @Get('/:id')

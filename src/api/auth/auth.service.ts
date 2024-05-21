@@ -9,7 +9,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../../schemas/user.schema';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { type JWTPayload } from '../../models/jwt.model';
+import { type IJWTPayload } from '../../interfaces/jwt.interface';
 import { JwtService } from '@nestjs/jwt';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
 import { rolesEnum } from '../../interfaces/roles.interface';
@@ -36,7 +36,7 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const payload: JWTPayload = { sub: candidate._id, roles: candidate.roles };
+    const payload: IJWTPayload = { sub: candidate._id, roles: candidate.roles };
     return { access_token: await this.jwtService.signAsync(payload) };
   }
 
@@ -58,7 +58,7 @@ export class AuthService {
     });
     await this.errorHandlerService.handleError<User>(user.save());
 
-    const payload: JWTPayload = { sub: user._id, roles: user.roles };
+    const payload: IJWTPayload = { sub: user._id, roles: user.roles };
 
     return {
       access_token: await this.jwtService.signAsync(payload),

@@ -17,6 +17,7 @@ import { rolesEnum } from '../../interfaces/roles.interface';
 import { CacheService } from '../../services/cache/cache.service';
 import { IPostImage } from '../../interfaces/post.interface';
 import { IMultiSharpResult } from '../../interfaces/sharp.interface';
+import { ISearchParams } from '../../interfaces/post.interface';
 
 @Injectable()
 export class PostService {
@@ -31,18 +32,28 @@ export class PostService {
   ) {}
 
   private readonly PAGE_SIZE = 10;
-  private readonly POST_PARENTS = ['1BZXHP1gQPnk9CwZPnwxBeqJ7EOIjIX2O'];
+  private readonly POST_PARENTS = ["1BZXHP1gQPnk9CwZPnwxBeqJ7EOIjIX2O"];
 
   // Get
 
-  public async getPage(page = 0): Promise<Post[]> {
+  public async getPage(searchParams: ISearchParams): Promise<Post[]> {
+    const page = Number(searchParams.page) || 0;
+    
+    const query = { };
+    if (searchParams.text) {
+      query['$text'] = { $search: searchParams.text ?? "" };
+    }
+    
     const posts = await this.errorHandlerService.handleError<Post[]>(
       this.postModel
-        .find()
+        .find(query)
         .skip(this.PAGE_SIZE * page)
         .limit(this.PAGE_SIZE)
         .exec(),
-    );
+    ).catch((err) => {
+      console.error(err);
+      return [];
+    });
     return posts;
   }
 

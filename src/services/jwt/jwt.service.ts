@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { type JWTPayload } from '../../models/jwt.model';
+import { type IJWTPayload } from '../../interfaces/jwt.interface';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class MyJwtService extends JwtService {
     });
   }
 
-  public async decodeAuth(auth: string): Promise<JWTPayload> {
+  public async decodeAuth(auth: string): Promise<IJWTPayload> {
     if (!auth) {
       throw new UnauthorizedException();
     }

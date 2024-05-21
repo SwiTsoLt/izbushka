@@ -1,6 +1,6 @@
 // SingIn
 
-import { type Location } from '../models/location.model';
+import { type ILocation } from '../interfaces/location.interface';
 
 export class SignInDTO {
   email: string;
@@ -17,7 +17,7 @@ export class SignUpDTO {
   email: string;
   first_name: string;
   last_name: string;
-  location: Location;
+  location: ILocation;
   password: string;
 }
 

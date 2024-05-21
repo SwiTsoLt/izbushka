@@ -1,11 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 type SearchButtonColor = 'black' | 'white' | 'green';
-
-function foo() {
-  return;
-}
 
 @Component({
   selector: 'app-search-button',
@@ -16,5 +12,5 @@ function foo() {
 })
 export class SearchButtonComponent {
   @Input() color: SearchButtonColor = 'black';
-  @Input() callback: () => void = foo;
+  @Output() press = new EventEmitter();
 }

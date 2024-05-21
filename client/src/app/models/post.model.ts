@@ -8,6 +8,13 @@ export class PostImage {
   ) {}
 }
 
+export class PostSearchParams {
+  constructor(
+    public page: string,
+    public text: string,
+  ) {}
+}
+
 export class Post {
   constructor(
     public _id: string,

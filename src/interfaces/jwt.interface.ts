@@ -1,6 +1,6 @@
 import { type Types } from 'mongoose';
 
-export class JWTPayload {
+export interface IJWTPayload {
   sub: Types.ObjectId;
   roles: string[];
 }

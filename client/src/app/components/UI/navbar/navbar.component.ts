@@ -31,6 +31,12 @@ export class NavbarComponent {
 
   constructor(private readonly router: Router, private readonly store: Store) {}
 
+  public search(text: string): void {
+    this.router.navigate(['/home'], {
+      queryParams: { text },
+    });
+  }
+
   public redirectToSignIn(): void {
     this.router.navigate(['/signin']);
   }

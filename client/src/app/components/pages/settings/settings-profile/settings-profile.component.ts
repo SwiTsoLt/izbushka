@@ -86,7 +86,6 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.user$.subscribe((user: User) => {
-      console.log(user);
       this.updateUserForm.setValue({
         avatar: {
           id: user.avatar.id ?? '',

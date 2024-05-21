@@ -64,12 +64,12 @@ export class AppModule {
   constructor(private readonly googleService: GoogleService) {
     const delay = 1000 * 60 * 45;
 
-    console.log('update token');
-    this.googleService.updateToken().catch(console.error);
-
-    setInterval(() => {
-      console.log('update token');
-      this.googleService.updateToken().catch(console.error);
-    }, delay);
+    setInterval(updateToken, delay);
+    updateToken.bind(this)();
   }
+}
+
+function updateToken() {
+  console.log('update token');
+  this.googleService.updateToken().then(console.log).catch(console.error);
 }

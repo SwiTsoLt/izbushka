@@ -9,7 +9,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { type Request } from 'express';
 import { MyJwtService } from '../services/jwt/jwt.service';
-import { type JWTPayload } from '../models/jwt.model';
+import { type IJWTPayload } from '../interfaces/jwt.interface';
 import { ErrorHandlerService } from '../services/error-handler/error-handler.service';
 
 @Injectable()
@@ -34,7 +34,7 @@ export class RolesGuard implements CanActivate {
     if (!auth) throw new UnauthorizedException();
 
     const { sub, roles } =
-      await this.errorHandlerService.handleError<JWTPayload>(
+      await this.errorHandlerService.handleError<IJWTPayload>(
         this.myJwtService.decodeAuth(auth),
       );
 
